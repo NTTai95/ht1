@@ -18,7 +18,7 @@ import utils.XJdbc;
  */
 public class BanAnDAO extends SysDAO<BanAn, String>{
 
-    String INSERT_SQL = "Insert BanAn(MaB) Value(?)";
+    String INSERT_SQL = "Insert BanAn(MaB) Values(?)";
     String DELETE_SQL = "DELETE FROM BanAn WHERE BanAn like ?";
     String SELECT_BY_ID = "Select * from BanAn where BanAn like ?";
     String SELECT_ALL = "SELECT * FROM BanAn";
