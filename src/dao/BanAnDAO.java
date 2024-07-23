@@ -5,7 +5,12 @@
 package dao;
 
 import entity.BanAn;
+import entity.MonAn;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import utils.XJdbc;
 
 /**
  *
@@ -13,9 +18,14 @@ import java.util.List;
  */
 public class BanAnDAO extends SysDAO<BanAn, String>{
 
+    String INSERT_SQL = "Insert BanAn(MaB) Value(?)";
+    String DELETE_SQL = "DELETE FROM BanAn WHERE BanAn like ?";
+    String SELECT_BY_ID = "Select * from BanAn where BanAn like ?";
+    String SELECT_ALL = "SELECT * FROM BanAn";
+    
     @Override
     public void insert(BanAn entity) {
-        
+        XJdbc.executeUpdate(INSERT_SQL, entity.getMaB());
     }
 
     @Override
@@ -25,21 +35,38 @@ public class BanAnDAO extends SysDAO<BanAn, String>{
 
     @Override
     public void delete(String id) {
+        XJdbc.executeUpdate(DELETE_SQL, id);
     }
 
     @Override
     public BanAn selectById(String id) {
-        return null;
+        List<BanAn> list = this.selectBySQL(SELECT_BY_ID, id);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override
     public List<BanAn> selectAll() {
-        return null;
+        return this.selectBySQL(SELECT_ALL);
     }
 
     @Override
     protected List<BanAn> selectBySQL(String sql, Object... args) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<BanAn> list = new ArrayList<>();
+        try {
+            ResultSet rs = XJdbc.executeQuery(sql, args);
+            while (rs.next()) {
+                BanAn entity = new BanAn();
+                entity.setMaB(rs.getString(1));
+                list.add(entity);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     
 }

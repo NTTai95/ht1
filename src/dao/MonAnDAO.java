@@ -18,8 +18,8 @@ import java.util.List;
 public class MonAnDAO extends SysDAO<MonAn, String> {
 
     String INSERT_SQL = "Insert MonAn(MaMon, TenMon, DonGia, Anh, MaLoai) Value(?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE MonAn SET TenMon = ?, DonGia = ?, Anh = ?, MaLoai = ? WHERE MaMon = ?";
-    String DELETE_SQL = "DELETE FROM MonAn WHERE MaMon = ?";
+    String UPDATE_SQL = "UPDATE MonAn SET TenMon = ?, DonGia = ?, Anh = ?, MaLoai = ? WHERE MaMon like ?";
+    String DELETE_SQL = "DELETE FROM MonAn WHERE MaMon like ?";
     String SELECT_BY_ID = "Select * from MonAn where MaMon like ?";
     String SELECT_ALL = "SELECT * FROM MonAn";
 

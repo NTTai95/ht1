@@ -9,13 +9,20 @@ package entity;
  * @author admin
  */
 public class BanAn {
-    int MaB;
+    String MaB;
 
-    public int getMaB() {
+    public BanAn() {
+    }
+
+    public BanAn(String MaB) {
+        this.MaB = MaB;
+    }
+
+    public String getMaB() {
         return MaB;
     }
 
-    public void setMaB(int MaB) {
+    public void setMaB(String MaB) {
         this.MaB = MaB;
     }
     
