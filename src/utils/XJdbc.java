@@ -14,7 +14,7 @@ import java.sql.*;
 public class XJdbc {
 
     public static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    public static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=Polypro";
+    public static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaHang_DuAn1";
     public static String username = "sa";
     public static String password = "123456";
 
