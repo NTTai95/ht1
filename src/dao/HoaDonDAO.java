@@ -5,13 +5,10 @@
 package dao;
 
 import entity.HoaDon;
-import entity.MonAn;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import utils.XJdbc;
 
 /**
@@ -29,7 +26,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     @Override
     public void insert(HoaDon entity) {
         XJdbc.executeUpdate(INSERT_SQL,
-                getCountRow(),
+                entity.getMaHD(),
                 entity.getNgayLap(),
                 entity.getMaKH(),
                 entity.getMaNV(),
@@ -75,6 +72,14 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
             ResultSet rs = XJdbc.executeQuery(sql, args);
             while (rs.next()) {
                 HoaDon entity = new HoaDon();
+                entity.setMaHD(rs.getInt(1));
+                entity.setNgayLap(rs.getTimestamp(2).toLocalDateTime());
+                entity.setMaKH(rs.getString(3));
+                entity.setMaNV(rs.getString(4));
+                entity.setMaB(rs.getString(5));
+                entity.setTrangThai(rs.getInt(6));
+                entity.setNgayNhan(rs.getTimestamp(7).toLocalDateTime());
+                entity.setGhiChu(rs.getString(8));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
@@ -84,14 +89,14 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         }
     }
 
-    protected int getCountRow() {
+    public int getCountRow() {
         try {
             ResultSet rs = XJdbc.executeQuery(COUNT_ROW);
             if (rs.next()) {
                 return rs.getInt(1);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(HoaDonDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
         return 0;
     }

@@ -22,6 +22,7 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
     String DELETE_SQL = "DELETE FROM MonAn WHERE MaMon like ?";
     String SELECT_BY_ID = "Select * from MonAn where MaMon like ?";
     String SELECT_ALL = "SELECT * FROM MonAn";
+    String COUNT_ROW = "SELECT COUNT(*) FROM MonAn";
 
     @Override
     public void insert(MonAn entity) {
@@ -81,5 +82,17 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    public int getCountRow() {
+        try {
+            ResultSet rs = XJdbc.executeQuery(COUNT_ROW);
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 }
