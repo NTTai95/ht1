@@ -6,6 +6,8 @@
 package utils;
 
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,9 +16,9 @@ import java.sql.*;
 public class XJdbc {
 
     public static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-    public static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaHang_DuAn1";
+    public static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaHang_DuAn1;encrypt=false";
     public static String username = "sa";
-    public static String password = "123456";
+    public static String password = "1234";
 
     static {
         try {
@@ -63,6 +65,22 @@ public class XJdbc {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    public static void main(String[] args) throws SQLException {
+        try {
+            Class.forName(driver);
+            Connection connection = DriverManager.getConnection(XJdbc.dburl,XJdbc.username,XJdbc.password);
+            if(connection != null){
+                System.out.println("Kết nối thành công!");
+                
+                connection.close();
+            }else{
+                System.out.println("Không thể kết nối!");
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(XJdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
