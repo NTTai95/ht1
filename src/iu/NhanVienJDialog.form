@@ -376,9 +376,13 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jPanel9" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="1" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="btnThongBaoBep" alignment="0" min="-2" pref="155" max="-2" attributes="0"/>
-                                      <Component id="btnGopBan" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="btnGopBan" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="btnLuuHD" max="32767" attributes="0"/>
+                                      </Group>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -399,8 +403,6 @@
                                               <Component id="txtTimKiemKhachHang" pref="142" max="32767" attributes="0"/>
                                               <Component id="lblTenKhachHang" max="32767" attributes="0"/>
                                           </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="btnGopBan1" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="lblBanAn" min="-2" pref="117" max="-2" attributes="0"/>
@@ -448,9 +450,8 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="txtTimKiemKhachHang" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnGopBan1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="jLabel6" max="32767" attributes="0"/>
                               <Component id="lblTenKhachHang" max="32767" attributes="0"/>
@@ -461,6 +462,7 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="btnGopBan" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="btnInHoaDon" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnLuuHD" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -754,7 +756,7 @@
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnGopBan1">
+                <Component class="javax.swing.JButton" name="btnLuuHD">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="99" red="0" type="rgb"/>
@@ -765,8 +767,11 @@
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="+"/>
+                    <Property name="text" type="java.lang.String" value="L&#x1b0;u"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLuuHDActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>

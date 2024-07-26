@@ -332,7 +332,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         btnThongBaoBep = new javax.swing.JButton();
         btnInHoaDon = new javax.swing.JButton();
         lblBanAn = new javax.swing.JLabel();
-        btnGopBan1 = new javax.swing.JButton();
+        btnLuuHD = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         lblMaHoaDon = new javax.swing.JLabel();
         pnlKhachHang = new javax.swing.JPanel();
@@ -665,10 +665,15 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         lblBanAn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         lblBanAn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        btnGopBan1.setBackground(new java.awt.Color(0, 153, 255));
-        btnGopBan1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnGopBan1.setForeground(new java.awt.Color(255, 255, 255));
-        btnGopBan1.setText("+");
+        btnLuuHD.setBackground(new java.awt.Color(0, 153, 255));
+        btnLuuHD.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnLuuHD.setForeground(new java.awt.Color(255, 255, 255));
+        btnLuuHD.setText("Lưu");
+        btnLuuHD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuHDActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Mã hóa đơn:");
 
@@ -683,9 +688,12 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btnThongBaoBep, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnGopBan, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(btnGopBan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLuuHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnInHoaDon)
@@ -700,9 +708,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                                    .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnGopBan1))
+                                    .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(lblBanAn, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -735,9 +741,8 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGopBan1))
-                .addGap(8, 8, 8)
+                    .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -746,7 +751,8 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGopBan)
-                    .addComponent(btnInHoaDon))
+                    .addComponent(btnInHoaDon)
+                    .addComponent(btnLuuHD))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThanhToan)
@@ -1099,7 +1105,16 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
     private void txtTimKiemKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKhachHangKeyPressed
         // TODO add your handling code here:
+        KhachHang khTemp = timKhachHangbySDT(txtTimKiemKhachHang.getText());
+        lblTenKhachHang.setText(khTemp != null?khTemp.getTenKH():"");
     }//GEN-LAST:event_txtTimKiemKhachHangKeyPressed
+
+    private void btnLuuHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuHDActionPerformed
+        // TODO add your handling code here:
+        if(!checkHoaDon()){
+            
+        }
+    }//GEN-LAST:event_btnLuuHDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1138,8 +1153,8 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGopBan;
-    private javax.swing.JButton btnGopBan1;
     private javax.swing.JButton btnInHoaDon;
+    private javax.swing.JButton btnLuuHD;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThongBaoBep;
     private javax.swing.JButton btnXoaMonAn;
