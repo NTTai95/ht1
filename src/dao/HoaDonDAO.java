@@ -81,6 +81,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
                 entity.setTrangThai(rs.getInt(6));
                 entity.setGhiChu(rs.getString(7));
                 list.add(entity);
+                
             }
             rs.getStatement().getConnection().close();
             return list;
