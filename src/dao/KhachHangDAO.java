@@ -21,6 +21,7 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
     String DELETE_SQL = "DELETE FROM KhachHang WHERE MaKh like ?";
     String SELECT_BY_ID = "Select * from KhachHang where MaKH like ?";
     String SELECT_ALL = "SELECT * FROM KhachHang";
+    String SELECT_BY_SDT = "Select * from KhachHang where SDT like ?";
     String COUNT_ROW = "SELECT COUNT(*) FROM KhachHang";
 
     @Override
@@ -87,5 +88,13 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
             throw new RuntimeException(e);
         }
         return 0;
+    }
+    
+    public KhachHang selectBySDT(String sdt){
+        List<KhachHang> list = this.selectBySQL(SELECT_BY_SDT, sdt);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 }

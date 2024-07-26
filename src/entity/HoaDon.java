@@ -18,7 +18,6 @@ public class HoaDon {
     String maNV;
     String maB;
     int trangThai; //-1. Hủy, 0. Chưa thanh toán, 1. Đã thanh toán
-    LocalDateTime ngayNhan;
     String ghiChu;
 
     public HoaDon() {
@@ -31,7 +30,6 @@ public class HoaDon {
         this.maNV = maNV;
         this.maB = maB;
         this.trangThai = trangThai;
-        this.ngayNhan = ngayNhan;
         this.ghiChu = ghiChu;
     }
     
@@ -81,14 +79,6 @@ public class HoaDon {
 
     public void setTrangThai(int trangThai) {
         this.trangThai = trangThai;
-    }
-
-    public LocalDateTime getNgayNhan() {
-        return ngayNhan;
-    }
-
-    public void setNgayNhan(LocalDateTime ngayNhan) {
-        this.ngayNhan = ngayNhan;
     }
 
     public String getGhiChu() {

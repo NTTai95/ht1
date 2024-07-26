@@ -5,6 +5,7 @@
 package dao;
 
 import entity.HoaDon;
+import entity.HoaDonChiTiet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     String SELECT_BY_ID = "Select * from HoaDon where MaHD like ?";
     String SELECT_ALL = "SELECT * FROM HoaDon";
     String COUNT_ROW = "SELECT COUNT(*) FROM HoaDon";
+    String SELECT_TRANGTHAI = "Select * from HoaDon Where TrangThai like ?";
 
     @Override
     public void insert(HoaDon entity) {
@@ -32,7 +34,6 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
                 entity.getMaNV(),
                 entity.getMaB(),
                 entity.getTrangThai(),
-                entity.getNgayNhan(),
                 entity.getGhiChu()
         );
     }
@@ -78,8 +79,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
                 entity.setMaNV(rs.getString(4));
                 entity.setMaB(rs.getString(5));
                 entity.setTrangThai(rs.getInt(6));
-                entity.setNgayNhan(rs.getTimestamp(7).toLocalDateTime());
-                entity.setGhiChu(rs.getString(8));
+                entity.setGhiChu(rs.getString(7));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
@@ -89,6 +89,10 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         }
     }
 
+    public List<HoaDon> selectByTrangThai(String trangThai){
+        return this.selectBySQL(SELECT_TRANGTHAI, trangThai);
+    }
+    
     public int getCountRow() {
         try {
             ResultSet rs = XJdbc.executeQuery(COUNT_ROW);
@@ -100,4 +104,5 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         }
         return 0;
     }
+    
 }
