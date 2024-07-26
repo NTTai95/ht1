@@ -81,6 +81,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
                 entity.setNgayNhan(rs.getTimestamp(7).toLocalDateTime());
                 entity.setGhiChu(rs.getString(8));
                 list.add(entity);
+                
             }
             rs.getStatement().getConnection().close();
             return list;

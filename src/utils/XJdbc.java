@@ -18,7 +18,7 @@ public class XJdbc {
     public static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     public static String dburl = "jdbc:sqlserver://localhost:1433;databaseName=QuanLyNhaHang_DuAn1;encrypt=false";
     public static String username = "sa";
-    public static String password = "1234";
+    public static String password = "123456";
 
     static {
         try {
@@ -48,7 +48,7 @@ public class XJdbc {
             try {
                 return pstmt.executeQuery();
             } finally {
-
+                //pstmt.getConnection().close();
             }
         } catch (SQLException e) {
             return null;
@@ -69,18 +69,32 @@ public class XJdbc {
     }
     
     public static void main(String[] args) throws SQLException {
+       
+        Connection connection = null;
         try {
+            // Tải driver JDBC (không cần thiết với JDBC 4.0+)
             Class.forName(driver);
-            Connection connection = DriverManager.getConnection(XJdbc.dburl,XJdbc.username,XJdbc.password);
-            if(connection != null){
+
+            // Kết nối đến cơ sở dữ liệu
+            connection = DriverManager.getConnection(dburl, username, password);
+
+            if (connection != null) {
                 System.out.println("Kết nối thành công!");
-                
-                connection.close();
-            }else{
-                System.out.println("Không thể kết nối!");
+            } else {
+                System.out.println("Kết nối thất bại!");
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(XJdbc.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Không tìm thấy driver JDBC: " + e.getMessage());
+        } catch (SQLException e) {
+            System.err.println("Lỗi kết nối cơ sở dữ liệu: " + e.getMessage());
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    System.err.println("Lỗi khi đóng kết nối: " + e.getMessage());
+                }
+            }
         }
     }
 }
