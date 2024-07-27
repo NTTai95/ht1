@@ -2,34 +2,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package iu;
+package ui;
 
 import dao.MonAnDAO;
 import entity.MonAn;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.MsgBox;
-import utils.XImage;
 
 /**
  *
  * @author admin
  */
-public class QuanLyMonAnJFrame extends javax.swing.JFrame {
+public class QuanLyMon_LoaiMonJFrame extends javax.swing.JFrame {
     JFileChooser fileChooser = new JFileChooser();
     MonAnDAO dao = new MonAnDAO();
     int row = 0;
     /**
      * Creates new form QuanLyMon_LoaiMon
      */
-    public QuanLyMonAnJFrame() {
+    public QuanLyMon_LoaiMonJFrame() {
         initComponents();
         fillTable();
     }
@@ -50,104 +44,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Lỗi truy vẫn dữ liệu");
         }
     }
-    
-    void setForm(MonAn model){
-        txtMaMonAn.setText(model.getMaMon());
-        txtTenMonAn.setText(model.getTenMon());
-        txtDonGia.setText(String.valueOf(model.getDonGia()));   
-        if(!model.getAnh().equals("")){
-            lblAnh.setIcon(XImage.read(model.getAnh()));
-            lblAnh.setToolTipText(model.getAnh());
-        }
-    }
-    
-    MonAn getForm(){
-        MonAn cd = new MonAn();
-        cd.setMaMon(txtMaMonAn.getText());
-        cd.setTenMon(txtTenMonAn.getText());
-        cd.setDonGia(Float.parseFloat(txtDonGia.getText()));
-        cd.setAnh(lblAnh.getToolTipText());
-        return cd;
-    }
-    
-    void chonAnh() throws IOException{
-        if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
-            File file = fileChooser.getSelectedFile();
-            XImage.save(file);
-            ImageIcon icon = XImage.read(file.getName());
-            lblAnh.setIcon(icon);
-            lblAnh.setToolTipText(file.getName());
-        }
-    }
-    
-    void edit(){
-        try {
-            String maCD = (String)tblMonAn.getValueAt(this.row, 0);
-            MonAn cd = dao.selectById(maCD);
-            if(cd != null){
-                setForm(cd);
-                updateStatus();
-            }
-        } catch (Exception e) {
-            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
-        }
-    }
-    
-    void updateStatus(){
-        boolean edit = this.row >= 0;
-        txtMaMonAn.setEnabled(!edit);
-        btnThem.setEnabled(!edit);
-        btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);       
-    }
-    
-    void clearForm(){
-        this.setForm(new MonAn());
-        this.updateStatus();
-        row = -1;
-        updateStatus();
-    }
-    
-    void insert(){
-        MonAn cd = getForm();
-            try {
-                dao.insert(cd);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Thêm mới thành công");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Thêm mới thất bại");
-            }
-    }
-    
-    void update(){
-        MonAn cd = getForm();
-            try {
-                dao.update(cd);
-                this.fillTable();                
-                MsgBox.alert(this, "Cập nhật thành công");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Cập nhật thất bại");
-            }                    
-    }
-    
-    void delete(){
-//        if(!Auth.isManager()){
-//            MsgBox.alert(this, "Bạn không có quyền xoá nhân viên");
-//        }else{
-            if(MsgBox.confirm(this, "Bạn thực sự muốn xoá nhân viên này?")){
-                String macd = txtMaMonAn.getText();
-                try {
-                    dao.delete(macd);
-                    this.fillTable();
-                    this.clearForm();
-                    MsgBox.alert(this, "Xoá thành công");
-                } catch (Exception e) {
-                    MsgBox.alert(this, "Xoá thất bại");
-                }
-            }                
-        }
-//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,13 +56,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtTenMonAn = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtDonGia = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         lblAnh = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtMaMonAn = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
         btnThem = new javax.swing.JButton();
         btnSua = new javax.swing.JButton();
         btnXoa = new javax.swing.JButton();
@@ -188,9 +84,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Tên món ăn:");
 
-        txtTenMonAn.addActionListener(new java.awt.event.ActionListener() {
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTenMonAnActionPerformed(evt);
+                jTextField1ActionPerformed(evt);
             }
         });
 
@@ -199,20 +95,14 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblAnh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                lblAnhMousePressed(evt);
-            }
-        });
         jPanel1.add(lblAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 150));
 
         jLabel3.setText("Mã món ăn:");
 
-        txtMaMonAn.setEnabled(false);
-        txtMaMonAn.addActionListener(new java.awt.event.ActionListener() {
+        jTextField3.setEnabled(false);
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaMonAnActionPerformed(evt);
+                jTextField3ActionPerformed(evt);
             }
         });
 
@@ -247,15 +137,15 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(38, 38, 38)
-                                .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtMaMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(51, 51, 51))
         );
         jPanel3Layout.setVerticalGroup(
@@ -266,14 +156,14 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                         .addGap(28, 28, 28)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
-                            .addComponent(txtMaMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
@@ -288,12 +178,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Danh sách", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
-
-        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jScrollPane1MousePressed(evt);
-            }
-        });
 
         tblMonAn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -315,11 +199,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             }
         });
         tblMonAn.setShowGrid(true);
-        tblMonAn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblMonAnMousePressed(evt);
-            }
-        });
         jScrollPane1.setViewportView(tblMonAn);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -416,34 +295,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtTenMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenMonAnActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtTenMonAnActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void txtMaMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaMonAnActionPerformed
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMaMonAnActionPerformed
-
-    private void lblAnhMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnhMousePressed
-        if(evt.getClickCount() == 2){
-            try {
-                chonAnh();
-            } catch (IOException ex) {
-                Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_lblAnhMousePressed
-
-    private void jScrollPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jScrollPane1MousePressed
-
-    private void tblMonAnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMonAnMousePressed
-        if(evt.getClickCount() == 2){
-            this.row = tblMonAn.rowAtPoint(evt.getPoint());
-            edit();
-        }
-    }//GEN-LAST:event_tblMonAnMousePressed
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -462,23 +320,21 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyMon_LoaiMonJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyMon_LoaiMonJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyMon_LoaiMonJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(QuanLyMon_LoaiMonJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyMonAnJFrame().setVisible(true);
+                new QuanLyMon_LoaiMonJFrame().setVisible(true);
             }
         });
     }
@@ -501,11 +357,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lblAnh;
     private javax.swing.JTable tblMonAn;
-    private javax.swing.JTextField txtDonGia;
-    private javax.swing.JTextField txtMaMonAn;
-    private javax.swing.JTextField txtTenMonAn;
     // End of variables declaration//GEN-END:variables
 }
