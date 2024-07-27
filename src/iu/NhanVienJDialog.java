@@ -23,6 +23,8 @@ import javax.swing.table.TableColumn;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import utils.Auth;
 
@@ -71,7 +73,6 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         loadThucDon();
         loadBanAn();
         loadComboxLoaiMonAn();
-        themMonAn();
     }
 
     public void loadComboxLoaiMonAn() {
@@ -106,7 +107,8 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         hdTemp.setMaHD(Integer.parseInt(lblMaHoaDon.getText()));
         hdTemp.setMaB(lblBanAn.getText());
         hdTemp.setMaKH(timKhachHangbySDT(txtTimKiemKhachHang.getText()).getMaKH());
-        hdTemp.setNgayLap(LocalDateTime.parse(lblNgayLap.getText()));
+        hdTemp.setMaNV(Auth.user.getMaNV());
+        hdTemp.setNgayLap(LocalDateTime.parse(lblNgayLap.getText(), fmThoiGian));
         hdTemp.setTrangThai(trangThai);
         hdTemp.setGhiChu("");
 
@@ -118,6 +120,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         lblMaHoaDon.setText(String.valueOf(hd.getMaHD()));
         lblNgayLap.setText(hd.getNgayLap().format(fmThoiGian));
         KhachHang khTemp = khDAO.selectById(hd.getMaKH());
+        System.out.println("Hóa đơn: " + hd.getMaKH());
         txtTimKiemKhachHang.setText(khTemp == null ? "" : khTemp.getSDT());
         lblTenKhachHang.setText(khTemp == null ? "" : khTemp.getTenKH());
         List<HoaDonChiTiet> hdct = hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()));
@@ -175,6 +178,11 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblBanAn.getModel();
         model.setRowCount(0);
 
+        String color = "blue";
+
+        row = -1;
+        loadHoaDon();
+        
         for (int i = 1; i < rowBA; i++) {
             String maBA = "B" + (i < 10 ? "0" + i : i);
             String tenKH = "Trống";
@@ -183,9 +191,11 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
             for (int j = 0; j < hd.size(); j++) {
                 if (maBA.equalsIgnoreCase(hd.get(j).getMaB())) {
-                    tenKH = khDAO.selectById(hd.get(j).getMaKH()).getTenKH();
-                    trangThai = "Chưa Thanh Toán";
+                    maBA = "<html><p style='color:" + color + ";'>" + maBA + "</p></html>";
+                    tenKH = "<html><p style='color:" + color + ";'>" + khDAO.selectById(hd.get(j).getMaKH()).getTenKH() + "</p></html>";
+                    trangThai = "<html><p style='color:" + color + ";'>Chưa Thanh Toán</p></html>";
                     boQua = cboBATrangThai.getSelectedIndex() == 2;
+                    break;
                 }
             }
             if (boQua) {
@@ -196,11 +206,35 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         }
     }
 
+    public String getValueTable(String str) {
+        if (!str.startsWith("<html>")) {
+            return str;
+        }
+        String strNew = str.substring(6, str.length() - 7);
+        int start = strNew.indexOf(">");
+        int end = strNew.lastIndexOf("<");
+
+        return strNew.substring(start + 1, end);
+    }
+
     public void loadHoaDon() {
 
-        if (tblBanAn.getValueAt(row, 2).toString().equalsIgnoreCase("Chưa Thanh Toán")) {
+        if(row == -1){
+            HoaDon hdNew = new HoaDon();
+            hdNew.setMaHD(0);
+            hdNew.setMaB("B00");
+            hdNew.setMaKH("");
+            hdNew.setMaNV(Auth.user.getMaNV());
+            hdNew.setNgayLap(LocalDateTime.now());
+            hdNew.setTrangThai(0);
+            hdNew.setGhiChu("");
+            setFrom(hdNew);
+            return;
+        }
+        
+        if (getValueTable(tblBanAn.getValueAt(row, 2).toString()).equalsIgnoreCase("Chưa Thanh Toán")) {
             for (int i = 0; i < hd.size(); i++) {
-                if (tblBanAn.getValueAt(row, 0).toString().equalsIgnoreCase(hd.get(i).getMaB())) {
+                if (getValueTable(tblBanAn.getValueAt(row, 0).toString()).equalsIgnoreCase(hd.get(i).getMaB())) {
                     setFrom(hd.get(i));
                     return;
                 }
@@ -208,7 +242,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         } else {
             HoaDon hdNew = new HoaDon();
             hdNew.setMaHD(hdDAO.getCountRow() + 1);
-            hdNew.setMaB(tblBanAn.getValueAt(row, 0).toString());
+            hdNew.setMaB(getValueTable(tblBanAn.getValueAt(row, 0).toString()));
             hdNew.setMaKH("");
             hdNew.setMaNV(Auth.user.getMaNV());
             hdNew.setNgayLap(LocalDateTime.now());
@@ -219,9 +253,16 @@ public class NhanVienJDialog extends javax.swing.JFrame {
     }
 
     public float tongTien() {
+//        float tongTien = 0;
+//        for (int i = 0; i < tblHoaDonChiTiet.getRowCount(); i++) {
+//            tongTien += (float) tblHoaDonChiTiet.getValueAt(i, 4);
+//        }
+//        return tongTien;
+
         float tongTien = 0;
-        for (int i = 0; i < tblHoaDonChiTiet.getRowCount(); i++) {
-            tongTien += (float) tblHoaDonChiTiet.getValueAt(i, 4);
+        List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
+        for (HoaDonChiTiet hdct1 : hdctTemp) {
+            tongTien += hdct1.getDonGia() * hdct1.getSoLuong();
         }
         return tongTien;
     }
@@ -247,6 +288,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
     public void themMonAn() {
         if (!checkHoaDon()) {
+            System.out.println("Khong The Them Mon An");
             return;
         }
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
@@ -277,13 +319,17 @@ public class NhanVienJDialog extends javax.swing.JFrame {
     public void capNhatHDCT() {
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
         List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
-        
+
         for (int i = 0; i < model.getRowCount(); i++) {
-            if(hdctTemp.get(i).getSoLuong() != Integer.parseInt(model.getValueAt(i, 2).toString())){
+            if (hdctTemp.get(i).getSoLuong() != Integer.parseInt(model.getValueAt(i, 2).toString())) {
                 hdctTemp.get(i).setSoLuong(Integer.parseInt(model.getValueAt(i, 2).toString()));
                 hdctDAO.update(hdctTemp.get(i));
             }
         }
+
+        lblTongTien.setText(fmTien.format(tongTien()));
+        System.out.println("Tổng tiền: " + fmTien.format(tongTien()));
+
     }
 
     public void inHoaDon(HoaDon hd) {
@@ -385,6 +431,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblBanAn.setSelectionBackground(new java.awt.Color(204, 204, 204));
         tblBanAn.setShowGrid(true);
         tblBanAn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -555,6 +602,11 @@ public class NhanVienJDialog extends javax.swing.JFrame {
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
+        tblHoaDonChiTiet.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                tblHoaDonChiTietFocusGained(evt);
+            }
+        });
         tblHoaDonChiTiet.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblHoaDonChiTietMouseClicked(evt);
@@ -662,7 +714,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
         lblBanAn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblBanAn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblBanAn.setText("Bàn 0");
-        lblBanAn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        lblBanAn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204), 3));
         lblBanAn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         btnLuuHD.setBackground(new java.awt.Color(0, 153, 255));
@@ -1084,37 +1136,49 @@ public class NhanVienJDialog extends javax.swing.JFrame {
 
     private void tblHoaDonChiTietMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietMouseClicked
         // TODO add your handling code here:
-        capNhatHDCT();
+
     }//GEN-LAST:event_tblHoaDonChiTietMouseClicked
 
     private void tblHoaDonChiTietAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietAncestorAdded
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_tblHoaDonChiTietAncestorAdded
 
     private void tblHoaDonChiTietInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietInputMethodTextChanged
         // TODO add your handling code here:
-        
 
     }//GEN-LAST:event_tblHoaDonChiTietInputMethodTextChanged
 
     private void tblHoaDonChiTietKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietKeyPressed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_tblHoaDonChiTietKeyPressed
 
     private void txtTimKiemKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKhachHangKeyPressed
         // TODO add your handling code here:
         KhachHang khTemp = timKhachHangbySDT(txtTimKiemKhachHang.getText());
-        lblTenKhachHang.setText(khTemp != null?khTemp.getTenKH():"");
+        lblTenKhachHang.setText(khTemp != null ? khTemp.getTenKH() : "");
     }//GEN-LAST:event_txtTimKiemKhachHangKeyPressed
 
     private void btnLuuHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuHDActionPerformed
         // TODO add your handling code here:
-        if(!checkHoaDon()){
-            
+        if (!checkHoaDon()) {
+            System.out.println("Hoa Don Khong Duoc Luu");
+            return;
         }
+
+        hdDAO.insert(getFrom(0));
+
+        hd = hdDAO.selectByTrangThai("0");
+        rowBA = baDAO.getCountRow();
+        loadBanAn();
+
     }//GEN-LAST:event_btnLuuHDActionPerformed
+
+    private void tblHoaDonChiTietFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietFocusGained
+        // TODO add your handling code here:
+        capNhatHDCT();
+    }//GEN-LAST:event_tblHoaDonChiTietFocusGained
 
     /**
      * @param args the command line arguments

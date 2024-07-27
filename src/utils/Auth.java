@@ -13,6 +13,6 @@ import entity.NhanVien;
  */
 public class Auth {
 
-    public static NhanVien user = new NhanVien("NV001", "Nguyễn Tấn Tài", "nv1234", 0, "nguyentantaivithanh@gmail.com");
+    public static NhanVien user = new NhanVien("NV01", "Nguyễn Tấn Tài", "nv1234", 0, "nguyentantaivithanh@gmail.com");
 
 }

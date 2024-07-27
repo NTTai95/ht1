@@ -18,7 +18,7 @@ import utils.XJdbc;
  */
 public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
 
-    String INSERT_SQL = "Insert HoaDon(MaHD, NgayLap, MaKH, MaNV, MaB, TrangThai, NgayNhan,GhiChu) Values (?,?,?,?,?,?,?,?)";
+    String INSERT_SQL = "Insert HoaDon(NgayLap, MaKH, MaNV, MaB, TrangThai,GhiChu) Values (?,?,?,?,?,?)";
     String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD like ?";
     String SELECT_BY_ID = "Select * from HoaDon where MaHD like ?";
     String SELECT_ALL = "SELECT * FROM HoaDon";
@@ -28,7 +28,6 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     @Override
     public void insert(HoaDon entity) {
         XJdbc.executeUpdate(INSERT_SQL,
-                entity.getMaHD(),
                 entity.getNgayLap(),
                 entity.getMaKH(),
                 entity.getMaNV(),
