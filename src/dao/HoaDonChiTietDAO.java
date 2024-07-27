@@ -20,11 +20,12 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
 
     String INSERT_SQL = "Insert HoaDonChiTiet(MaHD, MaMon, DonGia, SoLuongMon) Values (?,?,?,?)";
     String UPDATA_SQl = "UPDATE HoaDonChiTiet SET SoLuongMon = ? WHERE MaHD like ? And MaMon like ?";
-    String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD like ?";
+    String DELETE_SQL = "DELETE FROM HoaDonChiTiet WHERE MaHD like ? And MaMon like ?";
     String SELECT_BY_ID = "Select * from HoaDon where MaHD like ?";
     String SELECT_ALL = "SELECT * FROM HoaDon";
     String COUNT_ROW = "SELECT COUNT(*) FROM HoaDon";
     String SELECT_HDCT = "Select * from HoaDonChiTiet Where MaHD = ?";
+    String UPDATA_HDCT = "UPDATE HoaDonChiTiet SET MaHD = ? WHERE MaHD like ?";
     
     @Override
     public void insert(HoaDonChiTiet entity) {
@@ -42,10 +43,17 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
                             entity.getMaHD(),
                             entity.getMaMon());
     }
+    
+    public void gopBanAn(String maHDOld, String maHDNew){
+        XJdbc.executeUpdate(UPDATA_HDCT, maHDNew, maHDOld);
+    }
 
     @Override
     public void delete(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public void delete(String maHD, String maMon) {
+       XJdbc.executeUpdate(DELETE_SQL, maHD, maMon);
     }
 
     @Override
