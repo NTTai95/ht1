@@ -442,6 +442,7 @@ public class NhanVienJDialog extends javax.swing.JFrame {
     }
 
     public void updateStatus(){
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
