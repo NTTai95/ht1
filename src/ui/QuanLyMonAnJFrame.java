@@ -27,44 +27,41 @@ import utils.XImage;
  * @author admin
  */
 public class QuanLyMonAnJFrame extends javax.swing.JFrame {
+
     JFileChooser fileChooser = new JFileChooser();
     MonAnDAO MAdao = new MonAnDAO();
     int row = 0;
     LoaiMonDAO LMdao = new LoaiMonDAO();
-    
-   
- 
-    
 
     /**
      * Creates new form QuanLyMon_LoaiMon
      */
     public QuanLyMonAnJFrame() {
-        
+
         initComponents();
         fillTable();
         fillComboBoxLoaiMon();
         fillComboBoxLoaiMonTT();
-        
+
         txtMaMon.setText(generateNewMaMon());
     }
-    
-    
-    public void fillTable(){
+
+    public void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
         model.setRowCount(0);
-        try{
+        try {
             List<MonAn> list = MAdao.selectAll();
-            for(MonAn cd : list){
-                Object[] row ={
-                  cd.getMaMon(), cd.getTenMon(), cd.getDonGia()
+            for (MonAn cd : list) {
+                Object[] row = {
+                    cd.getMaMon(), cd.getTenMon(), cd.getDonGia()
                 };
                 model.addRow(row);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vẫn dữ liệu");
         }
     }
+
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
         model.removeAllElements();
@@ -72,9 +69,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         List<LoaiMon> list = LMdao.selectAll();
         for (LoaiMon cd : list) {
             model.addElement(cd);
-        }   
+        }
     }
-    
+
     void fillComboBoxLoaiMonTT() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMonTT.getModel();
         model.removeAllElements();
@@ -82,9 +79,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         List<LoaiMon> list = LMdao.selectAll();
         for (LoaiMon cd : list) {
             model.addElement(cd);
-        }   
+        }
     }
-    
+
     public void fillTableByLoai() {
         DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
         model.setRowCount(0);
@@ -95,16 +92,16 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             System.out.println("list: " + list.size());
             for (int i = 0; i < list.size(); i++) {
                 MonAn hv = list.get(i);
-                
+
                 Object[] row = {
-                    i + 1,  hv.getMaMon(), hv.getTenMon(), hv.getDonGia()
+                    i + 1, hv.getMaMon(), hv.getTenMon(), hv.getDonGia()
                 };
                 model.addRow(row);
             }
         }
         fillTable();
     }
-    
+
 //    public void fillTableByFindName() {
 //        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
 //        model.setRowCount(0);
@@ -121,51 +118,45 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 //            });
 //        }
 //    }
-
-    
-    
-    
     public void updateMaLoai() {
-    LoaiMon selectedLoaiMon = (LoaiMon) cboLoaiMonTT.getSelectedItem();
-    if (selectedLoaiMon != null) {
-        txtMaLoai.setText(selectedLoaiMon.getMaLoai());
+        LoaiMon selectedLoaiMon = (LoaiMon) cboLoaiMonTT.getSelectedItem();
+        if (selectedLoaiMon != null) {
+            txtMaLoai.setText(selectedLoaiMon.getMaLoai());
+        }
     }
-}
 
-    
     public String generateNewMaMon() {
-    int rowCount = MAdao.getCountRow(); // Lấy số lượng dòng hiện tại
-    int newNumber = rowCount + 1; // Tăng lên 1
-    return "M0" + newNumber; // Tạo mã món ăn mới
-}
+        int rowCount = MAdao.getCountRow(); // Lấy số lượng dòng hiện tại
+        int newNumber = rowCount + 1; // Tăng lên 1
+        return "M0" + newNumber; // Tạo mã món ăn mới
+    }
 
-    
-    void setForm(MonAn model){
+    void setForm(MonAn model) {
         txtMaLoai.setText(model.getMaLoai());
         txtMaMon.setText(model.getMaMon());
         txtTenMonAn.setText(model.getTenMon());
-        txtDonGia.setText(String.valueOf(model.getDonGia()));   
-        if(!model.getAnh().equals("")){
+        txtDonGia.setText(String.valueOf(model.getDonGia()));
+        if (!model.getAnh().equals("")) {
             lblAnh.setIcon(XImage.read(model.getAnh()));
             lblAnh.setToolTipText(model.getAnh());
         }
     }
-    
-    void setForm1(MonAn model){
+
+    void setForm1(MonAn model) {
         txtMaLoai.setText(model.getMaLoai());
         txtMaMon.setText(generateNewMaMon());
         txtTenMonAn.setText(model.getTenMon());
-        txtDonGia.setText(String.valueOf(model.getDonGia()));   
+        txtDonGia.setText(String.valueOf(model.getDonGia()));
 //        if(!model.getAnh().equals("")){
 //            lblAnh.setIcon(XImage.read(model.getAnh()));
 //            lblAnh.setToolTipText(model.getAnh());
 //        }
-        
+
     }
-    
-    MonAn getForm(){
+
+    MonAn getForm() {
         MonAn ma = new MonAn();
-        
+
         ma.setMaLoai(txtMaLoai.getText());
         ma.setMaMon(txtMaMon.getText());
         ma.setTenMon(txtTenMonAn.getText());
@@ -173,9 +164,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         ma.setAnh(lblAnh.getToolTipText());
         return ma;
     }
-    
-    void chonAnh() throws IOException{
-        if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+
+    void chonAnh() throws IOException {
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             XImage.save(file);
             ImageIcon icon = XImage.read(file.getName());
@@ -183,65 +174,68 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             lblAnh.setToolTipText(file.getName());
         }
     }
-    
-    void edit(){
+
+    void edit() {
         try {
-            String maMon = (String)tblMonAn.getValueAt(this.row, 0);
+            String maMon = (String) tblMonAn.getValueAt(this.row, 0);
             MonAn ma = MAdao.selectById(maMon);
-            if(ma != null){
-                setForm(ma);               
+            if (ma != null) {
+                setForm(ma);
             }
         } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
         }
     }
-    
-    
-    void clearForm(){
-        this.setForm1(new MonAn());       
+
+    void clearForm() {
+        this.setForm1(new MonAn());
         row = -1;
-        
+
     }
-    
-    void insert(){
+
+    void insert() {
         MonAn cd = getForm();
-            try {
-                MAdao.insert(cd);
-                this.fillTable();
-                this.clearForm();
-                MsgBox.alert(this, "Thêm mới thành công");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Thêm mới thất bại");
-            }
+        try {
+            MAdao.insert(cd);
+            this.fillTable();
+            this.clearForm();
+            MsgBox.alert(this, "Thêm mới thành công");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Thêm mới thất bại");
+        }
     }
-    
-    void update(){
+
+    void update() {
         MonAn cd = getForm();
-            try {
-                MAdao.update(cd);
-                this.fillTable();                
-                MsgBox.alert(this, "Cập nhật thành công");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Cập nhật thất bại");
-            }                    
+        try {
+            MAdao.update(cd);
+            this.fillTable();
+            MsgBox.alert(this, "Cập nhật thành công");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại");
+        }
     }
-    
-    void delete(){
+
+    void delete() {
 //        if(!Auth.isManager()){
 //            MsgBox.alert(this, "Bạn không có quyền xoá nhân viên");
 //        }else{
-            if(MsgBox.confirm(this, "Bạn thực sự muốn xoá món ăn này?")){
-                String maMon = txtMaMon.getText();
-                try {
-                    MAdao.delete(maMon);
-                    this.fillTable();
-                    this.clearForm();
-                    MsgBox.alert(this, "Xoá thành công");
-                } catch (Exception e) {
-                    MsgBox.alert(this, "Xoá thất bại");
-                }
-            }                
+        if (MsgBox.confirm(this, "Bạn thực sự muốn xoá món ăn này?")) {
+            String maMon = txtMaMon.getText();
+            try {
+                MAdao.delete(maMon);
+                this.fillTable();
+                this.clearForm();
+                MsgBox.alert(this, "Xoá thành công");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xoá thất bại");
+            }
         }
+    }
+    
+    public void fillTableByFindName(){
+        
+    }
 //    }
 
     /**
@@ -593,7 +587,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMaLoaiActionPerformed
 
     private void lblAnhMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnhMousePressed
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             try {
                 chonAnh();
             } catch (IOException ex) {
@@ -607,7 +601,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jScrollPane1MousePressed
 
     private void tblMonAnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMonAnMousePressed
-        if(evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             this.row = tblMonAn.rowAtPoint(evt.getPoint());
             edit();
         }
@@ -634,7 +628,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
         clearForm();
-        
+
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
