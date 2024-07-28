@@ -20,7 +20,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
     String INSERT_SQL = "Insert KhachHang(MaNV,TenNV,MatKhau,ChucVu,Email) values(?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE NhanVien SET TenNV = ?, MatKhau = ?, ChucVu = ?, Email = ? WHERE MaNV like ?";
     String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV like ?";
-    String SELECT_BY_ID = "Select * from NhanVien where NhanVien like ?";
+    String SELECT_BY_ID = "Select * from NhanVien where MaNV like ?";
     String SELECT_ALL = "SELECT * FROM NhanVien";
     String COUNT_ROW = "SELECT COUNT(*) FROM NhanVien";
 
