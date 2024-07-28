@@ -18,7 +18,7 @@ import utils.XJdbc;
  */
 public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
 
-    String INSERT_SQL = "Insert HoaDon(NgayLap, MaKH, MaNV, MaB, TrangThai,GhiChu) Values (?,?,?,?,?,?)";
+    String INSERT_SQL = "Insert HoaDon(NgayLap, MaKH, MaNV, MaB, TrangThai, GhiChu) Values (?,?,?,?,?,?)";
     String UPDATA_SQL = "UPDATE HoaDon SET TrangThai = ?, GhiChu = ? WHERE MaHD like ?";
     String DELETE_SQL = "DELETE FROM HoaDon WHERE MaHD like ?";
     String SELECT_BY_ID = "Select * from HoaDon where MaHD like ?";
