@@ -51,6 +51,62 @@ public class Printer {
     public static DecimalFormat fmTien = new DecimalFormat("#,#00");
     public static DateTimeFormatter fmThoiGian = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
+    public static void printThongBaoBep(String maHD){
+        try {
+            HoaDon hd = hdDAO.selectById(Integer.valueOf(maHD));
+            BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            
+            Font fontPhieuCheBien = new Font(bf, 20);
+            Font fontData = new Font(bf, 12);
+            
+            Document document = new Document();
+            
+            PdfWriter.getInstance(document, new FileOutputStream("./src/hoadon/phieu_che_bien.pdf"));
+
+            document.open();
+            
+            Paragraph phieuCheBien = new Paragraph("PHIẾU CHẾ BIẾN", fontPhieuCheBien);
+            phieuCheBien.setAlignment(Element.ALIGN_CENTER);
+            document.add(phieuCheBien);
+            
+            document.add(new Paragraph(" "));
+            
+            Paragraph tenNhanVien = getChiMuc("Nhân viên: ", nvDAO.selectById(hd.getMaNV()).getTenNV());
+            tenNhanVien.setAlignment(Element.ALIGN_LEFT);
+            document.add(tenNhanVien);
+            
+            Paragraph ngayLap = getChiMuc("Ngày lập: ", hd.getNgayLap().format(fmThoiGian));
+            ngayLap.setAlignment(Element.ALIGN_LEFT);
+            document.add(ngayLap);
+            
+            Paragraph banAn = getChiMuc("Bàn: ", hd.getMaB());
+            banAn.setAlignment(Element.ALIGN_LEFT);
+            document.add(banAn);
+            
+            PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên sản phẩm, Số lượng,
+            table.setWidthPercentage(100);
+            table.setSpacingBefore(10f);
+            table.setSpacingAfter(10f);
+            table.setWidths(new int[]{1,7,2});
+            
+            List<HoaDonChiTiet> hdct = hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()));
+            for (int i = 0; i < hdct.size(); i++) {
+                addCell(table, "" + (i + 1), fontData);
+                addCell(table, maDAO.selectById(hdct.get(i).getMaMon()).getTenMon(), fontData);
+                addCell(table, "" + hdct.get(i).getSoLuong(), fontData);
+            }
+            
+            document.add(table);
+            
+            document.close();
+        } catch (DocumentException ex) {
+            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
     public static void printHoaDon(String maHD, float tienKhachDua) {
         try {
 
@@ -174,7 +230,7 @@ public class Printer {
         }
     }
 
-    public static void getChiMuc2(PdfPTable table, String textBlod, String textItalic) {
+    private static void getChiMuc2(PdfPTable table, String textBlod, String textItalic) {
         try {
             BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font fontItalic = new Font(bf, 12, Font.ITALIC);
@@ -197,7 +253,7 @@ public class Printer {
         }
     }
 
-    public static Paragraph getChiMuc(String textBlod, String textItalic) {
+    private static Paragraph getChiMuc(String textBlod, String textItalic) {
         try {
             BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             Font fontItalic = new Font(bf, 12, Font.ITALIC);
@@ -216,88 +272,11 @@ public class Printer {
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
-
+    private static void main(String[] args) throws IOException {
         printHoaDon("12", 1700000);
+        printThongBaoBep("12");
     }
-    //        try {
-
-    //            BaseFont bf = BaseFont.createFont("c:/windows/fonts/Arial.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-    //            Font fontTieuDe = new Font(bf, 18, Font.BOLD);
-    //            Font fontCuaHang = new Font(bf, 12);
-    //            Font fontKhachHang = new Font(bf, 12);
-    //            Font fontHeader = new Font(bf, 12, Font.BOLD);
-    //            Font fontData = new Font(bf, 12);
-    //
-    //            // Tạo đối tượng Document
-    //            Document document = new Document();
-    //
-    //            // Lấy đối tượng PdfWriter để ghi vào file PDF
-    //            PdfWriter.getInstance(document, new FileOutputStream("./src/hoadon/hoa_don.pdf"));
-    //
-    //            // Mở document để bắt đầu ghi
-    //            document.open();
-    //
-    //            // =========== THÊM NỘI DUNG HÓA ĐƠN ============= //
-    //            // Thêm tiêu đề
-    //            Paragraph tieuDe = new Paragraph("HÓA ĐƠN BÁN HÀNG", fontTieuDe);
-    //            tieuDe.setAlignment(Element.ALIGN_CENTER);
-    //            document.add(tieuDe);
-    //
-    //            // Thêm thông tin cửa hàng
-    //            Paragraph cuaHang = new Paragraph("CỬA HÀNG ABC\nĐịa chỉ: 123 Đường XYZ, Quận 1, TP.HCM", fontCuaHang);
-    //            cuaHang.setAlignment(Element.ALIGN_CENTER);
-    //            document.add(cuaHang);
-    //
-    //            // Thêm khoảng trống
-    //            document.add(new Paragraph(" "));
-    //
-    //            // Thêm thông tin khách hàng
-    //            Paragraph thongTinKH = new Paragraph("Khách hàng: Nguyễn Văn A\nSố điện thoại: 0123456789", fontKhachHang);
-    //            document.add(thongTinKH);
-    //
-    //            // Thêm bảng chi tiết sản phẩm
-    //            PdfPTable table = new PdfPTable(4); // 4 cột: STT, Tên sản phẩm, Số lượng, Thành tiền
-    //            table.setWidthPercentage(100);
-    //            table.setSpacingBefore(10f);
-    //            table.setSpacingAfter(10f);
-    //
-    //            // Thêm header cho bảng
-    //            addCell(table, "STT", fontHeader);
-    //            addCell(table, "Tên sản phẩm", fontHeader);
-    //            addCell(table, "Số lượng", fontHeader);
-    //            addCell(table, "Thành tiền", fontHeader);
-    //
-    //            // Thêm dữ liệu sản phẩm (ví dụ)
-    //            addCell(table, "1", fontData);
-    //            addCell(table, "Áo thun", fontData);
-    //            addCell(table, "2", fontData);
-    //            addCell(table, "200.000", fontData);
-    //
-    //            addCell(table, "2", fontData);
-    //            addCell(table, "Quần jeans", fontData);
-    //            addCell(table, "1", fontData);
-    //            addCell(table, "350.000", fontData);
-    //
-    //            // Thêm bảng vào document
-    //            document.add(table);
-    //
-    //            // Thêm tổng tiền
-    //            Paragraph tongTien = new Paragraph("Tổng cộng: 550.000 VND", fontKhachHang);
-    //            tongTien.setAlignment(Element.ALIGN_RIGHT);
-    //            document.add(tongTien);
-    //
-    //            // =========== KẾT THÚC THÊM NỘI DUNG ============= //
-    //            // Đóng document
-    //            document.close();
-    //
-    //            System.out.println("Đã tạo file PDF thành công!");
-    //        } catch (DocumentException | FileNotFoundException e) {
-    //            e.printStackTrace();
-    //        }
-    //    }
-    //
-    //    // Hàm thêm cell vào bảng
+    
     private static void addCell(PdfPTable table, String content, Font font) {
         PdfPCell cell = new PdfPCell(new Phrase(content, font));
         cell.setPaddingLeft(5f);
