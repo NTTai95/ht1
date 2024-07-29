@@ -105,22 +105,22 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         fillTable();
     }
     
-//    public void fillTableByFindName() {
-//        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
-//        model.setRowCount(0);
-//
-//        String keyword = txtTimKiem.getText();
-//        List<MonAn> list = MAdao.selectByKeyWord(MonAn.maMon(), keyword);
-//        for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
-//            model.addRow(new Object[]{
-//                ma.getMaLoai(),
-//                ma.getMaMon(),              
-//                ma.getTenMon(),
-//                ma.getDonGia(),
-//                ma.getAnh()
-//            });
-//        }
-//    }
+    public void fillTableByFindName() {
+        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
+        model.setRowCount(0);
+
+        String keyword = txtTimKiem.getText();
+        List<MonAn> list = MAdao.selectByKeyWord(keyword);
+        for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
+            model.addRow(new Object[]{
+                
+                ma.getMaMon(),              
+                ma.getTenMon(),
+                ma.getDonGia(),
+                
+            });
+        }
+    }
 
     
     
@@ -513,6 +513,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 txtTimKiemActionPerformed(evt);
             }
         });
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+        });
 
         jLabel6.setText("Đơn giá");
 
@@ -646,8 +651,12 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        fillTableByFindName();
+//        fillTableByFindName();
     }//GEN-LAST:event_txtTimKiemActionPerformed
+
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        fillTableByFindName();
+    }//GEN-LAST:event_txtTimKiemKeyPressed
 
     /**
      * @param args the command line arguments
