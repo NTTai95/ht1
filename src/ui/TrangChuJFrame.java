@@ -80,14 +80,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         jToolBar2.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Exit.png")); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Exit.png")); // NOI18N
         jButton1.setText("ĐĂNG XUẤT");
         jButton1.setFocusable(false);
         jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton1);
 
-        btnKetThuc.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Stop.png")); // NOI18N
+        btnKetThuc.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Stop.png")); // NOI18N
         btnKetThuc.setText("KẾT THÚC");
         btnKetThuc.setFocusable(false);
         btnKetThuc.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -100,14 +100,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jToolBar2.add(btnKetThuc);
         jToolBar2.add(jSeparator1);
 
-        jButton3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\dish (1).png")); // NOI18N
+        jButton3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\dish (1).png")); // NOI18N
         jButton3.setText("MÓN ĂN");
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         jToolBar2.add(jButton3);
 
-        btnHoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Price list.png")); // NOI18N
+        btnHoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Price list.png")); // NOI18N
         btnHoaDon.setText("HÓA ĐƠN");
         btnHoaDon.setFocusable(false);
         btnHoaDon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -119,7 +119,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         });
         jToolBar2.add(btnHoaDon);
 
-        jButton6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\User group.png")); // NOI18N
+        jButton6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\User group.png")); // NOI18N
         jButton6.setText("KHÁCH HÀNG");
         jButton6.setFocusable(false);
         jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -127,7 +127,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jToolBar2.add(jButton6);
         jToolBar2.add(jSeparator2);
 
-        jButton7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Globe.png")); // NOI18N
+        jButton7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Globe.png")); // NOI18N
         jButton7.setText("GIỚI THIỆU");
         jButton7.setFocusable(false);
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,28 +147,28 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 0, 51));
         jLabel6.setText("L'ESCALE - SKY GRADENT & FOUNGE");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
 
         jMenu3.setText("TRANG CHỦ");
 
         jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem5.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Key.png")); // NOI18N
+        jMenuItem5.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Key.png")); // NOI18N
         jMenuItem5.setText("ĐĂNG NHẬP");
         jMenu3.add(jMenuItem5);
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Exit.png")); // NOI18N
+        jMenuItem6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Exit.png")); // NOI18N
         jMenuItem6.setText("ĐĂNG XUẤT");
         jMenu3.add(jMenuItem6);
         jMenu3.add(jSeparator5);
 
-        jMenuItem7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Refresh.png")); // NOI18N
+        jMenuItem7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Refresh.png")); // NOI18N
         jMenuItem7.setText("ĐỔI MẬT KHẨU");
         jMenu3.add(jMenuItem7);
         jMenu3.add(jSeparator4);
 
         jMenuItem16.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
-        jMenuItem16.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Stop.png")); // NOI18N
+        jMenuItem16.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Stop.png")); // NOI18N
         jMenuItem16.setText("KẾT THÚC");
         jMenu3.add(jMenuItem16);
 
@@ -177,12 +177,12 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenu4.setText("QUẢN LÝ");
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem8.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\dish (1).png")); // NOI18N
+        jMenuItem8.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\dish (1).png")); // NOI18N
         jMenuItem8.setText("MÓN ĂN");
         jMenu4.add(jMenuItem8);
 
         mni_LoaiMon.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_LoaiMon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\salad.png")); // NOI18N
+        mni_LoaiMon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\List.png")); // NOI18N
         mni_LoaiMon.setText("LOẠI MÓN");
         mni_LoaiMon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -192,12 +192,12 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenu4.add(mni_LoaiMon);
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem9.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Conference.png")); // NOI18N
+        jMenuItem9.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Conference.png")); // NOI18N
         jMenuItem9.setText("BÀN ĂN");
         jMenu4.add(jMenuItem9);
 
         mni_HoaDon.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_HoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Price list.png")); // NOI18N
+        mni_HoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Price list.png")); // NOI18N
         mni_HoaDon.setText("HÓA ĐƠN");
         mni_HoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -207,7 +207,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenu4.add(mni_HoaDon);
 
         mni_BanHang.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_BanHang.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\User group.png")); // NOI18N
+        mni_BanHang.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\User group.png")); // NOI18N
         mni_BanHang.setText("BÁN HÀNG");
         mni_BanHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,7 +218,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenu4.add(jSeparator6);
 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem12.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Users.png")); // NOI18N
+        jMenuItem12.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Users.png")); // NOI18N
         jMenuItem12.setText("NHÂN VIÊN");
         jMenu4.add(jMenuItem12);
 
@@ -226,11 +226,11 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         jMenu8.setText("THỐNG KÊ");
 
-        jMenuItem13.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Billboard.png")); // NOI18N
+        jMenuItem13.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Billboard.png")); // NOI18N
         jMenuItem13.setText("DOANH SỐ MÓN ĂN");
         jMenu8.add(jMenuItem13);
 
-        jMenuItem14.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Coins.png")); // NOI18N
+        jMenuItem14.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Coins.png")); // NOI18N
         jMenuItem14.setText("DOANH THU ");
         jMenu8.add(jMenuItem14);
 
@@ -238,7 +238,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         jMenu9.setText("TRỢ GIÚP");
 
-        jMenuItem15.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\Globe.png")); // NOI18N
+        jMenuItem15.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang22\\src\\icon\\Globe.png")); // NOI18N
         jMenuItem15.setText("GIỚI THIỆU");
         jMenu9.add(jMenuItem15);
 
