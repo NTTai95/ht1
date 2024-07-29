@@ -598,7 +598,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 //    }
     
     public boolean checkBanAn(){
-        
+        return false;
     }
 
 
