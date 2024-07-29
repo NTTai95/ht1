@@ -105,6 +105,44 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
+    
+    public void fillTableByPrice() {
+        DefaultTableModel model = modelTableHA;
+        model.setRowCount(0);
+        try {
+            MonAn lm = cboLoaiMon.getSelectedIndex() == 0 ? null : (MonAn) cboLoaiMon.getSelectedItem();
+            String maLM = lm == null ? "All" : (String.valueOf(lm.getDonGia()));
+
+            // Lấy khoảng giá từ cboBoxDonGia
+            String priceRange = cboDonGia.getSelectedItem().toString();
+            String[] prices = priceRange.split("-");
+            double minPrice = Double.parseDouble(prices[0].trim());
+            double maxPrice = Double.parseDouble(prices[1].trim());
+
+            List<MonAn> list = MAdao.selectAll();
+
+            System.out.println(maLM);
+
+            for (MonAn cd : list) {
+                if ((cd.getMaLoai().equalsIgnoreCase(maLM) || maLM.equalsIgnoreCase("All")) &&
+                    cd.getDonGia() >= minPrice && cd.getDonGia() <= maxPrice) {
+                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
+                    Object[] row = {
+                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
+                    };
+                    model.addRow(row);
+                }
+            }
+            tblMonAn.setModel(model);
+            System.out.println("ui.QuanLyMonAnJFrame.fillTable()");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
+
+    
 
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
@@ -173,12 +211,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         String keyword = txtTimKiem.getText();
         List<MonAn> list = MAdao.selectByKeyWord(keyword);
         for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
-            model.addRow(new Object[]{
-                
+            model.addRow(new Object[]{                
                 ma.getMaMon(),              
                 ma.getTenMon(),
-                ma.getDonGia(),
-                
+                ma.getDonGia(),                
             });
         }
     }
@@ -252,7 +288,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 setForm(ma);
             }
         } catch (Exception e) {
-            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+//            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
         }
     }
 
@@ -439,34 +475,32 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(38, 38, 38)
-                                        .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(23, 23, 23))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtMaMon, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtMaLoai, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtMaMon, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(181, 181, 181)))))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtMaLoai, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                            .addComponent(jLabel2)
+                                            .addGap(38, 38, 38)
+                                            .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                            .addComponent(jLabel1)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -475,10 +509,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtMaLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8))
@@ -486,7 +520,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtMaMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addGap(12, 12, 12)
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
                             .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -549,7 +583,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 832, Short.MAX_VALUE)
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -585,7 +619,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
         jLabel6.setText("Đơn giá");
 
-        cboDonGia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0 - 50000", "51000 - 100000", "100000 - 200000", "201000 - 300000", "301000 - 400000", "401000 - 500000", " ", " " }));
+        cboDonGia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ALL", "0 - 49000", "50000 - 99000", "100000 - 149000", "150000 - 199000", "200000 - 249000", "250000 - 299000", "300000 - 400000", " ", " " }));
         cboDonGia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboDonGiaActionPerformed(evt);
@@ -734,7 +768,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMonAnMouseClicked
 
     private void cboDonGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDonGiaActionPerformed
-        // TODO add your handling code here:
+        fillTableByPrice();
     }//GEN-LAST:event_cboDonGiaActionPerformed
 
     private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
