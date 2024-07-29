@@ -18,7 +18,7 @@ import utils.XJdbc;
 public class KhachHangDAO extends SysDAO<KhachHang, String>{
     String INSERT_SQL = "Insert KhachHang(MaKH, TenKH, SDT) Values (?,?,?)";
     String UPDATE_SQL = "UPDATE KhachHang SET TenKH = ?, SDT = ? WHERE MaKH like ?";
-    String DELETE_SQL = "DELETE FROM KhachHang WHERE MaKh like ?";
+    String DELETE_SQL = "DELETE FROM KhachHang WHERE MaKH like ?";
     String SELECT_BY_ID = "Select * from KhachHang where MaKH like ?";
     String SELECT_ALL = "SELECT * FROM KhachHang";
     String SELECT_BY_SDT = "Select * from KhachHang where SDT like ?";
@@ -35,9 +35,9 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
     @Override
     public void update(KhachHang entity) {
          XJdbc.executeUpdate(UPDATE_SQL,
-                entity.getMaKH(),
                 entity.getTenKH(),
-                entity.getSDT());
+                entity.getSDT(),
+                entity.getMaKH());
     }
 
     @Override

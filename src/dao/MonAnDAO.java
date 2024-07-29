@@ -23,7 +23,13 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
     String SELECT_BY_ID = "Select * from MonAn where MaMon like ?";
     String SELECT_ALL = "SELECT * FROM MonAn";
     String COUNT_ROW = "SELECT COUNT(*) FROM MonAn";
-
+    
+    String SELECT_BY_LoaiMon = "select* from MonAn where MaLoai = ?";
+    String GET_PRICE = "SELECT * FROM MonAn WHERE DonGia BETWEEN ? AND ?";
+    String SELECT_BY_KEYWORD = "select* from MonAn where TenMon like ?";
+    String SELECT_IN_LIST = "SELECT * FROM MonAn WHERE TenMon LIKE ?";
+    
+    
     @Override
     public void insert(MonAn entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -83,6 +89,9 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
             throw new RuntimeException(e);
         }
     }
+    public List<MonAn> selectByLoaiMon(String MaLoai) {
+        return selectBySQL(SELECT_BY_LoaiMon, MaLoai);
+    }
     
     public int getCountRow() {
         try {
@@ -95,4 +104,17 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
         }
         return 0;
     }
+    
+    public List<MonAn> selectByKeyWord(String keyword){
+        return this.selectBySQL(SELECT_BY_KEYWORD, "%"+keyword+"%");       
+    }
+    
+    public List<MonAn> selectlnList(String maMon, String keywork){
+        return this.selectBySQL(SELECT_IN_LIST, "%"+keywork+"%",maMon);
+    }
+    
+    
+    
+    
+    
 }
