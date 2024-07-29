@@ -74,7 +74,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 80, -1));
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\icon\\fc5c9805b1c614984dd7.jpg")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\pizza.jpg")); // NOI18N
         jLabel3.setText("jLabel3");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, -1));
 
