@@ -22,7 +22,8 @@ public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
     String SELECT_BY_ID = "Select * from LoaiMon where MaLoai like ?";
     String SELECT_ALL = "SELECT * FROM LoaiMon";
     String COUNT_ROW = "SELECT COUNT(*) FROM LoaiMon";
-
+    
+   
     @Override
     public void insert(LoaiMon entity) {
         XJdbc.executeUpdate(INSERT_SQL, 
@@ -85,4 +86,6 @@ public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
         }
         return 0;
     }
+    
+
 }
