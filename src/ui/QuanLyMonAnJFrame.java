@@ -127,6 +127,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         }
     }
 
+
 //    public void fillTableByLoai() {
 //        DefaultTableModel model = modelTableHA;
 //        model.setRowCount(0);
@@ -164,6 +165,27 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 //            });
 //        }
 //    }
+    
+    public void fillTableByFindName() {
+        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
+        model.setRowCount(0);
+
+        String keyword = txtTimKiem.getText();
+        List<MonAn> list = MAdao.selectByKeyWord(keyword);
+        for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
+            model.addRow(new Object[]{
+                
+                ma.getMaMon(),              
+                ma.getTenMon(),
+                ma.getDonGia(),
+                
+            });
+        }
+    }
+
+    
+    
+    
     public void updateMaLoai() {
         LoaiMon selectedLoaiMon = (LoaiMon) cboLoaiMonTT.getSelectedItem();
         if (selectedLoaiMon != null) {
@@ -279,10 +301,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 MsgBox.alert(this, "Không thể xóa món ăn");
             }
         }
-    }
-
-    public void fillTableByFindName() {
-
     }
 
     /**
@@ -559,6 +577,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 txtTimKiemActionPerformed(evt);
             }
         });
+        txtTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtTimKiemKeyPressed(evt);
+            }
+        });
 
         jLabel6.setText("Đơn giá");
 
@@ -695,7 +718,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
-        fillTableByFindName();
+//        fillTableByFindName();
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void tblMonAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMonAnMouseClicked
@@ -713,6 +736,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     private void cboDonGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDonGiaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboDonGiaActionPerformed
+
+    private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
+        fillTableByFindName();
+    }//GEN-LAST:event_txtTimKiemKeyPressed
+
 
     /**
      * @param args the command line arguments

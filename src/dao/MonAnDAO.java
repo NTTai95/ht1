@@ -105,8 +105,8 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
         return 0;
     }
     
-    public List<MonAn> selectByKeyWord(String MaMon, String keyword){
-        return this.selectBySQL(SELECT_BY_KEYWORD, "%"+keyword+"%", MaMon);       
+    public List<MonAn> selectByKeyWord(String keyword){
+        return this.selectBySQL(SELECT_BY_KEYWORD, "%"+keyword+"%");       
     }
     
     public List<MonAn> selectlnList(String maMon, String keywork){
