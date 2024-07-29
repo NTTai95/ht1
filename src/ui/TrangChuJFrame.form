@@ -15,7 +15,7 @@
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Key.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Key.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG NH&#x1eac;P"/>
               </Properties>
@@ -26,7 +26,7 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Exit.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Exit.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG XU&#x1ea4;T"/>
               </Properties>
@@ -36,7 +36,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Refresh.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Refresh.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ed4;I M&#x1eac;T KH&#x1ea8;U"/>
               </Properties>
@@ -49,7 +49,7 @@
                   <KeyStroke key="F10"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Stop.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Stop.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="K&#x1ebe;T TH&#xda;C"/>
               </Properties>
@@ -67,7 +67,7 @@
                   <KeyStroke key="Ctrl+F1"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\dish (1).png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\dish (1).png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="M&#xd3;N &#x102;N"/>
               </Properties>
@@ -78,7 +78,7 @@
                   <KeyStroke key="Ctrl+F2"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\List.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\List.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="LO&#x1ea0;I M&#xd3;N"/>
               </Properties>
@@ -92,7 +92,7 @@
                   <KeyStroke key="Ctrl+F3"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Conference.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Conference.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="B&#xc0;N &#x102;N"/>
               </Properties>
@@ -103,7 +103,7 @@
                   <KeyStroke key="Ctrl+F4"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Price list.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Price list.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="H&#xd3;A &#x110;&#x1a0;N"/>
               </Properties>
@@ -117,7 +117,7 @@
                   <KeyStroke key="Ctrl+F5"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\User group.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\User group.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="B&#xc1;N H&#xc0;NG"/>
               </Properties>
@@ -133,7 +133,7 @@
                   <KeyStroke key="Ctrl+F6"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Users.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Users.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="NH&#xc2;N VI&#xca;N"/>
               </Properties>
@@ -148,7 +148,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Billboard.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Billboard.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="DOANH S&#x1ed0; M&#xd3;N &#x102;N"/>
               </Properties>
@@ -156,7 +156,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Coins.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Coins.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="DOANH THU "/>
               </Properties>
@@ -171,7 +171,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang22\src\icon\Globe.png"/>
+                  <Image iconType="2" name="D:\quanlynhahang\src\img\Globe.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="GI&#x1eda;I THI&#x1ec6;U"/>
               </Properties>
@@ -208,26 +208,27 @@
               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Component id="jLabel3" min="-2" pref="954" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
                       <Component id="jToolBar2" min="-2" pref="477" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="106" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" pref="300" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" pref="215" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="lblDongHo" min="-2" pref="74" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                  </Group>
               </Group>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel2" min="-2" pref="215" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="lblDongHo" min="-2" pref="74" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -243,13 +244,16 @@
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" pref="432" max="-2" attributes="0"/>
-              <EmptySpace pref="40" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                  <Component id="jLabel1" pref="432" max="32767" attributes="0"/>
+                  <Component id="jLabel3" pref="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace pref="99" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lblDongHo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -265,7 +269,7 @@
         <Component class="javax.swing.JButton" name="jButton1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\Exit.png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\Exit.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG XU&#x1ea4;T"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -276,7 +280,7 @@
         <Component class="javax.swing.JButton" name="btnKetThuc">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\Stop.png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\Stop.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="K&#x1ebe;T TH&#xda;C"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -292,7 +296,7 @@
         <Component class="javax.swing.JButton" name="jButton3">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\dish (1).png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\dish (1).png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="M&#xd3;N &#x102;N"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -303,7 +307,7 @@
         <Component class="javax.swing.JButton" name="btnHoaDon">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\Price list.png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\Price list.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="H&#xd3;A &#x110;&#x1a0;N"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -317,7 +321,7 @@
         <Component class="javax.swing.JButton" name="jButton6">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\User group.png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\User group.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="KH&#xc1;CH H&#xc0;NG"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -330,7 +334,7 @@
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang22\src\icon\Globe.png"/>
+              <Image iconType="2" name="D:\quanlynhahang\src\img\Globe.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="GI&#x1eda;I THI&#x1ec6;U"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -343,7 +347,7 @@
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\quanlynhahang22\src\icon\Info.png"/>
+          <Image iconType="2" name="D:\quanlynhahang\src\img\Info.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="H&#x1ec6; TH&#x1ed0;NG QU&#x1ea2;N L&#xdd; NH&#xc0; H&#xc0;NG"/>
       </Properties>
@@ -376,9 +380,11 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\quanlynhahang22\src\icon\400360970_913848526916133_5979970040266248220_n.jpg"/>
+          <Image iconType="2" name="D:\quanlynhahang\src\img\400360970_913848526916133_5979970040266248220_n.jpg"/>
         </Property>
       </Properties>
     </Component>
