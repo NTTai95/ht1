@@ -15,18 +15,19 @@ public class NhanVien {
     String maNV;
     String tenNV;
     String matKhau;
-    int chucVu;
     String email;
+    private boolean VaiTro;
 
     public NhanVien() {
     }
 
-    public NhanVien(String maNV, String tenNV, String matKhau, int chucVu, String email) {
+    public NhanVien(String maNV, String tenNV, String matKhau, String email, boolean VaiTro) {
         this.maNV = maNV;
         this.tenNV = tenNV;
-        this.matKhau = maHoa(matKhau);
-        this.chucVu = chucVu;
+        this.matKhau = matKhau;
         this.email = email;
+        this.VaiTro = VaiTro;
+        
     }
 
     public String getMaNV() {
@@ -46,19 +47,19 @@ public class NhanVien {
     }
 
     public String getMatKhau() {
-        return giaiMa(matKhau);
+        return matKhau;
     }
 
     public void setMatKhau(String matKhau) {
-        this.matKhau = maHoa(matKhau);
+        this.matKhau = matKhau;
     }
 
-    public int getChucVu() {
-        return chucVu;
+    public boolean isVaiTro() {
+        return VaiTro;
     }
 
-    public void setChucVu(int chucVu) {
-        this.chucVu = chucVu;
+    public void setVaiTro(boolean VaiTro) {
+        this.VaiTro = VaiTro;
     }
 
     public String getEmail() {

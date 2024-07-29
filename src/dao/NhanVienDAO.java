@@ -30,7 +30,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
                 entity.getMaNV(),
                 entity.getTenNV(),
                 entity.getMatKhau(),
-                entity.getChucVu(),
+                entity.isVaiTro(),
                 entity.getEmail());
     }
 
@@ -39,7 +39,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
         XJdbc.executeUpdate(UPDATE_SQL,
                 entity.getTenNV(),
                 entity.getMatKhau(),
-                entity.getChucVu(),
+                entity.isVaiTro(),
                 entity.getEmail(),
                 entity.getMaNV());
     }
@@ -73,7 +73,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
                 entity.setMaNV(rs.getString(1));
                 entity.setTenNV(rs.getString(2));
                 entity.setMatKhau(rs.getString(3));
-                entity.setChucVu(rs.getInt(4));
+                entity.setVaiTro(rs.getBoolean(4));
                 entity.setEmail(rs.getString(5));
                 list.add(entity);
             }
