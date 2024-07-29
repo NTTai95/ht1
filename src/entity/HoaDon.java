@@ -23,7 +23,7 @@ public class HoaDon {
     public HoaDon() {
     }
     
-    public HoaDon(int maHD, LocalDateTime ngayLap, String maKH, String maNV, String maB, int trangThai, LocalDateTime ngayNhan, String ghiChu) {
+    public HoaDon(int maHD, LocalDateTime ngayLap, String maKH, String maNV, String maB, int trangThai, String ghiChu) {
         this.maHD = maHD;
         this.ngayLap = ngayLap;
         this.maKH = maKH;

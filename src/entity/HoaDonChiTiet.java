@@ -14,9 +14,36 @@ public class HoaDonChiTiet {
     float donGia;
     int soLuong;
 
+    String tenMon;
+    String tenNhanVien;
+    String tenKhachHang;
+
+    public HoaDonChiTiet(int maHD, String maMon, float donGia, int soLuong, String tenMon, String tenNhanVien, String tenKhachHang) {
+        this.maHD = maHD;
+        this.maMon = maMon;
+        this.donGia = donGia;
+        this.soLuong = soLuong;
+        this.tenMon = tenMon;
+        this.tenNhanVien = tenNhanVien;
+        this.tenKhachHang = tenKhachHang;
+    }
+
+//  
+//
+//    public HoaDonChiTiet(int maHD, String maMon, float donGia, int soLuong, String tenMon, String tenNhanVien) {
+//        this.maHD = maHD;
+//        this.maMon = maMon;
+//        this.donGia = donGia;
+//        this.soLuong = soLuong;
+//        this.tenMon = tenMon;
+//        this.tenNhanVien = tenNhanVien;
+//    }
+//    
+    
     public HoaDonChiTiet() {
     }
 
+    
     public HoaDonChiTiet(int maHD, String maMon, float donGia, int soLuong) {
         this.maHD = maHD;
         this.maMon = maMon;
@@ -54,6 +81,28 @@ public class HoaDonChiTiet {
 
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
+    }
+    public String getTenMon() {
+        return tenMon;
+    }
+
+    public void setTenMon(String tenMon) {
+        this.tenMon = tenMon;
+    }
+
+    public String getTenNhanVien() {
+        return tenNhanVien;
+    }
+
+    public void setTenNhanVien(String tenNhanVien) {
+        this.tenNhanVien = tenNhanVien;
+    }
+    public String getTenKhachHang() {
+        return tenKhachHang;
+    }
+
+    public void setTenKhachHang(String tenKhachHang) {
+        this.tenKhachHang = tenKhachHang;
     }
     
     
