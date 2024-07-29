@@ -10,19 +10,45 @@ package entity;
  */
 public class BanAn {
     String MaB;
-
-    public BanAn() {
-    }
-
-    public BanAn(String MaB) {
-        this.MaB = MaB;
-    }
+    boolean trangThai;
 
     public String getMaB() {
         return MaB;
     }
 
     public void setMaB(String MaB) {
+        this.MaB = MaB;
+    }
+
+    public boolean isTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getViTri() {
+        return viTri;
+    }
+
+    public void setViTri(String viTri) {
+        this.viTri = viTri;
+    }
+
+    public String getGhiChu() {
+        return ghiChu;
+    }
+
+    public void setGhiChu(String ghiChu) {
+        this.ghiChu = ghiChu;
+    }
+    String viTri;
+    String ghiChu;
+    public BanAn() {
+    }
+
+    public BanAn(String MaB) {
         this.MaB = MaB;
     }
     

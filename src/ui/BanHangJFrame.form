@@ -1140,11 +1140,9 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnDoiTrangThai" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnCapNhatBanAn" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -1160,9 +1158,8 @@
                       <Component id="jScrollPane2" min="-2" pref="500" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton3" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnCapNhatBanAn" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnDoiTrangThai" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="22" max="32767" attributes="0"/>
                   </Group>
@@ -1197,15 +1194,15 @@
                               <Component id="jLabel4" pref="63" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
-                                  <Component id="txtMaBanAn" min="-2" pref="223" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
+                                  <Component id="txtMaBanAn" min="-2" pref="165" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="137" max="-2" attributes="0"/>
                                   <Component id="jLabel12" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="txtViTri" min="-2" pref="499" max="-2" attributes="0"/>
+                                  <Component id="txtViTri" min="-2" pref="548" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="txtGhiChu" max="32767" attributes="0"/>
+                              <Component id="txtGhiChu" min="-2" pref="883" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="11" max="32767" attributes="0"/>
                           <Component id="btnThemBanAn" min="-2" max="-2" attributes="0"/>
@@ -1241,6 +1238,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="txtMaBanAn">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
@@ -1275,17 +1275,20 @@
               </SubComponents>
             </Container>
             <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jScrollPane2MouseClicked"/>
+              </Events>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="tblListBanAn">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
-                        <Column editable="true" title="M&#xe3; b&#xe0;n &#x103;n" type="java.lang.Object"/>
+                        <Column editable="false" title="M&#xe3; b&#xe0;n &#x103;n" type="java.lang.Object"/>
                         <Column editable="false" title="Tr&#x1ea1;ng th&#xe1;i" type="java.lang.Object"/>
-                        <Column editable="false" title="V&#x1ecb; tr&#xed;" type="java.lang.Object"/>
-                        <Column editable="false" title="Ghi ch&#xfa;" type="java.lang.Object"/>
+                        <Column editable="true" title="V&#x1ecb; tr&#xed;" type="java.lang.Object"/>
+                        <Column editable="true" title="Ghi ch&#xfa;" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -1316,23 +1319,27 @@
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblListBanAnMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="btnCapNhatBanAn">
               <Properties>
                 <Property name="text" type="java.lang.String" value="C&#x1ead;p nh&#x1ead;t"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCapNhatBanAnActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton3">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="X&#xf3;a"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="jButton4">
+            <Component class="javax.swing.JButton" name="btnDoiTrangThai">
               <Properties>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ed5;i tr&#x1ea1;ng th&#xe1;i"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDoiTrangThaiActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

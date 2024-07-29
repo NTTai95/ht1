@@ -15,22 +15,32 @@ import utils.XJdbc;
  *
  * @author admin
  */
-public class BanAnDAO extends SysDAO<BanAn, String>{
+public class BanAnDAO extends SysDAO<BanAn, String> {
 
-    String INSERT_SQL = "Insert BanAn(MaB) Values(?)";
+    String INSERT_SQL = "Insert BanAn(MaB, TrangThai, ViTri, GhiChu) Values(?,?,?,?)";
     String DELETE_SQL = "DELETE FROM BanAn WHERE BanAn like ?";
-    String SELECT_BY_ID = "Select * from BanAn where BanAn like ?";
+    String UPDATA_SQL = "UPDATE BanAn SET TrangThai = ?, ViTri = ?, GhiChu = ? WHERE MaB like ?";
+    String SELECT_BY_ID = "Select * from BanAn where MaB like ?";
     String SELECT_ALL = "SELECT * FROM BanAn";
     String COUNT_ROW = "SELECT COUNT(*) FROM BanAn";
-    
+    String SELECT_TRANGTHAI = "SELECT * from BanAn WHERE TrangThai like ?";
+
     @Override
     public void insert(BanAn entity) {
-        XJdbc.executeUpdate(INSERT_SQL, entity.getMaB());
+        XJdbc.executeUpdate(INSERT_SQL,
+                entity.getMaB(),
+                entity.isTrangThai(),
+                entity.getViTri(),
+                entity.getGhiChu());
     }
 
     @Override
     public void update(BanAn entity) {
-        
+        XJdbc.executeUpdate(UPDATA_SQL,
+                entity.isTrangThai(),
+                entity.getViTri(),
+                entity.getGhiChu(),
+                entity.getMaB());
     }
 
     @Override
@@ -60,6 +70,9 @@ public class BanAnDAO extends SysDAO<BanAn, String>{
             while (rs.next()) {
                 BanAn entity = new BanAn();
                 entity.setMaB(rs.getString(1));
+                entity.setTrangThai(rs.getBoolean(2));
+                entity.setViTri(rs.getString(3));
+                entity.setGhiChu(rs.getString(4));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
@@ -68,7 +81,11 @@ public class BanAnDAO extends SysDAO<BanAn, String>{
             throw new RuntimeException(e);
         }
     }
-    
+
+    public List<BanAn> selectByTrangThai(boolean id) {
+        return this.selectBySQL(SELECT_TRANGTHAI, id);
+    }
+
     public int getCountRow() {
         try {
             ResultSet rs = XJdbc.executeQuery(COUNT_ROW);

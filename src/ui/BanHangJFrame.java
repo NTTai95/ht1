@@ -10,6 +10,7 @@ import dao.HoaDonDAO;
 import dao.KhachHangDAO;
 import dao.LoaiMonDAO;
 import dao.MonAnDAO;
+import entity.BanAn;
 import entity.HoaDon;
 import entity.HoaDonChiTiet;
 import entity.KhachHang;
@@ -192,11 +193,16 @@ public class BanHangJFrame extends javax.swing.JFrame {
         row = -1;
         loadHoaDon();
 
-        for (int i = 1; i < rowBA; i++) {
+        List<BanAn> banAnAn = baDAO.selectByTrangThai(false);
+        
+        for (int i = 1; i <= rowBA; i++) {
+            
+            boolean boQua = false;
+            
             String maBA = "B" + (i < 10 ? "0" + i : i);
             String tenKH = "Trống";
             String trangThai = "Chờ sử dụng";
-            boolean boQua = cboBATrangThai.getSelectedIndex() == 1;
+            boQua = cboBATrangThai.getSelectedIndex() == 1;
 
             for (int j = 0; j < hd.size(); j++) {
                 if (maBA.equalsIgnoreCase(hd.get(j).getMaB())) {
@@ -204,6 +210,13 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     tenKH = "<html><p style='color:" + color + ";'>" + khDAO.selectById(hd.get(j).getMaKH()).getTenKH() + "</p></html>";
                     trangThai = "<html><p style='color:" + color + ";'>Chưa Thanh Toán</p></html>";
                     boQua = cboBATrangThai.getSelectedIndex() == 2;
+                    break;
+                }
+            }
+            
+             for(BanAn BATemp : banAnAn){
+                if(BATemp.getMaB().equalsIgnoreCase(maBA)){
+                    boQua = true;
                     break;
                 }
             }
@@ -450,6 +463,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
     public void initKhachHang() {
         this.setFormKhachHang();
         this.fillTable();
+        loadListBanAn();
+        banAnNEW();
+        btnDoiTrangThai.setEnabled(false);
     }
 
     int rowkh = -1;
@@ -596,9 +612,48 @@ public class BanHangJFrame extends javax.swing.JFrame {
 //        tblListKH.setRowSelectionInterval(this.rowkh, this.rowkh);
 //        this.updateStatus();
 //    }
-    
-    public boolean checkBanAn(){
-        return false;
+
+    int rowBanAn = -1;
+
+    public boolean checkBanAn() {
+        if (txtMaBanAn.getText().length() > 5) {
+            MsgBox.alert(this, "Mã bàn ăn phải ngắn hơn 6 ký tự!");
+            return false;
+        } else if (txtMaBanAn.getText().trim().equals("")) {
+            MsgBox.alert(this, "Mã bàn ăn không được bỏ trống!");
+            return false;
+        } else if (txtViTri.getText().trim().equals("")) {
+            MsgBox.alert(this, "Vị trí không được bỏ trống!");
+            return false;
+        }
+        return true;
+    }
+
+    public void loadListBanAn() {
+        DefaultTableModel model = (DefaultTableModel) tblListBanAn.getModel();
+        model.setRowCount(0);
+
+        List<BanAn> ba = baDAO.selectAll();
+
+        for (BanAn ba1 : ba) {
+            model.addRow(new Object[]{ba1.getMaB(), ba1.isTrangThai() ? "Đang Sử dụng" : "Không sử dụng", ba1.getViTri(), ba1.getGhiChu()});
+        }
+    }
+
+    public void banAnNEW() {
+        int rowBanAn = baDAO.getCountRow() + 1;
+
+        txtMaBanAn.setText("B" + (rowBanAn < 10 ? "0" + rowBanAn : rowBanAn));
+    }
+
+    public BanAn getFromBanAn() {
+        BanAn baTemp = new BanAn();
+        baTemp.setMaB(txtMaBanAn.getText());
+        baTemp.setTrangThai(true);
+        baTemp.setViTri(txtViTri.getText());
+        baTemp.setGhiChu(txtGhiChu.getText());
+
+        return baTemp;
     }
 
 
@@ -670,10 +725,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
         txtGhiChu = new javax.swing.JTextField();
         btnThemBanAn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        tblListBanAn = new javax.swing.JTable();
+        btnCapNhatBanAn = new javax.swing.JButton();
+        btnDoiTrangThai = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Bán Hàng");
@@ -1334,6 +1388,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)), "Thông tin", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 0, 51))); // NOI18N
 
+        txtMaBanAn.setEditable(false);
+
         jLabel4.setText("Mã bàn ăn:");
 
         jLabel12.setText("Vị trí:");
@@ -1358,14 +1414,14 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(txtMaBanAn, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128)
+                        .addComponent(txtMaBanAn, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(137, 137, 137)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtViTri, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtGhiChu))
+                        .addComponent(txtViTri, javax.swing.GroupLayout.PREFERRED_SIZE, 548, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGhiChu, javax.swing.GroupLayout.PREFERRED_SIZE, 883, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(btnThemBanAn)
                 .addContainerGap())
@@ -1390,7 +1446,13 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jScrollPane2MouseClicked(evt);
+            }
+        });
+
+        tblListBanAn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -1402,20 +1464,33 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false
+                false, false, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
+        tblListBanAn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblListBanAnMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tblListBanAn);
 
-        jButton2.setText("Cập nhật");
+        btnCapNhatBanAn.setText("Cập nhật");
+        btnCapNhatBanAn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCapNhatBanAnActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Xóa");
-
-        jButton4.setText("Đổi trạng thái");
+        btnDoiTrangThai.setText("Đổi trạng thái");
+        btnDoiTrangThai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoiTrangThaiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -1430,11 +1505,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
                             .addComponent(jScrollPane2)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4)
+                        .addComponent(btnDoiTrangThai)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)))
+                        .addComponent(btnCapNhatBanAn)))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -1446,9 +1519,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(btnCapNhatBanAn)
+                    .addComponent(btnDoiTrangThai))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -1686,8 +1758,77 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     private void btnThemBanAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemBanAnActionPerformed
         // TODO add your handling code here:
-        
+        if (!checkBanAn()) {
+            return;
+        }
+        BanAn baTemp = getFromBanAn();
+
+        baDAO.insert(baTemp);
+        loadListBanAn();
+        loadBanAn();
     }//GEN-LAST:event_btnThemBanAnActionPerformed
+
+    private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane2MouseClicked
+
+    private void tblListBanAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListBanAnMouseClicked
+        // TODO add your handling code here:
+        rowBanAn = tblListBanAn.getSelectedRow();
+        if (rowBanAn < 0) {
+            btnDoiTrangThai.setEnabled(false);
+            btnCapNhatBanAn.setEnabled(false);
+        } else {
+            btnDoiTrangThai.setEnabled(true);
+            btnCapNhatBanAn.setEnabled(true);
+        }
+    }//GEN-LAST:event_tblListBanAnMouseClicked
+
+    private void btnCapNhatBanAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCapNhatBanAnActionPerformed
+        // TODO add your handling code here:
+        for (int i = 0; i < tblListBanAn.getRowCount(); i++) {
+            if (tblListBanAn.getValueAt(i, 2).toString().trim().equals("")) {
+                MsgBox.alert(this, "Bàn ăn: " + tblListBanAn.getValueAt(i, 0) + " - vị trí không được để trống!");
+                continue;
+            }
+            BanAn baTemp = new BanAn();
+            baTemp.setMaB(tblListBanAn.getValueAt(i, 0).toString());
+            baTemp.setTrangThai(tblListBanAn.getValueAt(i, 1).toString().equalsIgnoreCase("Đang Sử dụng"));
+            baTemp.setViTri(tblListBanAn.getValueAt(i, 2) == null?"":tblListBanAn.getValueAt(i, 2).toString());
+            baTemp.setGhiChu(tblListBanAn.getValueAt(i, 3) == null?"":tblListBanAn.getValueAt(i, 3).toString());
+
+            baDAO.update(baTemp);
+        }
+        loadListBanAn();
+        MsgBox.alert(this, "Đã cập nhật bàn ăn!");
+    }//GEN-LAST:event_btnCapNhatBanAnActionPerformed
+
+    private void btnDoiTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoiTrangThaiActionPerformed
+        // TODO add your handling code here:
+        int rowTemp = tblListBanAn.getSelectedRow();
+
+        BanAn baTemp = baDAO.selectById(tblListBanAn.getValueAt(rowTemp, 0).toString());
+
+        List<HoaDon> listHD = hdDAO.selectByTrangThai("0");
+
+        for (HoaDon hd1 : listHD) {
+            if (baTemp.getMaB().equalsIgnoreCase(hd1.getMaB())) {
+                MsgBox.alert(this, "Bàn ăn: " + baTemp.getMaB() + " Đang có khách không thể đổi trạng thái!");
+                return;
+            }
+        }
+
+        baTemp.setTrangThai(!baTemp.isTrangThai());
+
+        baDAO.update(baTemp);
+
+        loadListBanAn();
+
+        tblListBanAn.setRowSelectionInterval(rowTemp, rowTemp);
+        
+        loadBanAn();
+
+    }//GEN-LAST:event_btnDoiTrangThaiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1735,6 +1876,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat;
+    private javax.swing.JButton btnCapNhatBanAn;
+    private javax.swing.JButton btnDoiTrangThai;
     private javax.swing.JButton btnGopBan;
     private javax.swing.JButton btnInHoaDon;
     private javax.swing.JButton btnTaoHD;
@@ -1748,9 +1891,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboBATrangThai;
     private javax.swing.JComboBox<String> cboLoaiMonAn;
     private javax.swing.JScrollPane cuon;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1782,7 +1922,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblBanAn;
     private javax.swing.JLabel lblMaHoaDon;
     private javax.swing.JLabel lblNgayLap;
@@ -1791,6 +1930,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel pnlKhachHang;
     private javax.swing.JTable tblBanAn;
     private javax.swing.JTable tblHoaDonChiTiet;
+    private javax.swing.JTable tblListBanAn;
     private javax.swing.JTable tblListKH;
     private javax.swing.JTable tblThucDon;
     private javax.swing.JTextField txtGhiChu;
