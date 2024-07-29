@@ -246,7 +246,7 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="jLabel1" pref="432" max="32767" attributes="0"/>
-                  <Component id="jLabel3" pref="0" max="32767" attributes="0"/>
+                  <Component id="jLabel3" max="32767" attributes="0"/>
               </Group>
               <EmptySpace pref="99" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -384,7 +384,7 @@
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\quanlynhahang\src\img\400360970_913848526916133_5979970040266248220_n.jpg"/>
+          <Image iconType="2" name="D:\quanlynhahang\src\img\pizza.jpg"/>
         </Property>
       </Properties>
     </Component>
