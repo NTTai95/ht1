@@ -8,6 +8,11 @@ import dao.LoaiMonDAO;
 import dao.MonAnDAO;
 import entity.LoaiMon;
 import entity.MonAn;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -17,7 +22,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.table.DefaultTableModel;
 import utils.MsgBox;
 import utils.XImage;
@@ -30,8 +38,32 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
     JFileChooser fileChooser = new JFileChooser();
     MonAnDAO MAdao = new MonAnDAO();
-    int row = 0;
+    int row = -1;
     LoaiMonDAO LMdao = new LoaiMonDAO();
+
+    DefaultTableModel modelTableHA = new DefaultTableModel(new Object[]{"Mã món ăn", "Tên món ăn", "Đơn giá", "Hình ảnh"}, 0) {
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            switch (columnIndex) {
+                case 3:
+                    return ImageIcon.class; // Cột Photo
+                default:
+                    return Object.class;
+            }
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            switch (column) {
+                case 0:
+                    return false;
+                case 3:
+                    return false;
+                default:
+                    return true;
+            }
+        }
+    };
 
     /**
      * Creates new form QuanLyMon_LoaiMon
@@ -39,32 +71,45 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     public QuanLyMonAnJFrame() {
 
         initComponents();
-        fillTable();
+
         fillComboBoxLoaiMon();
         fillComboBoxLoaiMonTT();
+        fillTable();
 
         txtMaMon.setText(generateNewMaMon());
     }
 
     public void fillTable() {
-        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
+        DefaultTableModel model = modelTableHA;
         model.setRowCount(0);
         try {
+            LoaiMon lm = cboLoaiMon.getSelectedIndex() == 0 ? null : (LoaiMon) cboLoaiMon.getSelectedItem();
+            String maLM = lm == null ? "All" : lm.getMaLoai();
+
             List<MonAn> list = MAdao.selectAll();
+
+            System.out.println(maLM);
+
             for (MonAn cd : list) {
-                Object[] row = {
-                    cd.getMaMon(), cd.getTenMon(), cd.getDonGia()
-                };
-                model.addRow(row);
+                if (cd.getMaLoai().equalsIgnoreCase(maLM) || maLM.equalsIgnoreCase("All")) {
+                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
+                    Object[] row = {
+                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
+                    };
+                    model.addRow(row);
+                }
             }
+            tblMonAn.setModel(model);
+            System.out.println("ui.QuanLyMonAnJFrame.fillTable()");
         } catch (Exception e) {
-            MsgBox.alert(this, "Lỗi truy vẫn dữ liệu");
+            System.out.println(e);
         }
     }
 
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
         model.removeAllElements();
+        model.addElement("ALL");
 //        try {
         List<LoaiMon> list = LMdao.selectAll();
         for (LoaiMon cd : list) {
@@ -82,26 +127,27 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         }
     }
 
-    public void fillTableByLoai() {
-        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
-        model.setRowCount(0);
-        LoaiMon kh = (LoaiMon) cboLoaiMon.getSelectedItem();
-        if (kh != null) {
-            System.out.println("filltableMonAn MaLoai: " + kh.getMaLoai());
-            List<MonAn> list = MAdao.selectByLoaiMon(kh.getMaLoai());
-            System.out.println("list: " + list.size());
-            for (int i = 0; i < list.size(); i++) {
-                MonAn hv = list.get(i);
-
-                Object[] row = {
-                    i + 1, hv.getMaMon(), hv.getTenMon(), hv.getDonGia()
-                };
-                model.addRow(row);
-            }
-        }
-        fillTable();
-    }
-
+//    public void fillTableByLoai() {
+//        DefaultTableModel model = modelTableHA;
+//        model.setRowCount(0);
+//        
+//        LoaiMon kh = (LoaiMon) cboLoaiMon.getSelectedItem();
+//        
+//        if (kh != null) {
+//            System.out.println("filltableMonAn MaLoai: " + kh.getMaLoai());
+//            List<MonAn> list = MAdao.selectByLoaiMon(kh.getMaLoai());
+//            System.out.println("list: " + list.size());
+//            for (int i = 0; i < list.size(); i++) {
+//                MonAn hv = list.get(i);
+//
+//                Object[] row = {
+//                     hv.getMaMon(), hv.getTenMon(), hv.getDonGia(),new ImageIcon("./"+hv.getAnh())
+//                };
+//                model.addRow(row);
+//            }
+//        }
+//        fillTable();
+//    }
 //    public void fillTableByFindName() {
 //        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
 //        model.setRowCount(0);
@@ -165,14 +211,15 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         return ma;
     }
 
-    void chonAnh() throws IOException {
+    ImageIcon chonAnh() throws IOException {
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
             File file = fileChooser.getSelectedFile();
             XImage.save(file);
             ImageIcon icon = XImage.read(file.getName());
-            lblAnh.setIcon(icon);
-            lblAnh.setToolTipText(file.getName());
+            return icon;
         }
+        return null;
     }
 
     void edit() {
@@ -232,9 +279,36 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             }
         }
     }
+
+    public void fillTableByFindName() {
+
+    }
     
-    public void fillTableByFindName(){
-        
+    public void doiAnhTable(java.awt.event.MouseEvent evt){
+        JPopupMenu popupMenu = new JPopupMenu();
+            JLabel maMonAn = new JLabel();
+            maMonAn.setText(tblMonAn.getValueAt(tblMonAn.getSelectedRow(), 0).toString());
+            maMonAn.setForeground(Color.red);
+
+            JMenuItem menuItem1 = new JMenuItem("Đổi ảnh");
+            menuItem1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        ImageIcon anh = chonAnh();
+                        anh = anh == null ? null : new ImageIcon(anh.getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH));
+                        int rowSeleced = tblMonAn.getSelectedRow();
+
+                        tblMonAn.setValueAt(anh != null ? anh : tblMonAn.getValueAt(rowSeleced, 3), rowSeleced, 3);
+                    } catch (IOException ex) {
+                        Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+            popupMenu.add(maMonAn);
+            popupMenu.add(menuItem1);
+
+            popupMenu.show(evt.getComponent(), evt.getX(), evt.getY());
     }
 //    }
 
@@ -448,25 +522,29 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
         tblMonAn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã món ăn", "Tên món ăn", "Đơn giá"
+                "Mã món ăn", "Tên món ăn", "Đơn giá", "Hình ảnh"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false
+                false, true, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tblMonAn.setRowHeight(40);
         tblMonAn.setShowGrid(true);
         tblMonAn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMonAnMouseClicked(evt);
+            }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 tblMonAnMousePressed(evt);
             }
@@ -589,7 +667,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     private void lblAnhMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnhMousePressed
         if (evt.getClickCount() == 2) {
             try {
-                chonAnh();
+                ImageIcon anh = chonAnh();
+                lblAnh.setIcon(anh != null ? anh : lblAnh.getIcon());
             } catch (IOException ex) {
                 Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -601,10 +680,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jScrollPane1MousePressed
 
     private void tblMonAnMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMonAnMousePressed
-        if (evt.getClickCount() == 2) {
-            this.row = tblMonAn.rowAtPoint(evt.getPoint());
-            edit();
-        }
+
     }//GEN-LAST:event_tblMonAnMousePressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -612,10 +688,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void cboLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonActionPerformed
-        LoaiMon kh = (LoaiMon) cboLoaiMon.getSelectedItem();
-        if (kh != null) {
-            fillTableByLoai();
-        }
+
+        fillTable();
+
     }//GEN-LAST:event_cboLoaiMonActionPerformed
 
     private void txtMaMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaMonActionPerformed
@@ -642,6 +717,21 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         fillTableByFindName();
     }//GEN-LAST:event_txtTimKiemActionPerformed
+
+    private void tblMonAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMonAnMouseClicked
+        // TODO add your handling code here:
+        this.row = tblMonAn.getSelectedRow();
+        if (row < 0) {
+            return;
+        }
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            doiAnhTable(evt);
+        }
+        if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2) {
+            this.row = tblMonAn.getSelectedRow();
+            edit();
+        }
+    }//GEN-LAST:event_tblMonAnMouseClicked
 
     /**
      * @param args the command line arguments
