@@ -28,6 +28,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     String SELECT_TRANGTHAI = "Select * from HoaDon Where TrangThai like ?";
     String SELECT_KHACHHANG = "Select * from HoaDon Where MaKH like ?";
 
+    
     @Override
     public void insert(HoaDon entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -108,6 +109,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         }
         return list.get(0);
     }
+
     
     public int getCountRow() {
         try {
