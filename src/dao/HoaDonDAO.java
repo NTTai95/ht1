@@ -7,6 +7,7 @@ package dao;
 import entity.HoaDon;
 import entity.HoaDonChiTiet;
 import entity.KhachHang;
+import entity.MonAn;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     String COUNT_ROW = "SELECT COUNT(*) FROM HoaDon";
     String SELECT_TRANGTHAI = "Select * from HoaDon Where TrangThai like ?";
     String SELECT_KHACHHANG = "Select * from HoaDon Where MaKH like ?";
-
+    String SELECT_BY_KEYWORK = "Select * from HoaDon where MaNV like ?";
+    String SELECT_LIST = "Select * from HoaDon where MaNV like ?";
+    
     @Override
     public void insert(HoaDon entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -108,6 +111,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         }
         return list.get(0);
     }
+
     
     public int getCountRow() {
         try {
@@ -121,4 +125,10 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
         return 0;
     }
     
+    public List<HoaDon> selectByKeyWord(String keyword){
+        return this.selectBySQL(SELECT_BY_KEYWORK, "%"+keyword+"%");       
+    }
+     public List<HoaDon> selectByList(String MaNV,String keyword){
+        return this.selectBySQL(SELECT_LIST, "%"+keyword+"%", MaNV);       
+    }
 }
