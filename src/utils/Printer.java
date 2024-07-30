@@ -1,22 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package utils;
 
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.LineSeparator;
+import com.itextpdf.text.pdf.Pfm2afm;
 import dao.HoaDonChiTietDAO;
 import dao.HoaDonDAO;
 import dao.KhachHangDAO;
@@ -24,265 +8,372 @@ import dao.MonAnDAO;
 import dao.NhanVienDAO;
 import entity.HoaDon;
 import entity.HoaDonChiTiet;
-import entity.MonAn;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.print.*;
+import static java.awt.print.Printable.NO_SUCH_PAGE;
+import static java.awt.print.Printable.PAGE_EXISTS;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.concurrent.Phaser;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.lang.model.util.Elements;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 
-/**
- *
- * @author admin
- */
 public class Printer {
 
-    public static HoaDonDAO hdDAO = new HoaDonDAO();
-    public static NhanVienDAO nvDAO = new NhanVienDAO();
-    public static KhachHangDAO khDAO = new KhachHangDAO();
-    public static MonAnDAO maDAO = new MonAnDAO();
-    public static HoaDonChiTietDAO hdctDAO = new HoaDonChiTietDAO();
-    public static String pathFont = "c:/windows/fonts/Arial.ttf";
-    public static DecimalFormat fmTien = new DecimalFormat("#,#00");
-    public static DateTimeFormatter fmThoiGian = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    private static final HoaDonDAO hdDAO = new HoaDonDAO();
+    private static final KhachHangDAO khDAO = new KhachHangDAO();
+    private static final NhanVienDAO nvDAO = new NhanVienDAO();
+    private static final HoaDonChiTietDAO hdctDAO = new HoaDonChiTietDAO();
+    private static final MonAnDAO maDAO = new MonAnDAO();
 
-    public static void printThongBaoBep(String maHD){
-        try {
-            HoaDon hd = hdDAO.selectById(Integer.valueOf(maHD));
-            BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            
-            Font fontPhieuCheBien = new Font(bf, 20);
-            Font fontData = new Font(bf, 12);
-            
-            Document document = new Document();
-            
-            PdfWriter.getInstance(document, new FileOutputStream("./src/hoadon/phieu_che_bien.pdf"));
+    private static final DecimalFormat fmTien = new DecimalFormat("#,#00");
+    private static final DateTimeFormatter fmThoiGian = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-            document.open();
-            
-            Paragraph phieuCheBien = new Paragraph("PHIẾU CHẾ BIẾN", fontPhieuCheBien);
-            phieuCheBien.setAlignment(Element.ALIGN_CENTER);
-            document.add(phieuCheBien);
-            
-            document.add(new Paragraph(" "));
-            
-            Paragraph tenNhanVien = getChiMuc("Nhân viên: ", nvDAO.selectById(hd.getMaNV()).getTenNV());
-            tenNhanVien.setAlignment(Element.ALIGN_LEFT);
-            document.add(tenNhanVien);
-            
-            Paragraph ngayLap = getChiMuc("Ngày lập: ", hd.getNgayLap().format(fmThoiGian));
-            ngayLap.setAlignment(Element.ALIGN_LEFT);
-            document.add(ngayLap);
-            
-            Paragraph banAn = getChiMuc("Bàn: ", hd.getMaB());
-            banAn.setAlignment(Element.ALIGN_LEFT);
-            document.add(banAn);
-            
-            PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên sản phẩm, Số lượng,
-            table.setWidthPercentage(100);
-            table.setSpacingBefore(10f);
-            table.setSpacingAfter(10f);
-            table.setWidths(new int[]{1,7,2});
-            
-            List<HoaDonChiTiet> hdct = hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()));
-            for (int i = 0; i < hdct.size(); i++) {
-                addCell(table, "" + (i + 1), fontData);
-                addCell(table, maDAO.selectById(hdct.get(i).getMaMon()).getTenMon(), fontData);
-                addCell(table, "" + hdct.get(i).getSoLuong(), fontData);
-            }
-            
-            document.add(table);
-            
-            document.close();
-        } catch (DocumentException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
-    
-    public static void printHoaDon(String maHD, float tienKhachDua) {
-        try {
+    public static String tenNhaHang = "NHÀ HÀNG L'ESCALE CẦN THƠ";
+    public static String tieuDe = "HÓA ĐƠN THANH TOÁN";
+    public static String diaChi = "Tầng 4, 01 Ngô Quyền Tan An Ward, Ninh Kieu 92000 Việt Nam";
+    public static String camOn = "Trân trọng cảm ơn!";
 
-            HoaDon hd = hdDAO.selectById(Integer.valueOf(maHD));
-            BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font fontTenNhaHang = new Font(bf, 20, Font.BOLD);
-            Font fontDiaChi = new Font(bf, 12);
-            Font fontTieuDe = new Font(bf, 16, Font.BOLD);
-            Font fontSoHD = new Font(bf, 12, Font.BOLD);
+    public static String phieuCheBien = "PHIẾU CHẾ BIẾN";
 
-            Font fontKhachHang = new Font(bf, 12);
-            Font fontHeader = new Font(bf, 12, Font.BOLD);
-            Font fontData = new Font(bf, 12);
-            Font fontCamOn = new Font(bf, 16, Font.BOLD);
+    private static final int width = 80;
+    private static final int sizeHeader = 210;
+    private static final int sizeFooter = 140;
+    private static final int margin_left_right = 2;
+    private static final int margin_top_bottom = 5;
+    private static final Font fontTieuDe = new Font("Arial", Font.BOLD, 14);
+    private static final Font fontPlain = new Font("Arial", Font.PLAIN, 10);
+    private static final Font fontBold = new Font("Arial", Font.BOLD, 10);
+    private static final Font fontHeader = new Font("Arial", Font.BOLD, 12);
+    private static final Font fontBody = new Font("Arial", Font.PLAIN, 12);
 
-            Document document = new Document();
+    public static void inThongBaoBep(String maHD) {
+        PrinterJob job = PrinterJob.getPrinterJob();
 
-            PdfWriter.getInstance(document, new FileOutputStream("./src/hoadon/hoa_don.pdf"));
+        PageFormat pf = job.defaultPage();
 
-            document.open();
+        HoaDon hd = hdDAO.selectById(Integer.parseInt(maHD));
 
-            Paragraph tenNhaHang = new Paragraph("Nhà hàng L'ESCALE", fontTenNhaHang);
-            tenNhaHang.setAlignment(Element.ALIGN_CENTER);
-            document.add(tenNhaHang);
+        int heightHDCT = getHeightHDCT(hdctDAO.selectHDCT(maHD), fontHeader, (float) (mmToPonit(width) * 0.7));
+        System.out.println(heightHDCT);
 
-            Paragraph diaChi = new Paragraph("Tầng 4, 01 Ngô Quyền Tan An Ward,\n Ninh Kieu 92000 Việt Nam", fontDiaChi);
-            diaChi.setAlignment(Element.ALIGN_CENTER);
-            document.add(diaChi);
+        Paper pr = new Paper();
+        pr.setSize(mmToPonit(width), mmToPonit(120) + heightHDCT);
 
-            document.add(new Paragraph(" "));
+        pr.setImageableArea(mmToPonit(margin_left_right), mmToPonit(margin_top_bottom), (mmToPonit(width) - mmToPonit(margin_left_right)) * 1.745, mmToPonit(120) + heightHDCT);
 
-            Paragraph tieuDe = new Paragraph("HÓA ĐƠN THANH TOÁN", fontTieuDe);
-            tieuDe.setAlignment(Element.ALIGN_CENTER);
-            document.add(tieuDe);
+        pf.setPaper(pr);
 
-            Paragraph soHD = new Paragraph("Số HD: " + hd.getMaHD(), fontSoHD);
-            soHD.setAlignment(Element.ALIGN_CENTER);
-            document.add(soHD);
+        job.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if (pageIndex > 0) {
+                    return NO_SUCH_PAGE;
+                }
 
-            document.add(new Paragraph(" "));
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.translate(pf.getImageableX(), pf.getImageableY());
 
-            //-----Thông tin hóa đơn
-            Paragraph tenKhachHang = getChiMuc("Khách Hàng: ", khDAO.selectById(hd.getMaKH()).getTenKH());
-            tenKhachHang.setAlignment(Element.ALIGN_LEFT);
-            document.add(tenKhachHang);
+//                g2d.setColor(new Color(0, 0, 0, 55));
+//                g2d.fillRect(0, 0, (int) pf.getImageableWidth(), (int) pf.getImageableHeight());
 
-            Paragraph ngayLap = getChiMuc("Ngày lập: ", hd.getNgayLap().format(fmThoiGian));
-            ngayLap.setAlignment(Element.ALIGN_LEFT);
-            document.add(ngayLap);
+                g2d.setColor(Color.black);
 
-            Paragraph ban = getChiMuc("Bàn: ", hd.getMaB());
-            ban.setAlignment(Element.ALIGN_LEFT);
-            document.add(ban);
+                int y = 14;
 
-            Paragraph nhanVien = getChiMuc("Nhân Viên: ", nvDAO.selectById(hd.getMaNV()).getTenNV());
-            nhanVien.setAlignment(Element.ALIGN_LEFT);
-            document.add(nhanVien);
+                drawCenter(phieuCheBien, fontTieuDe, g2d, pf.getImageableWidth(), y);
 
-            //------Craete Table
-            //Thêm bảng chi tiết sản phẩm
-            PdfPTable table = new PdfPTable(5); // 4 cột: STT, Tên sản phẩm, Số lượng,, Thành tiền
-            table.setWidthPercentage(100);
-            table.setSpacingBefore(10f);
-            table.setSpacingAfter(10f);
-            table.setWidths(new int[]{1, 4, 1, 2, 2});
+                y += 20;
 
-            //Thêm header cho bảng
-            addCell(table, "STT", fontHeader);
-            addCell(table, "Tên sản phẩm", fontHeader);
-            addCell(table, "Số lượng", fontHeader);
-            addCell(table, "Đơn giá", fontHeader);
-            addCell(table, "Thành tiền", fontHeader);
+                drawLeft2("Khách Hàng: ", khDAO.selectById(hd.getMaKH()).getTenKH(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
 
-            List<HoaDonChiTiet> hdct = hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()));
-            float tongTien = 0;
-            for (int i = 0; i < hdct.size(); i++) {
-                addCell(table, "" + (i + 1), fontData);
-                addCell(table, maDAO.selectById(hdct.get(i).getMaMon()).getTenMon(), fontData);
-                addCell(table, "" + hdct.get(i).getSoLuong(), fontData);
-                addCell(table, fmTien.format(hdct.get(i).getDonGia()), fontData);
-                addCell(table, fmTien.format(hdct.get(i).getSoLuong() * hdct.get(i).getDonGia()), fontData);
-                tongTien += (hdct.get(i).getSoLuong() * hdct.get(i).getDonGia());
+                y += 14;
+
+                drawLeft2("Bàn ăn: ", hd.getMaB(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+
+                y += 14;
+
+                drawLeft2("Ngày lập: ", hd.getNgayLap().format(fmThoiGian), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+
+                y += 14;
+
+                drawLeft2("Nhân viên: ", nvDAO.selectById(hd.getMaNV()).getTenNV(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 14;
+                g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
+
+                y += 20;
+                String[] header = new String[]{"Tên Món", "Số lượng", "Đơn giá"};
+                float[] widthColumn = new float[]{0.6f, 0.15f, 0.25f};
+                drawTable3clm(g2d, pf.getImageableWidth(), y, widthColumn, header, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
+
+                return PAGE_EXISTS;
             }
 
-            document.add(table);
+        }, pf);
 
-            document.add(new Paragraph(" "));
-            
-            PdfPTable table2 = new PdfPTable(2);
-            table2.setWidthPercentage(100);
-
-            getChiMuc2(table2, "Thành tiền: ", fmTien.format(tongTien));
-
-            getChiMuc2(table2, "Tiền khách đưa: ", fmTien.format(tienKhachDua));
-
-            document.add(table2);
-            table2.deleteBodyRows();
-            
-            document.add(new Paragraph(" "));
-
-            LineSeparator line = new LineSeparator();
-            document.add(line);
-
-            document.add(new Paragraph(" "));
-            
-            getChiMuc2(table2, "Tiền trả lại: ", fmTien.format(tienKhachDua - tongTien));
-            
-            document.add(table2);
-            
-            document.add(new Paragraph(" "));
-            
-            Paragraph camOn = new Paragraph("Trân trọng cảm ơn!", fontCamOn);
-            camOn.setAlignment(Element.ALIGN_CENTER);
-            document.add(camOn);
-            
-            document.close();
-        } catch (DocumentException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+        if (job.printDialog()) {
+            try {
+                job.print();
+            } catch (PrinterException ex) {
+                Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    private static void getChiMuc2(PdfPTable table, String textBlod, String textItalic) {
-        try {
-            BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font fontItalic = new Font(bf, 12, Font.ITALIC);
-            Font fontBold = new Font(bf, 12, Font.BOLD);
-            
-            PdfPCell cellLabel = new PdfPCell(new Phrase(textBlod, fontBold));
-            cellLabel.setHorizontalAlignment(Element.ALIGN_LEFT);
-            cellLabel.setBorder(0);
-            
-            PdfPCell cellValue = new PdfPCell(new Phrase(textItalic, fontItalic));
-            cellValue.setHorizontalAlignment(Element.ALIGN_RIGHT);
-            cellValue.setBorder(0);
-            
-            table.addCell(cellLabel);
-            table.addCell(cellValue);
-        } catch (DocumentException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+    public static void inHoaDon(String maHD, float KHTra) {
+        PrinterJob job = PrinterJob.getPrinterJob();
+
+        PageFormat pf = job.defaultPage();
+
+        HoaDon hd = hdDAO.selectById(Integer.parseInt(maHD));
+
+        int heightHDCT = getHeightHDCT(hdctDAO.selectHDCT(maHD), fontHeader, (float) (mmToPonit(width) * 0.7));
+        System.out.println(heightHDCT);
+
+        Paper pr = new Paper();
+        pr.setSize(mmToPonit(width), sizeHeader + heightHDCT + sizeFooter);
+
+        pr.setImageableArea(mmToPonit(margin_left_right), mmToPonit(margin_top_bottom), (mmToPonit(width) - mmToPonit(margin_left_right)) * 1.745, sizeHeader + heightHDCT + sizeFooter);
+
+        pf.setPaper(pr);
+
+        job.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics g, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                if (pageIndex > 0) {
+                    return NO_SUCH_PAGE;
+                }
+
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.translate(pf.getImageableX(), pf.getImageableY());
+                int y = 14;
+
+//                g2d.setColor(new Color(0, 0, 0, 55));
+//                g2d.fillRect(0, 0, (int) pf.getImageableWidth(), (int) pf.getImageableHeight());
+                g2d.setColor(Color.black);
+                drawCenter(tenNhaHang, fontTieuDe, g2d, pf.getImageableWidth(), y);
+                y += 14;
+                drawCenter(diaChi, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 45;
+                drawCenter(tieuDe, fontTieuDe, g2d, pf.getImageableWidth(), y);
+                y += 14;
+                drawCenter("Số HD: " + hd.getMaHD(), fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 20;
+                drawLeft2("Khách hàng: ", khDAO.selectById(hd.getMaKH()).getTenKH(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 20;
+                drawLeft2("Ngày Lập: ", hd.getNgayLap().format(fmThoiGian), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 20;
+                drawLeft2("Bàn ăn: ", hd.getMaB(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 20;
+                drawLeft2("Nhân viên: ", nvDAO.selectById(hd.getMaNV()).getTenNV(), fontBold, fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 20;
+                g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
+                y += 20;
+
+                System.err.println("Y: " + y);
+
+                String[] header = new String[]{"Tên món", "Số lượng", "T.Tiền"};
+                float[] widthColumn = new float[]{0.6f, 1.5f, 2.5f};
+                drawTable3clm(g2d, pf.getImageableWidth(), y, widthColumn, header, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
+
+                int thanhToan = 0;
+                for (HoaDonChiTiet hdct : hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()))) {
+                    thanhToan += (hdct.getSoLuong() * hdct.getDonGia());
+                }
+
+                y += getHeightHDCT(hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())), fontHeader, (float) pf.getImageableWidth()) + 15;
+
+                g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
+
+                y += 20;
+
+                drawLeft("THANH TOÁN", fontHeader, g2d, pf.getImageableWidth(), y);
+                drawRight(fmTien.format(thanhToan) + "đ", fontBody, g2d, pf.getImageableWidth(), y);
+
+                y += 15;
+
+                drawLeft("Tiền khách trả", fontPlain, g2d, pf.getImageableWidth(), y);
+                drawRight(fmTien.format(KHTra) + "đ", fontPlain, g2d, pf.getImageableWidth(), y);
+
+                y += 15;
+
+                g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
+
+                y += 15;
+
+                drawLeft("Thối lại", fontPlain, g2d, pf.getImageableWidth(), y);
+                drawRight(fmTien.format((KHTra - thanhToan)) + "đ", fontPlain, g2d, pf.getImageableWidth(), y);
+                y += 30;
+
+                drawCenter("-------*--***--*-------", fontBold, g2d, pf.getImageableWidth(), y);
+
+                y += 20;
+                drawCenter(camOn, fontBold, g2d, pf.getImageableWidth(), y);
+
+                return PAGE_EXISTS;
+            }
+
+        }, pf);
+
+        if (job.printDialog()) {
+            try {
+                job.print();
+            } catch (PrinterException ex) {
+                Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
-    private static Paragraph getChiMuc(String textBlod, String textItalic) {
-        try {
-            BaseFont bf = BaseFont.createFont(pathFont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            Font fontItalic = new Font(bf, 12, Font.ITALIC);
-            Font fontBold = new Font(bf, 12, Font.BOLD);
-            Phrase ph = new Phrase();
+    private static void drawTable3clm(Graphics2D g2d, double width, int y, float[] widthColumn, String[] header, List<HoaDonChiTiet> list) {
+        int x = 0;
+        int textWidth;
+        float widthColumn1 = (float) (width * widthColumn[0]);
+        float widthColumn2 = (float) (width * widthColumn[1]);
+        float widthColumn3 = (float) (width * widthColumn[2]);
+        int fontSize = fontHeader.getSize() + 8;
+        g2d.setFont(fontHeader);
+        g2d.drawString(header[0], x, y);
 
-            ph.add(new Chunk(textBlod, fontBold));
-            ph.add(new Chunk(textItalic, fontItalic));
+        textWidth = g2d.getFontMetrics().stringWidth(header[1]);
+        x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
 
-            return new Paragraph(ph);
-        } catch (DocumentException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+        g2d.drawString(header[1], x, y);
+
+        drawRight(header[2], fontHeader, g2d, width, y);
+        x = 0;
+        fontSize = fontBody.getSize() + 8;
+        y += fontSize;
+        g2d.setFont(fontBody);
+        for (HoaDonChiTiet hdct : list) {
+            int i = -1;
+            String text = maDAO.selectById(hdct.getMaMon()).getTenMon();
+
+            textWidth = g2d.getFontMetrics().stringWidth(text);
+            while (true) {
+                String textTemp = text.substring(0, i == -1 ? text.length() - 1 : i);
+                if (textWidth > widthColumn1) {
+                    i = textTemp.lastIndexOf(" ");
+                    textWidth = g2d.getFontMetrics().stringWidth(text.substring(0, i));
+                } else {
+                    break;
+                }
+            }
+
+            x = 0;
+
+            if (i > 0) {
+                g2d.drawString(text.substring(0, i), x, y);
+                y += fontSize;
+                g2d.drawString(text.substring(i + 1, text.length()), x, y);
+                y -= 8;
+            } else {
+                g2d.drawString(text, 0, y);
+            }
+
+            text = String.valueOf(hdct.getSoLuong());
+            textWidth = g2d.getFontMetrics().stringWidth(text);
+
+            x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+            g2d.drawString(text, x, y);
+
+            x = (int) (widthColumn1 + widthColumn2);
+
+            text = fmTien.format(hdct.getDonGia() * hdct.getSoLuong());
+            drawRight(text, fontBody, g2d, width, y);
+            if (i > 0) {
+                y += fontSize + 10;
+            } else {
+                y += fontSize;
+            }
         }
-        return null;
     }
 
-    private static void main(String[] args) throws IOException {
-        printHoaDon("12", 1700000);
-        printThongBaoBep("12");
-    }
-    
-    private static void addCell(PdfPTable table, String content, Font font) {
-        PdfPCell cell = new PdfPCell(new Phrase(content, font));
-        cell.setPaddingLeft(5f);
-        cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(cell);
+    private static void drawLeft2(String text1, String text2, Font font1, Font font2, Graphics2D g2d, double width, float y) {
+        g2d.setFont(font1);
+        g2d.drawString(text1, 0, y);
+
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(text1);
+
+        g2d.setFont(font2);
+        g2d.drawString(text2, textWidth, y);
     }
 
+    private static void drawRight(String text, Font font, Graphics2D g2d, double width, float y) {
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(text);
+        int RightX = (int) (width - textWidth);
+        g2d.drawString(text, RightX, y);
+    }
+
+    private static void drawLeft(String text, Font font, Graphics2D g2d, double width, float y) {
+        g2d.setFont(font);
+        g2d.drawString(text, 0, y);
+    }
+
+    private static void drawCenter(String text, Font font, Graphics2D g2d, double width, float y) {
+        g2d.setFont(font);
+        FontMetrics fm = g2d.getFontMetrics();
+        int textWidth = fm.stringWidth(text);
+        int centerX = (int) (width - textWidth) / 2;
+        g2d.drawString(text, centerX, y);
+    }
+
+    private static float mmToPonit(int mm) {
+        return (float) (mm * (72 / 25.4));
+    }
+
+    private static int getHeightHDCT(List<HoaDonChiTiet> list, Font font, float widthColumn) {
+        int y = 0;
+
+        int fontSize = font.getSize() + 8;
+
+        for (HoaDonChiTiet hdct : list) {
+            int i = -1;
+            String text = maDAO.selectById(hdct.getMaMon()).getTenMon();
+
+            int textWidth = getTextWidth(text, font);
+            while (true) {
+                String textTemp = text.substring(0, i == -1 ? text.length() - 1 : i);
+                if (textWidth > widthColumn) {
+                    i = textTemp.lastIndexOf(" ");
+                    textWidth = getTextWidth(text.substring(0, i), font);
+                } else {
+                    break;
+                }
+            }
+
+            if (i > 0) {
+                y += fontSize;
+                y -= 8;
+            }
+
+            if (i > 0) {
+                y += fontSize + 10;
+            } else {
+                y += fontSize;
+            }
+        }
+        return y;
+    }
+
+    private static int getTextWidth(String text, Font font) {
+        // Tạo một BufferedImage tạm thời để lấy đối tượng Graphics
+        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = img.getGraphics();
+        g.setFont(font);
+        FontMetrics fm = g.getFontMetrics();
+        int width = fm.stringWidth(text);
+        g.dispose(); // Giải phóng tài nguyên đồ họa
+        return width;
+    }
+
+    public static void main(String[] args) {
+//        inHoaDon("2", 1000000);
+        inThongBaoBep("1");
+    }
 }

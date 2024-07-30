@@ -517,19 +517,19 @@ public class BanHangJFrame extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
 
     public boolean checkKhachHang() {
-        if (txtTenKH.getText().matches(".*\\d.*")) {
+        if (txtTenKH.getText().trim().matches(".*\\d.*")) {
             JOptionPane.showMessageDialog(this, "Tên khách hàng không hợp lệ!");
             return false;
-        } else if (txtSDT.getText().matches(".*\\D.*")) {
+        } else if (txtSDT.getText().trim().matches(".*\\D.*")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không được nhập chữ!");
             return false;
-        } else if (txtTenKH.getText().equals("")) {
+        } else if (txtTenKH.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Tên khách hàng không được bỏ trống!");
             return false;
-        } else if (txtSDT.getText().equals("")) {
+        } else if (txtSDT.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không được bỏ trống!");
             return false;
-        } else if (txtSDT.getText().length() < 9) {
+        } else if (txtSDT.getText().trim().length() < 9) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không đủ!");
             return false;
         }
@@ -562,7 +562,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     }
 
     public boolean checkTrungSDT(String sdt) {
-        KhachHang kh = khDAO.selectBySDT(sdt);
+        KhachHang kh = khDAO.selectBySDT(sdt.trim());
         return kh == null;
     }
 
@@ -616,8 +616,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
     int rowBanAn = -1;
 
     public boolean checkBanAn() {
-        if (txtMaBanAn.getText().length() > 5) {
-            MsgBox.alert(this, "Mã bàn ăn phải ngắn hơn 6 ký tự!");
+        if (txtMaBanAn.getText().trim().length() > 5) {
+            MsgBox.alert(this, "Mã bàn ăn tối thiểu 6 ký tự!");
             return false;
         } else if (txtMaBanAn.getText().trim().equals("")) {
             MsgBox.alert(this, "Mã bàn ăn không được bỏ trống!");
@@ -1592,7 +1592,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         if (!checkHoaDon()) {
             return;
         }
-        Printer.printThongBaoBep(lblMaHoaDon.getText());
+        Printer.inThongBaoBep(lblMaHoaDon.getText());
         JOptionPane.showMessageDialog(this, "Đã in thông báo bếp!");
     }//GEN-LAST:event_btnThongBaoBepActionPerformed
 
@@ -1633,7 +1633,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         String tienKhachTra = txtKhachTra.getText().replaceAll("\\.", "");
         tienKhachTra = tienKhachTra.replaceAll(",", "");
-        Printer.printHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra));
+        tienKhachTra = tienKhachTra.replaceAll(" ", "");
+        Printer.inHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra));
         JOptionPane.showMessageDialog(this, "Đã in hóa đơn!");
     }//GEN-LAST:event_btnInHoaDonActionPerformed
 

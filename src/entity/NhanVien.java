@@ -14,7 +14,7 @@ public class NhanVien {
 
     String maNV;
     String tenNV;
-    String matKhau;
+    public String matKhau;
     int chucVu;
     String email;
 
@@ -112,5 +112,12 @@ public class NhanVien {
             randomChar = (char) ('0' + randomNumber - 52);
         }
         return randomChar;
+    }
+    
+    public static void main(String[] args) {
+        NhanVien nv = new NhanVien();
+        nv.setMatKhau("nv12345");
+        
+        System.out.println(nv.matKhau);
     }
 }
