@@ -482,6 +482,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                        
                 } catch (Exception ex) {
                    MsgBox.alert(this, "Lỗi truy vấn chi tiết hóa đơn!");
+                    System.out.println(ex);
                 }
             }
       }
