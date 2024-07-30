@@ -103,7 +103,7 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
                      "JOIN HoaDon hd ON hdct.MaHD = hd.MaHD " +
                      "JOIN NhanVien nv ON hd.MaNV = nv.MaNV " +
                      "JOIN KhachHang kh ON hd.MaKH = kh.MAKH "+
-                     "WHERE hdct.MaHD = 3";
+                     "WHERE hdct.MaHD = ?";
                       
         List<HoaDonChiTiet> list = new ArrayList<>();
         try {
