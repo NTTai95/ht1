@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import static utils.Auth.user;
 import utils.XJdbc;
+
 
 /**
  *
@@ -26,6 +28,7 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
     String COUNT_ROW = "SELECT COUNT(*) FROM HoaDon";
     String SELECT_HDCT = "Select * from HoaDonChiTiet Where MaHD = ?";
     String UPDATA_HDCT = "UPDATE HoaDonChiTiet SET MaHD = ? WHERE MaHD like ?";
+
     
     @Override
     public void insert(HoaDonChiTiet entity) {
@@ -61,6 +64,8 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+
+    
     @Override
     public List<HoaDonChiTiet> selectAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -89,16 +94,20 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
     public List<HoaDonChiTiet> selectHDCT(String maHD){
         return this.selectBySQL(SELECT_HDCT, maHD);
     }
+
     
-    public List<HoaDonChiTiet> selectWithDetails() {
+    public List<HoaDonChiTiet> selectWithDetails(Integer maHD) {
         String sql = "SELECT hd.MaHD, ma.TenMon, hdct.DonGia, hdct.SoLuongMon, nv.TenNV, kh.TENKH " +
                      "FROM HoaDonChiTiet hdct " +
                      "JOIN MonAn ma ON hdct.MaMon = ma.MaMon " +
                      "JOIN HoaDon hd ON hdct.MaHD = hd.MaHD " +
                      "JOIN NhanVien nv ON hd.MaNV = nv.MaNV " +
-                     "JOIN KhachHang kh ON hd.MaKH = kh.MAKH;";
+                     "JOIN KhachHang kh ON hd.MaKH = kh.MAKH "+
+                     "WHERE hdct.MaHD = 3";
+                      
         List<HoaDonChiTiet> list = new ArrayList<>();
         try {
+            
             ResultSet rs = XJdbc.executeQuery(sql);
             while (rs.next()) {
                 HoaDonChiTiet entity = new HoaDonChiTiet();
@@ -107,13 +116,16 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
                 entity.setDonGia(rs.getFloat("DonGia"));
                 entity.setSoLuong(rs.getInt("SoLuongMon"));
                 entity.setTenNhanVien(rs.getString("TenNV"));
-                entity.setTenNhanVien(rs.getString("TENKH"));
+                entity.setTenKhachHang(rs.getString("TENKH"));
                 list.add(entity);
             }
             rs.getStatement().getConnection().close();
             return list;
+            
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+    
 }

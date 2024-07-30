@@ -380,7 +380,7 @@ public class QuanLyMon_LoaiMonJFrame extends javax.swing.JFrame {
         LoaiMon lm = getForm();
         try {
             daolm.update(lm);
-            this.fillTable();
+            fillTable();
             MsgBox.alert(this, "Cập nhật thành công!");
         } catch (Exception e) {
             MsgBox.alert(this, "Cập nhật thất bại!");
