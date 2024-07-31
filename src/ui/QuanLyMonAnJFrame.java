@@ -113,15 +113,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             MonAn lm = cboLoaiMon.getSelectedIndex() == 0 ? null : (MonAn) cboLoaiMon.getSelectedItem();
             String maLM = lm == null ? "All" : (String.valueOf(lm.getDonGia()));
 
-            // Lấy khoảng giá từ cboBoxDonGia
+            
             String priceRange = cboDonGia.getSelectedItem().toString();
             String[] prices = priceRange.split("-");
-            double minPrice = Double.parseDouble(prices[0].trim());
+            double minPrice = Double.parseDouble(prices[0].trim());    
             double maxPrice = Double.parseDouble(prices[1].trim());
 
             List<MonAn> list = MAdao.selectAll();
-
-            System.out.println(maLM);
 
             for (MonAn cd : list) {
                 if ((cd.getMaLoai().equalsIgnoreCase(maLM) || maLM.equalsIgnoreCase("All")) &&

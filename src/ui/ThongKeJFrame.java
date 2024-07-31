@@ -4,17 +4,27 @@
  */
 package ui;
 
+import dao.LoaiMonDAO;
+import dao.ThongKeDAO;
+import entity.LoaiMon;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
  */
 public class ThongKeJFrame extends javax.swing.JFrame {
+    LoaiMonDAO LMdao = new LoaiMonDAO();
+    ThongKeDAO TKdao = new ThongKeDAO();
 
     /**
      * Creates new form ThongKeJFrame
      */
     public ThongKeJFrame() {
         initComponents();
+        fillComboBoxLoaiMon();
     }
 
     /**
@@ -30,9 +40,9 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboLoaiMon = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblMonAn = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -50,18 +60,29 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel2.setText("LOẠI MÓN ĂN");
 
-        jComboBox1.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboLoaiMon.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        cboLoaiMon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboLoaiMon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboLoaiMonActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblMonAn.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Tên món", "Số lượng bán", "Đơn giá"
+                "Mã Món", "Tên Món", "Số lượng bán"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblMonAn);
+        if (tblMonAn.getColumnModel().getColumnCount() > 0) {
+            tblMonAn.getColumnModel().getColumn(0).setMinWidth(100);
+            tblMonAn.getColumnModel().getColumn(0).setMaxWidth(200);
+            tblMonAn.getColumnModel().getColumn(2).setMinWidth(100);
+            tblMonAn.getColumnModel().getColumn(2).setMaxWidth(200);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -71,7 +92,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 .addContainerGap(183, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cboLoaiMon, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(108, 108, 108))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -84,7 +105,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboLoaiMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -175,9 +196,37 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cboLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonActionPerformed
+        fillTableMonAn();
+    }//GEN-LAST:event_cboLoaiMonActionPerformed
+
     /**
      * @param args the command line arguments
      */
+    
+    void fillComboBoxLoaiMon() {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
+        model.removeAllElements();
+        List<LoaiMon> list = LMdao.selectAll();
+        for (LoaiMon lm : list) {
+            model.addElement(lm);
+        }
+    }
+    
+    void fillTableMonAn() {
+        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
+        model.setRowCount(0);
+        tblMonAn.setModel(model);
+        LoaiMon lm = (LoaiMon) cboLoaiMon.getSelectedItem();
+        List<Object[]> list = TKdao.getSum(Integer.parseInt(lm.getMaLoai()));
+        for (Object[] row : list) {
+            double soluong = (double) row[2];
+            model.addRow(new Object[]{
+                row[0], row[1], soluong
+            });
+        }
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -211,7 +260,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cboLoaiMon;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -223,7 +272,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblMonAn;
     // End of variables declaration//GEN-END:variables
 }
