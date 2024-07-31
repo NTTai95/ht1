@@ -29,7 +29,15 @@ public class NhanVien {
         this.VaiTro = VaiTro;
         
     }
+    
+    public String getMatKhauMaHoa(){
+        return this.matKhau;
+    }
 
+    public void setMatKhauMaHoa(String matKhau){
+        this.matKhau = matKhau;
+    }
+    
     public String getMaNV() {
         return maNV;
     }
@@ -47,11 +55,11 @@ public class NhanVien {
     }
 
     public String getMatKhau() {
-        return matKhau;
+        return giaiMa(matKhau);
     }
 
     public void setMatKhau(String matKhau) {
-        this.matKhau = matKhau;
+        this.matKhau = maHoa(matKhau);
     }
 
     public boolean isVaiTro() {
@@ -85,7 +93,7 @@ public class NhanVien {
         for (int i = 0; i < enStr.length; i += 2) {
             prStr += enStr[i];
         }
-        return prStr;
+        return reverse(prStr);
     }
 
     protected String reverse(String str) {
@@ -117,8 +125,10 @@ public class NhanVien {
     
     public static void main(String[] args) {
         NhanVien nv = new NhanVien();
-        nv.setMatKhau("nv12345");
+        nv.setMatKhau("5a4a3a2a1avana");
         
         System.out.println(nv.matKhau);
+        
+        System.out.println(nv.getMatKhau());
     }
 }

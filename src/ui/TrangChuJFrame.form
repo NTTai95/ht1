@@ -4,29 +4,15 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
+        <Menu class="javax.swing.JMenu" name="mnuHeThong">
           <Properties>
-            <Property name="text" type="java.lang.String" value="TRANG CH&#x1ee6;"/>
+            <Property name="text" type="java.lang.String" value="H&#x1ec6; TH&#x1ed0;NG"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+L"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Key.png"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG NH&#x1eac;P"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Exit.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG XU&#x1ea4;T"/>
               </Properties>
@@ -35,9 +21,6 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Refresh.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;&#x1ed4;I M&#x1eac;T KH&#x1ea8;U"/>
               </Properties>
             </MenuItem>
@@ -48,15 +31,12 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="F10"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Stop.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="K&#x1ebe;T TH&#xda;C"/>
               </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="mnuQuanLy">
           <Properties>
             <Property name="text" type="java.lang.String" value="QU&#x1ea2;N L&#xdd;"/>
           </Properties>
@@ -66,9 +46,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F1"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\dish (1).png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="M&#xd3;N &#x102;N"/>
               </Properties>
             </MenuItem>
@@ -76,9 +53,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F2"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\List.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="LO&#x1ea0;I M&#xd3;N"/>
               </Properties>
@@ -91,9 +65,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F3"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Conference.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="B&#xc0;N &#x102;N"/>
               </Properties>
             </MenuItem>
@@ -101,9 +72,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F4"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Price list.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="H&#xd3;A &#x110;&#x1a0;N"/>
               </Properties>
@@ -115,9 +83,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F5"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\User group.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="B&#xc1;N H&#xc0;NG"/>
               </Properties>
@@ -132,32 +97,23 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+F6"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Users.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="NH&#xc2;N VI&#xca;N"/>
               </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu8">
+        <Menu class="javax.swing.JMenu" name="mnuThongKe">
           <Properties>
             <Property name="text" type="java.lang.String" value="TH&#x1ed0;NG K&#xca;"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem13">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Billboard.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="DOANH S&#x1ed0; M&#xd3;N &#x102;N"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem14">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Coins.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="DOANH THU "/>
               </Properties>
             </MenuItem>
@@ -170,9 +126,6 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem15">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\quanlynhahang\src\img\Globe.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="GI&#x1eda;I THI&#x1ec6;U"/>
               </Properties>
             </MenuItem>
@@ -209,22 +162,19 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel3" min="-2" pref="954" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                          </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel3" alignment="0" min="-2" pref="954" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jLabel2" min="-2" pref="215" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="692" max="-2" attributes="0"/>
                               <Component id="lblDongHo" min="-2" pref="74" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="jToolBar2" min="-2" pref="477" max="-2" attributes="0"/>
+                      <Component id="tlbMenu" min="-2" pref="477" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="106" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -239,7 +189,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jToolBar2" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                  <Component id="tlbMenu" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
@@ -258,24 +208,20 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JToolBar" name="jToolBar2">
+    <Container class="javax.swing.JToolBar" name="tlbMenu">
       <Properties>
         <Property name="rollover" type="boolean" value="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btnDangXuat">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\Exit.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="&#x110;&#x102;NG XU&#x1ea4;T"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -284,9 +230,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnKetThuc">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\Stop.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="K&#x1ebe;T TH&#xda;C"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -298,11 +241,8 @@
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator1">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btnMonAn">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\dish (1).png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="M&#xd3;N &#x102;N"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -311,9 +251,6 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnHoaDon">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\Price list.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="H&#xd3;A &#x110;&#x1a0;N"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -323,24 +260,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHoaDonActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton6">
+        <Component class="javax.swing.JButton" name="btnBanHang">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\User group.png"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="KH&#xc1;CH H&#xc0;NG"/>
-            <Property name="focusable" type="boolean" value="false"/>
+            <Property name="text" type="java.lang.String" value="B&#xc1;N H&#xc0;NG"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBanHangActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
         </Component>
         <Component class="javax.swing.JButton" name="jButton7">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\quanlynhahang\src\img\Globe.png"/>
-            </Property>
             <Property name="text" type="java.lang.String" value="GI&#x1eda;I THI&#x1ec6;U"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
@@ -351,9 +284,6 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\quanlynhahang\src\img\Info.png"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="H&#x1ec6; TH&#x1ed0;NG QU&#x1ea2;N L&#xdd; NH&#xc0; H&#xc0;NG"/>
       </Properties>
     </Component>
@@ -389,7 +319,7 @@
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="D:\quanlynhahang\src\img\400360970_913848526916133_5979970040266248220_n.jpg"/>
+          <Image iconType="2" name="D:\DuAn1\quanlybanhang\quanlynhahang\src\img\400360970_913848526916133_5979970040266248220_n.jpg"/>
         </Property>
       </Properties>
     </Component>

@@ -27,7 +27,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
     @Override
     public void insert(NhanVien entity) {
         XJdbc.executeUpdate(INSERT_SQL,
-                entity.getMaNV(),
+                entity.getMatKhauMaHoa(),
                 entity.getTenNV(),
                 entity.getMatKhau(),
                 entity.isVaiTro(),
@@ -38,7 +38,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
     public void update(NhanVien entity) {
         XJdbc.executeUpdate(UPDATE_SQL,
                 entity.getTenNV(),
-                entity.getMatKhau(),
+                entity.getMatKhauMaHoa(),
                 entity.isVaiTro(),
                 entity.getEmail(),
                 entity.getMaNV());
@@ -72,7 +72,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
                 NhanVien entity = new NhanVien();
                 entity.setMaNV(rs.getString(1));
                 entity.setTenNV(rs.getString(2));
-                entity.setMatKhau(rs.getString(3));
+                entity.setMatKhauMaHoa(rs.getString(3));
                 entity.setVaiTro(rs.getBoolean(4));
                 entity.setEmail(rs.getString(5));
                 list.add(entity);

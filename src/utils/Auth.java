@@ -13,7 +13,7 @@ import entity.NhanVien;
  */
 public class Auth {
 
-    //public static NhanVien user = new NhanVien("NV01", "Nguyễn Tấn Tài", "nv1234", 0, "nguyentantaivithanh@gmail.com");
+//    public static NhanVien user = new NhanVien("NV01", "Nguyễn Tấn Tài", "nv1234", "nguyentantaivithanh@gmail.com", false);
     public static NhanVien user = null;
     public static void clear(){
         Auth.user = null;

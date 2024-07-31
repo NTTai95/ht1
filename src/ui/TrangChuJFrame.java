@@ -13,7 +13,11 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import utils.Auth;
 import utils.MsgBox;
 
 /**
@@ -31,6 +35,8 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     }
     
     
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,13 +46,13 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jToolBar2 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        tlbMenu = new javax.swing.JToolBar();
+        btnDangXuat = new javax.swing.JButton();
         btnKetThuc = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
+        btnMonAn = new javax.swing.JButton();
         btnHoaDon = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnBanHang = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         jButton7 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -56,14 +62,13 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        mnuHeThong = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
         jMenuItem7 = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         jMenuItem16 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
+        mnuQuanLy = new javax.swing.JMenu();
         jMenuItem8 = new javax.swing.JMenuItem();
         mni_LoaiMon = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
@@ -71,7 +76,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         mni_BanHang = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         jMenuItem12 = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
+        mnuThongKe = new javax.swing.JMenu();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
@@ -79,16 +84,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jToolBar2.setRollover(true);
+        tlbMenu.setRollover(true);
 
-        jButton1.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Exit.png")); // NOI18N
-        jButton1.setText("ĐĂNG XUẤT");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton1);
+        btnDangXuat.setText("ĐĂNG XUẤT");
+        btnDangXuat.setFocusable(false);
+        btnDangXuat.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDangXuat.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tlbMenu.add(btnDangXuat);
 
-        btnKetThuc.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Stop.png")); // NOI18N
         btnKetThuc.setText("KẾT THÚC");
         btnKetThuc.setFocusable(false);
         btnKetThuc.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -98,17 +101,15 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                 btnKetThucActionPerformed(evt);
             }
         });
-        jToolBar2.add(btnKetThuc);
-        jToolBar2.add(jSeparator1);
+        tlbMenu.add(btnKetThuc);
+        tlbMenu.add(jSeparator1);
 
-        jButton3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\dish (1).png")); // NOI18N
-        jButton3.setText("MÓN ĂN");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton3);
+        btnMonAn.setText("MÓN ĂN");
+        btnMonAn.setFocusable(false);
+        btnMonAn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnMonAn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tlbMenu.add(btnMonAn);
 
-        btnHoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Price list.png")); // NOI18N
         btnHoaDon.setText("HÓA ĐƠN");
         btnHoaDon.setFocusable(false);
         btnHoaDon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -118,24 +119,25 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                 btnHoaDonActionPerformed(evt);
             }
         });
-        jToolBar2.add(btnHoaDon);
+        tlbMenu.add(btnHoaDon);
 
-        jButton6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\User group.png")); // NOI18N
-        jButton6.setText("KHÁCH HÀNG");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton6);
-        jToolBar2.add(jSeparator2);
+        btnBanHang.setText("BÁN HÀNG");
+        btnBanHang.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnBanHang.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnBanHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBanHangActionPerformed(evt);
+            }
+        });
+        tlbMenu.add(btnBanHang);
+        tlbMenu.add(jSeparator2);
 
-        jButton7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Globe.png")); // NOI18N
         jButton7.setText("GIỚI THIỆU");
         jButton7.setFocusable(false);
         jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton7);
+        tlbMenu.add(jButton7);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Info.png")); // NOI18N
         jLabel2.setText("HỆ THỐNG QUẢN LÝ NHÀ HÀNG");
 
         lblDongHo.setText("00:23:00 SA");
@@ -148,98 +150,81 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel6.setForeground(new java.awt.Color(255, 0, 51));
         jLabel6.setText("L'ESCALE - SKY GRADENT & FOUNGE");
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\DuAn1\\quanlybanhang\\quanlynhahang\\src\\img\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
 
-        jMenu3.setText("TRANG CHỦ");
-
-        jMenuItem5.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem5.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Key.png")); // NOI18N
-        jMenuItem5.setText("ĐĂNG NHẬP");
-        jMenu3.add(jMenuItem5);
+        mnuHeThong.setText("HỆ THỐNG");
 
         jMenuItem6.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem6.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Exit.png")); // NOI18N
         jMenuItem6.setText("ĐĂNG XUẤT");
-        jMenu3.add(jMenuItem6);
-        jMenu3.add(jSeparator5);
+        mnuHeThong.add(jMenuItem6);
+        mnuHeThong.add(jSeparator5);
 
-        jMenuItem7.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Refresh.png")); // NOI18N
         jMenuItem7.setText("ĐỔI MẬT KHẨU");
-        jMenu3.add(jMenuItem7);
-        jMenu3.add(jSeparator4);
+        mnuHeThong.add(jMenuItem7);
+        mnuHeThong.add(jSeparator4);
 
         jMenuItem16.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F10, 0));
-        jMenuItem16.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Stop.png")); // NOI18N
         jMenuItem16.setText("KẾT THÚC");
-        jMenu3.add(jMenuItem16);
+        mnuHeThong.add(jMenuItem16);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(mnuHeThong);
 
-        jMenu4.setText("QUẢN LÝ");
+        mnuQuanLy.setText("QUẢN LÝ");
 
         jMenuItem8.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem8.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\dish (1).png")); // NOI18N
         jMenuItem8.setText("MÓN ĂN");
-        jMenu4.add(jMenuItem8);
+        mnuQuanLy.add(jMenuItem8);
 
         mni_LoaiMon.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_LoaiMon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\List.png")); // NOI18N
         mni_LoaiMon.setText("LOẠI MÓN");
         mni_LoaiMon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mni_LoaiMonActionPerformed(evt);
             }
         });
-        jMenu4.add(mni_LoaiMon);
+        mnuQuanLy.add(mni_LoaiMon);
 
         jMenuItem9.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem9.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Conference.png")); // NOI18N
         jMenuItem9.setText("BÀN ĂN");
-        jMenu4.add(jMenuItem9);
+        mnuQuanLy.add(jMenuItem9);
 
         mni_HoaDon.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_HoaDon.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Price list.png")); // NOI18N
         mni_HoaDon.setText("HÓA ĐƠN");
         mni_HoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mni_HoaDonActionPerformed(evt);
             }
         });
-        jMenu4.add(mni_HoaDon);
+        mnuQuanLy.add(mni_HoaDon);
 
         mni_BanHang.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        mni_BanHang.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\User group.png")); // NOI18N
         mni_BanHang.setText("BÁN HÀNG");
         mni_BanHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 mni_BanHangActionPerformed(evt);
             }
         });
-        jMenu4.add(mni_BanHang);
-        jMenu4.add(jSeparator6);
+        mnuQuanLy.add(mni_BanHang);
+        mnuQuanLy.add(jSeparator6);
 
         jMenuItem12.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem12.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Users.png")); // NOI18N
         jMenuItem12.setText("NHÂN VIÊN");
-        jMenu4.add(jMenuItem12);
+        mnuQuanLy.add(jMenuItem12);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(mnuQuanLy);
 
-        jMenu8.setText("THỐNG KÊ");
+        mnuThongKe.setText("THỐNG KÊ");
 
-        jMenuItem13.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Billboard.png")); // NOI18N
         jMenuItem13.setText("DOANH SỐ MÓN ĂN");
-        jMenu8.add(jMenuItem13);
+        mnuThongKe.add(jMenuItem13);
 
-        jMenuItem14.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Coins.png")); // NOI18N
         jMenuItem14.setText("DOANH THU ");
-        jMenu8.add(jMenuItem14);
+        mnuThongKe.add(jMenuItem14);
 
-        jMenuBar1.add(jMenu8);
+        jMenuBar1.add(mnuThongKe);
 
         jMenu9.setText("TRỢ GIÚP");
 
-        jMenuItem15.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\Globe.png")); // NOI18N
         jMenuItem15.setText("GIỚI THIỆU");
         jMenu9.add(jMenuItem15);
 
@@ -256,18 +241,16 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 954, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblDongHo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(22, 22, 22)))
+                                .addGap(692, 692, 692)
+                                .addComponent(lblDongHo, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(54, 54, 54)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tlbMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -278,7 +261,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tlbMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(35, 35, 35)
@@ -291,8 +274,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(lblDongHo))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lblDongHo)))))
         );
 
         pack();
@@ -318,6 +300,11 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private void mni_BanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mni_BanHangActionPerformed
        openBanHang();
     }//GEN-LAST:event_mni_BanHangActionPerformed
+
+    private void btnBanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanHangActionPerformed
+        // TODO add your handling code here:
+        openBanHang();
+    }//GEN-LAST:event_btnBanHangActionPerformed
 
     /**
      * @param args the command line arguments
@@ -356,20 +343,17 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBanHang;
+    private javax.swing.JButton btnDangXuat;
     private javax.swing.JButton btnHoaDon;
     private javax.swing.JButton btnKetThuc;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnMonAn;
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem12;
@@ -377,7 +361,6 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem16;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
@@ -387,13 +370,26 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
-    private javax.swing.JToolBar jToolBar2;
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JMenuItem mni_BanHang;
     private javax.swing.JMenuItem mni_HoaDon;
     private javax.swing.JMenuItem mni_LoaiMon;
+    private javax.swing.JMenu mnuHeThong;
+    private javax.swing.JMenu mnuQuanLy;
+    private javax.swing.JMenu mnuThongKe;
+    private javax.swing.JToolBar tlbMenu;
     // End of variables declaration//GEN-END:variables
 
+    void setChucVu(){
+        if(!Auth.isManager()){
+            mnuThongKe.setVisible(false);
+            mnuQuanLy.setVisible(false);
+            
+            btnHoaDon.setVisible(false);
+            btnMonAn.setVisible(false);
+        }
+    }
+    
      void init(){
         setSize(1000, 600);
         setLocationRelativeTo(null);
@@ -406,12 +402,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                 lblDongHo.setText(fomat.format(new Date()));
             }
         }).start();
-      this.openWelcome();
+        
+        setChucVu();
+        this.openWelcome();
     }
 
      
     void openWelcome() {
-        new ChaoJDialog(this, true).setVisible(true);
+        new ChaoJDialog(this, true, 30).setVisible(true);
         
     }
      void ketThuc(){
@@ -426,5 +424,6 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     }
     void openBanHang(){
         new BanHangJFrame().setVisible(true);
+        dispose();
     }
 }

@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import utils.Auth;
 import utils.MsgBox;
 import utils.Printer;
@@ -70,8 +71,13 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
     };
 
-    public BanHangJFrame() {
+    public BanHangJFrame() { 
         initComponents();
+        init();
+    }
+    
+    void init(){
+        
         this.loadThucDon();
         this.loadBanAn();
         this.loadComboxLoaiMonAn();
@@ -1869,8 +1875,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+//        bh.init();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new BanHangJFrame().setVisible(true);
             }
         });

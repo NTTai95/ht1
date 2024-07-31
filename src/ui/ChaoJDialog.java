@@ -2,14 +2,17 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 import javax.swing.Timer;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-
-
 /**
  *
  * @author admin
@@ -18,27 +21,28 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form ChangePasswordJDialog
+     *
      * @param parent
      * @param modal
      */
-    public ChaoJDialog(java.awt.Frame parent, boolean modal) {
+    public ChaoJDialog(javax.swing.JFrame parent, boolean modal, int time) {
         super(parent, modal);
         initComponents();
-        init();
+        init(time);
     }
-    
-    void init(){
+
+    void init(int time) {
 //        setIconImage(XImage.getAppIcon());
         setLocationRelativeTo(null);
 //        setTitle("Hệ Thống Quản Lý Đào Tạo Edusys");
-    
-        new Timer(300, new ActionListener() {
+
+        new Timer(time, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int value = pgbLoad.getValue();
-                if(value <100){
-                    pgbLoad.setValue(value+14);
-                }else{
+                if (value < 100) {
+                    pgbLoad.setValue(value + 1);
+                } else {
                     ChaoJDialog.this.dispose();
                 }
             }
@@ -57,26 +61,24 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
         pgbLoad = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(980, 600));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pgbLoad.setBackground(new java.awt.Color(255, 255, 255));
         pgbLoad.setForeground(new java.awt.Color(0, 51, 153));
         pgbLoad.setStringPainted(true);
-        getContentPane().add(pgbLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 533, 880, 30));
+        getContentPane().add(pgbLoad, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 500, 880, 30));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(102, 0, 0));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Loading...");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 540, 80, -1));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, 80, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\quanlynhahang\\src\\img\\fc5c9805b1c614984dd7.jpg")); // NOI18N
-        jLabel3.setText("jLabel3");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, -1));
+        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\DuAn1\\quanlybanhang\\quanlynhahang\\src\\img\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 580));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,7 +116,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ChaoJDialog dialog = new ChaoJDialog(new javax.swing.JFrame(), true);
+                ChaoJDialog dialog = new ChaoJDialog(new javax.swing.JFrame(), true, 30);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -128,7 +130,6 @@ public class ChaoJDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JProgressBar pgbLoad;
     // End of variables declaration//GEN-END:variables
