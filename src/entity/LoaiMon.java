@@ -40,4 +40,6 @@ public class LoaiMon {
     public String toString(){
         return this.tenLoai;
     }
+    
+    
 }
