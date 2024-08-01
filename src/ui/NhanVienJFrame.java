@@ -50,8 +50,9 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         rdo_quanLy = new javax.swing.JRadioButton();
         rdo_nhanVien = new javax.swing.JRadioButton();
         btn_them = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
+        txt_tim = new javax.swing.JTextField();
         btn_tim = new javax.swing.JButton();
+        btn_clear = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_NhanVien = new javax.swing.JTable();
@@ -95,10 +96,23 @@ public class NhanVienJFrame extends javax.swing.JFrame {
             }
         });
 
+        txt_tim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_timActionPerformed(evt);
+            }
+        });
+
         btn_tim.setText("Tìm");
         btn_tim.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_timActionPerformed(evt);
+            }
+        });
+
+        btn_clear.setText("Làm Mới");
+        btn_clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearActionPerformed(evt);
             }
         });
 
@@ -111,7 +125,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                     .addGroup(tabsLayout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addGroup(tabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5)
+                            .addComponent(txt_tim)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabsLayout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -136,11 +150,14 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                                         .addComponent(rdo_quanLy)
                                         .addGap(18, 18, 18)
                                         .addComponent(rdo_nhanVien)))
-                                .addGap(0, 147, Short.MAX_VALUE))))
+                                .addGap(0, 148, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabsLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(267, Short.MAX_VALUE)
                         .addGroup(tabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btn_them, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabsLayout.createSequentialGroup()
+                                .addComponent(btn_clear)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btn_them))
                             .addComponent(btn_tim, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
@@ -170,15 +187,23 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                         .addComponent(rdo_quanLy)
                         .addComponent(rdo_nhanVien)))
                 .addGap(18, 18, 18)
-                .addComponent(btn_them)
+                .addGroup(tabsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_them)
+                    .addComponent(btn_clear))
                 .addGap(18, 18, 18)
-                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_tim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_tim)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)), "Danh sách", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 0, 51))); // NOI18N
+
+        jScrollPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jScrollPane1MousePressed(evt);
+            }
+        });
 
         tbl_NhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -192,11 +217,19 @@ public class NhanVienJFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, true, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbl_NhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_NhanVienMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tbl_NhanVienMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(tbl_NhanVien);
@@ -271,7 +304,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_capNhatActionPerformed
 
     private void btn_timActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_timActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_btn_timActionPerformed
 
     private void txt_maNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_maNVActionPerformed
@@ -289,6 +322,30 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     private void btn_xoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_xoaActionPerformed
         delete();
     }//GEN-LAST:event_btn_xoaActionPerformed
+
+    private void jScrollPane1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jScrollPane1MousePressed
+
+    private void tbl_NhanVienMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_NhanVienMouseClicked
+        int selectedRow = tbl_NhanVien.getSelectedRow();
+            if (selectedRow != -1  &&evt.getClickCount() == 2) {
+                this.row = selectedRow;
+                edit();
+            }
+    }//GEN-LAST:event_tbl_NhanVienMouseClicked
+
+    private void tbl_NhanVienMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_NhanVienMousePressed
+        
+    }//GEN-LAST:event_tbl_NhanVienMousePressed
+
+    private void btn_clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btn_clearActionPerformed
+
+    private void txt_timActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_timActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_timActionPerformed
 
     /**
      * @param args the command line arguments
@@ -327,6 +384,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_capNhat;
+    private javax.swing.JButton btn_clear;
     private javax.swing.JButton btn_them;
     private javax.swing.JButton btn_tim;
     private javax.swing.JButton btn_xoa;
@@ -337,7 +395,6 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JRadioButton rdo_nhanVien;
     private javax.swing.JRadioButton rdo_quanLy;
     private javax.swing.JPanel tabs;
@@ -346,10 +403,10 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txt_maNV;
     private javax.swing.JTextField txt_matKhau;
     private javax.swing.JTextField txt_tenNV;
+    private javax.swing.JTextField txt_tim;
     // End of variables declaration//GEN-END:variables
 
     void init() {
-        setIconImage(XImage.getAppIcon());
         setLocationRelativeTo(null);
         setTitle("Edusys - Quản lý nhân viên quản trị");
         fillTable();
@@ -365,7 +422,8 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                     nv.getMaNV(),
                     //nv.getMatKhau(),
                     nv.getTenNV(),
-                    nv.isVaiTro()? "Quản lý" : "Nhân Viên"
+                    nv.isVaiTro()? "Quản lý" : "Nhân Viên",
+                    nv.getEmail()
                 };
                 model.addRow(row);
             }
@@ -411,6 +469,15 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     
     void clearForm() {
         NhanVien nv = new NhanVien();
+        nv.setMatKhau("");
+        int slNV = dao.getCountRow();
+        if(slNV < 10){
+            nv.setMaNV("NV0"+(slNV+1)); 
+        }else{
+            nv.setMaNV("NV"+(slNV+1));
+        }
+        
+        nv.setVaiTro(true);
         this.setForm(nv);
         this.row = -1;
         this.updateStatus();
@@ -418,19 +485,14 @@ public class NhanVienJFrame extends javax.swing.JFrame {
 
     void insert() {
         NhanVien model = getForm();
-        String confirm = new String(txt_matKhau.getText());
-        if (confirm.equals(model.getMatKhau())) {
-            try {
+//        try {
                 dao.insert(model);
                 this.fillTable();
                 this.clearForm();
                 MsgBox.alert(this, "Thêm mới thành công");
-            } catch (Exception e) {
-                MsgBox.alert(this, "thêm mới thất bại !");
-            }
-        } else {
-            MsgBox.alert(this, "Mật khẩu xác nhận không đúng!");
-        }
+//            } catch (Exception e) {
+//                MsgBox.alert(this, "thêm mới thất bại !");
+//            }
     }
 
     void update() {
@@ -465,15 +527,10 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                 }
             }
         }
-
     }
     
-    private void tbl_nhanvienMousePressed(java.awt.event.MouseEvent evt) {                                          
-        int selectedRow = tbl_NhanVien.getSelectedRow();
-        if (selectedRow != -1  &&evt.getClickCount() == 2) {
-            this.row = selectedRow; // Gán giá trị row bằng hàng được chọn
-            edit();
-        }
-    }
+    
+    
+    
 }
 

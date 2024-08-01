@@ -17,7 +17,7 @@ import utils.XJdbc;
  */
 public class NhanVienDAO extends SysDAO<NhanVien, String> {
 
-    String INSERT_SQL = "Insert KhachHang(MaNV,TenNV,MatKhau,ChucVu,Email) values(?,?,?,?,?)";
+    String INSERT_SQL = "Insert NhanVien(MaNV,TenNV,MatKhau,ChucVu,Email) values(?,?,?,?,?)";
     String UPDATE_SQL = "UPDATE NhanVien SET TenNV = ?, MatKhau = ?, ChucVu = ?, Email = ? WHERE MaNV like ?";
     String DELETE_SQL = "DELETE FROM NhanVien WHERE MaNV like ?";
     String SELECT_BY_ID = "Select * from NhanVien where MaNV like ?";
@@ -27,9 +27,9 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
     @Override
     public void insert(NhanVien entity) {
         XJdbc.executeUpdate(INSERT_SQL,
-                entity.getMatKhauMaHoa(),
+                entity.getMaNV(),
                 entity.getTenNV(),
-                entity.getMatKhau(),
+                entity.getMatKhauMaHoa(),
                 entity.isVaiTro(),
                 entity.getEmail());
     }
