@@ -63,7 +63,7 @@ public class NhanVien {
     }
 
     public boolean isVaiTro() {
-        return !VaiTro;
+        return VaiTro;
     }
 
     public void setVaiTro(boolean VaiTro) {
