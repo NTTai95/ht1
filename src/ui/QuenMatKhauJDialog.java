@@ -143,6 +143,7 @@ public class QuenMatKhauJDialog extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     public boolean checkQuenMatKhau() {

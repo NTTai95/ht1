@@ -47,7 +47,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
                 }
             }
         }).start();
-        this.dispose();
+        //this.dispose();
     }
 
     /**

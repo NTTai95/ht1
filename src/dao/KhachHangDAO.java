@@ -15,7 +15,8 @@ import utils.XJdbc;
  *
  * @author admin
  */
-public class KhachHangDAO extends SysDAO<KhachHang, String>{
+public class KhachHangDAO extends SysDAO<KhachHang, String> {
+
     String INSERT_SQL = "Insert KhachHang(MaKH, TenKH, SDT) Values (?,?,?)";
     String UPDATE_SQL = "UPDATE KhachHang SET TenKH = ?, SDT = ? WHERE MaKH like ?";
     String DELETE_SQL = "DELETE FROM KhachHang WHERE MaKH like ?";
@@ -26,7 +27,7 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
 
     @Override
     public void insert(KhachHang entity) {
-        XJdbc.executeUpdate(INSERT_SQL, 
+        XJdbc.executeUpdate(INSERT_SQL,
                 entity.getMaKH(),
                 entity.getTenKH(),
                 entity.getSDT());
@@ -34,7 +35,7 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
 
     @Override
     public void update(KhachHang entity) {
-         XJdbc.executeUpdate(UPDATE_SQL,
+        XJdbc.executeUpdate(UPDATE_SQL,
                 entity.getTenKH(),
                 entity.getSDT(),
                 entity.getMaKH());
@@ -77,7 +78,7 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
             throw new RuntimeException(e);
         }
     }
-    
+
     public int getCountRow() {
         try {
             ResultSet rs = XJdbc.executeQuery(COUNT_ROW);
@@ -89,12 +90,17 @@ public class KhachHangDAO extends SysDAO<KhachHang, String>{
         }
         return 0;
     }
-    
-    public KhachHang selectBySDT(String sdt){
+
+    public KhachHang selectBySDT(String sdt) {
         List<KhachHang> list = this.selectBySQL(SELECT_BY_SDT, sdt);
         if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
+    }
+
+    public List<KhachHang> selectByKeyword(String tenKH, String SDT) {
+        String SQL = "SELECT * FROM KhachHang WHERE TenKH LIKE ? AND SDT like ?";
+        return this.selectBySQL(SQL, "%" + tenKH + "%", SDT + "%");
     }
 }

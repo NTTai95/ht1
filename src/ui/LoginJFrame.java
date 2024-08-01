@@ -194,17 +194,15 @@ public class LoginJFrame extends javax.swing.JFrame {
         
         NhanVien nv = nvDAO.selectById(txtMaNV.getText());
         
-        System.out.println(nv.getMatKhau());
-        System.out.println(txtPass.getPassword());
-        System.out.println(txtPass.getText().equals(nv.getMatKhau()));
-        
         if(nv == null || !(nv.getMatKhau().equals(txtPass.getText()))){
             MsgBox.alert(this, "Mã Nhân viên hoặc mật khẩu không đúng!");
             return;
         }else{
-            Auth.user = nv;
             this.dispose();
             new TrangChuJFrame().setVisible(true);
+            System.out.println("Login: "+nv.getMaNV());
+            System.out.println("Login: "+nv.getTenNV());
+            Auth.user = nv;
         }
     }//GEN-LAST:event_btnDangNhapActionPerformed
 

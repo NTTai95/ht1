@@ -373,7 +373,7 @@ public class Printer {
     }
 
     public static void main(String[] args) {
-//        inHoaDon("2", 1000000);
-        inThongBaoBep("1");
+        inHoaDon("2", 1000000);
+//        inThongBaoBep("1");
     }
 }

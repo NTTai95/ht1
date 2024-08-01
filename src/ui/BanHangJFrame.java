@@ -25,6 +25,7 @@ import javax.swing.table.TableColumn;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import utils.Auth;
@@ -50,7 +51,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     BanAnDAO baDAO = new BanAnDAO();
     List<LoaiMon> lm = lmDAO.selectAll();
 
-    int rowBA = baDAO.getCountRow();
+    
     DecimalFormat fmTien = new DecimalFormat("#,#00");
     DateTimeFormatter fmThoiGian = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
@@ -71,13 +72,13 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
     };
 
-    public BanHangJFrame() { 
+    public BanHangJFrame() {
         initComponents();
         init();
     }
-    
-    void init(){
-        
+
+    void init() {
+
         this.loadThucDon();
         this.loadBanAn();
         this.loadComboxLoaiMonAn();
@@ -199,12 +200,14 @@ public class BanHangJFrame extends javax.swing.JFrame {
         row = -1;
         loadHoaDon();
 
+        int rowBA = baDAO.getCountRow();
+        System.out.println(rowBA);
         List<BanAn> banAnAn = baDAO.selectByTrangThai(false);
-        
+
         for (int i = 1; i <= rowBA; i++) {
-            
+
             boolean boQua = false;
-            
+
             String maBA = "B" + (i < 10 ? "0" + i : i);
             String tenKH = "Trống";
             String trangThai = "Chờ sử dụng";
@@ -219,9 +222,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-            
-             for(BanAn BATemp : banAnAn){
-                if(BATemp.getMaB().equalsIgnoreCase(maBA)){
+
+            for (BanAn BATemp : banAnAn) {
+                if (BATemp.getMaB().equalsIgnoreCase(maBA)) {
                     boQua = true;
                     break;
                 }
@@ -494,7 +497,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
     void fillTable() {
         DefaultTableModel model = (DefaultTableModel) tblListKH.getModel();
         model.setRowCount(0);
-        List<KhachHang> list = khDAO.selectAll();
+        String tenKH = txtTenKH.getText();
+        String SDT = txtSDT.getText();
+            List<KhachHang> list = khDAO.selectByKeyword(tenKH, SDT);
         for (KhachHang kh : list) {
             Object[] rows = {kh.getMaKH(), kh.getTenKH(), kh.getSDT()};
             model.addRow(rows);
@@ -503,7 +508,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
     }
 
     void setForm(KhachHang kh) {
-        txtmaKH.setText((String) kh.getMaKH());
         txtTenKH.setText(kh.getTenKH());
         txtSDT.setText(kh.getSDT());
 
@@ -567,9 +571,21 @@ public class BanHangJFrame extends javax.swing.JFrame {
         return khTemp;
     }
 
-    public boolean checkTrungSDT(String sdt) {
-        KhachHang kh = khDAO.selectBySDT(sdt.trim());
-        return kh == null;
+    public boolean checkTrungSDT(KhachHang khNew) {
+        KhachHang kh = khDAO.selectBySDT(khNew.getSDT());
+        System.out.println("kh != null - :" + kh != null);
+        if(khNew.getMaKH().equals("KH0032")){
+            System.out.println("ui.BanHangJFrame.checkTrungSDT()");
+        }
+        if (kh != null) {
+
+            if (kh.getMaKH().equalsIgnoreCase(khNew.getMaKH())) {
+                System.out.println("--Chính nó");
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     public void xoaKhachHang() {
@@ -595,16 +611,17 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 continue;
             }
             khTemp.setTenKH(tenKhachHang);
-
+            
             String SDT = tblListKH.getValueAt(i, 2).toString();
+            khTemp.setSDT(SDT);
             if (SDT.matches(".*\\D.*") && SDT.length() < 9) {
                 MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại Không hợp lệ '" + tblListKH.getValueAt(i, 2) + "'");
                 continue;
-            } else if (!checkTrungSDT(SDT)) {
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại bị trùng!");
+            } else if (checkTrungSDT(khTemp)) {
+                KhachHang khNew = khDAO.selectBySDT(khTemp.getSDT());
+                MsgBox.alert(this, khTemp.getMaKH() +" - "+ khNew.getMaKH()+" - Số điện thoại bị trùng!");
                 continue;
             }
-            khTemp.setSDT(SDT);
 
             khDAO.update(khTemp);
         }
@@ -642,7 +659,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
         List<BanAn> ba = baDAO.selectAll();
 
         for (BanAn ba1 : ba) {
-            model.addRow(new Object[]{ba1.getMaB(), ba1.isTrangThai() ? "Đang Sử dụng" : "Không sử dụng", ba1.getViTri(), ba1.getGhiChu()});
+            if(ba1.isTrangThai()){
+                model.addRow(new Object[]{ba1.getMaB(),  "Đang Sử dụng", ba1.getViTri(), ba1.getGhiChu()});
+            }else{
+                model.addRow(new Object[]{ba1.getMaB(),
+                    "<html><p style='color:red'>Không sử dụng</p></html>",
+                    ba1.getViTri(),
+                    ba1.getGhiChu()});
+            }
+            
         }
     }
 
@@ -735,8 +760,16 @@ public class BanHangJFrame extends javax.swing.JFrame {
         btnCapNhatBanAn = new javax.swing.JButton();
         btnDoiTrangThai = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Bán Hàng");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 153, 153));
 
@@ -1394,7 +1427,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)), "Thông tin", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 0, 51))); // NOI18N
 
-        txtMaBanAn.setEditable(false);
+        txtMaBanAn.setEnabled(false);
 
         jLabel4.setText("Mã bàn ăn:");
 
@@ -1574,7 +1607,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         KhachHang kh = getForm();
         kh = getKhachHangNew(kh);
 
-        if (!checkTrungSDT(kh.getSDT())) {
+        if (checkTrungSDT(kh)) {
             MsgBox.alert(this, "Số điện thoại bị trùng!");
             return;
         }
@@ -1689,7 +1722,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
         hdDAO.insert(getFrom(0));
         hd = hdDAO.selectByTrangThai("0");
-        rowBA = baDAO.getCountRow();
         loadBanAn();
     }//GEN-LAST:event_btnTaoHDActionPerformed
 
@@ -1736,6 +1768,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     private void btntimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntimKiemActionPerformed
         // TODO add your handling code here:
+        new TrangChuJFrame().setVisible(true);
     }//GEN-LAST:event_btntimKiemActionPerformed
 
     private void tblListKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListKHMouseClicked
@@ -1774,6 +1807,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
         baDAO.insert(baTemp);
         loadListBanAn();
         loadBanAn();
+        banAnNEW();
+        MsgBox.alert(this, "Đã thêm bàn ăn!");
     }//GEN-LAST:event_btnThemBanAnActionPerformed
 
     private void jScrollPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jScrollPane2MouseClicked
@@ -1796,14 +1831,14 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         for (int i = 0; i < tblListBanAn.getRowCount(); i++) {
             if (tblListBanAn.getValueAt(i, 2).toString().trim().equals("")) {
-                MsgBox.alert(this, "Bàn ăn: " + tblListBanAn.getValueAt(i, 0) + " - vị trí không được để trống!");
+                MsgBox.alert(this, "Bàn ăn: " + tblListBanAn.getValueAt(i, 0).toString() + " - vị trí không được để trống!");
                 continue;
             }
             BanAn baTemp = new BanAn();
             baTemp.setMaB(tblListBanAn.getValueAt(i, 0).toString());
-            baTemp.setTrangThai(tblListBanAn.getValueAt(i, 1).toString().equalsIgnoreCase("Đang Sử dụng"));
-            baTemp.setViTri(tblListBanAn.getValueAt(i, 2) == null?"":tblListBanAn.getValueAt(i, 2).toString());
-            baTemp.setGhiChu(tblListBanAn.getValueAt(i, 3) == null?"":tblListBanAn.getValueAt(i, 3).toString());
+            baTemp.setTrangThai(getValueTable(tblListBanAn.getValueAt(i, 1).toString()).equalsIgnoreCase("Đang Sử dụng"));
+            baTemp.setViTri(tblListBanAn.getValueAt(i, 2) == null ? "" : tblListBanAn.getValueAt(i, 2).toString());
+            baTemp.setGhiChu(tblListBanAn.getValueAt(i, 3) == null ? "" : tblListBanAn.getValueAt(i, 3).toString());
 
             baDAO.update(baTemp);
         }
@@ -1815,7 +1850,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         int rowTemp = tblListBanAn.getSelectedRow();
 
-        BanAn baTemp = baDAO.selectById(tblListBanAn.getValueAt(rowTemp, 0).toString());
+        BanAn baTemp = baDAO.selectById(getValueTable(tblListBanAn.getValueAt(rowTemp, 0).toString()));
 
         List<HoaDon> listHD = hdDAO.selectByTrangThai("0");
 
@@ -1833,10 +1868,21 @@ public class BanHangJFrame extends javax.swing.JFrame {
         loadListBanAn();
 
         tblListBanAn.setRowSelectionInterval(rowTemp, rowTemp);
-        
+
         loadBanAn();
 
     }//GEN-LAST:event_btnDoiTrangThaiActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.dispose();
+        new TrangChuJFrame().setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
@@ -1878,7 +1924,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 //        bh.init();
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                
+
                 new BanHangJFrame().setVisible(true);
             }
         });

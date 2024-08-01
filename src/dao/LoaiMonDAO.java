@@ -15,18 +15,18 @@ import utils.XJdbc;
  *
  * @author admin
  */
-public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
+public class LoaiMonDAO extends SysDAO<LoaiMon, String> {
+
     String INSERT_SQL = "Insert LoaiMon(MaLoai,TenLoai) Values(?,?)";
     String UPDATE_SQL = "UPDATE LoaiMon SET TenLoai = ? WHERE MaLoai like ?";
     String DELETE_SQL = "DELETE FROM LoaiMon WHERE MaLoai like ?";
     String SELECT_BY_ID = "Select * from LoaiMon where MaLoai like ?";
     String SELECT_ALL = "SELECT * FROM LoaiMon";
     String COUNT_ROW = "SELECT COUNT(*) FROM LoaiMon";
-    
-   
+
     @Override
     public void insert(LoaiMon entity) {
-        XJdbc.executeUpdate(INSERT_SQL, 
+        XJdbc.executeUpdate(INSERT_SQL,
                 entity.getMaLoai(),
                 entity.getTenLoai());
     }
@@ -34,8 +34,8 @@ public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
     @Override
     public void update(LoaiMon entity) {
         XJdbc.executeUpdate(UPDATE_SQL,
-                entity.getMaLoai(),
-                entity.getTenLoai());
+                entity.getTenLoai(),
+                entity.getMaLoai());
     }
 
     @Override
@@ -74,7 +74,7 @@ public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
             throw new RuntimeException(e);
         }
     }
-    
+
     public int getCountRow() {
         try {
             ResultSet rs = XJdbc.executeQuery(COUNT_ROW);
@@ -86,6 +86,5 @@ public class LoaiMonDAO extends SysDAO<LoaiMon, String>{
         }
         return 0;
     }
-    
 
 }
