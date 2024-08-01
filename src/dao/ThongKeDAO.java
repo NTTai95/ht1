@@ -15,11 +15,18 @@ import utils.XJdbc;
  * @author ADMIN
  */
 public class ThongKeDAO {
-    String SUM_SQL = "SELECT SUM(HoaDonChiTiet.SoLuongMon)\n" +
-                        "FROM HoaDonChiTiet\n" +
-                        "JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon\n" +
-                        "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n" +
-                        "WHERE LoaiMon.MaLoai = ?;";
+//    String SUM_SQL = "SELECT SUM(HoaDonChiTiet.SoLuongMon)\n" +
+//                        "FROM HoaDonChiTiet\n" +
+//                        "JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon\n" +
+//                        "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n" +
+//                        "WHERE LoaiMon.MaLoai = ?;";
+    
+    String SUM_SQL = "SELECT MonAn.MaMon, MonAn.TenMon, SUM(HoaDonChiTiet.SoLuongMon) as SoLuongBan\n" +
+                     "FROM HoaDonChiTiet\n" +
+                     "JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon\n" +
+                     "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n" +
+                     "WHERE LoaiMon.MaLoai = ?\n" +
+                     "GROUP BY MonAn.MaMon, MonAn.TenMon;";
     
     
     private List<Object[]> getListOfArray(String sql, String[] cols, Object... args) {
@@ -41,24 +48,33 @@ public class ThongKeDAO {
         }
     }
     
-//    public int getSum(String MaLoai) {
+//    public List<Object[]> getSum(int maLoai) {
+//        List<Object[]> resultList = new ArrayList<>();
+//        
 //        try {
+////            XJdbc.setInt(1, maLoai);
 //            ResultSet rs = XJdbc.executeQuery(SUM_SQL);
-//            if (rs.next()) {
-//                return rs.getInt(1);
+//
+//            while (rs.next()) {
+//                Object[] row = new Object[3];
+//                row[0] = rs.getString("MaMon");
+//                row[1] = rs.getString("TenMon");
+//                row[2] = rs.getDouble("SoLuongBan");
+//                resultList.add(row);
 //            }
+//
 //        } catch (SQLException e) {
-//            throw new RuntimeException(e);
+//            e.printStackTrace();
 //        }
-//        return 0;
+//
+//        return resultList;
 //    }
     
-    public List<Object[]> getSum(int maLoai) {
+    public List<Object[]> getSum(String maLoai) {
         List<Object[]> resultList = new ArrayList<>();
         
         try {
-//            XJdbc.setInt(1, maLoai);
-            ResultSet rs = XJdbc.executeQuery(SUM_SQL);
+            ResultSet rs = XJdbc.executeQuery(SUM_SQL, maLoai);
 
             while (rs.next()) {
                 Object[] row = new Object[3];
@@ -67,7 +83,6 @@ public class ThongKeDAO {
                 row[2] = rs.getDouble("SoLuongBan");
                 resultList.add(row);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
