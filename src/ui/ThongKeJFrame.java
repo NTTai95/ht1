@@ -213,17 +213,36 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         }
     }
     
-    void fillTableMonAn() {
+//    void fillTableMonAn() {
+//        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
+//        model.setRowCount(0);
+//        tblMonAn.setModel(model);
+//        LoaiMon lm = (LoaiMon) cboLoaiMon.getSelectedItem();
+//        List<Object[]> list = TKdao.getSum(Integer.parseInt(lm.getMaLoai()));
+//        for (Object[] row : list) {
+//            double soluong = (double) row[2];
+//            model.addRow(new Object[]{
+//                row[0], row[1], soluong
+//            });
+//        }
+//    }
+    
+    public void fillTableMonAn() {
         DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
         model.setRowCount(0);
         tblMonAn.setModel(model);
+
+        // Retrieve the selected item from the combo box
         LoaiMon lm = (LoaiMon) cboLoaiMon.getSelectedItem();
-        List<Object[]> list = TKdao.getSum(Integer.parseInt(lm.getMaLoai()));
-        for (Object[] row : list) {
-            double soluong = (double) row[2];
-            model.addRow(new Object[]{
-                row[0], row[1], soluong
-            });
+        if (lm != null) {
+            // Fetch the data using the selected item
+            List<Object[]> list = TKdao.getSum(lm.getMaLoai());
+            for (Object[] row : list) {
+                double soluong = (double) row[2];
+                model.addRow(new Object[]{
+                    row[0], row[1], soluong
+                });
+            }
         }
     }
     
