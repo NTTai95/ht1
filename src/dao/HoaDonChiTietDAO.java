@@ -108,7 +108,7 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
         List<HoaDonChiTiet> list = new ArrayList<>();
         try {
             
-            ResultSet rs = XJdbc.executeQuery(sql);
+            ResultSet rs = XJdbc.executeQuery(sql, maHD);
             while (rs.next()) {
                 HoaDonChiTiet entity = new HoaDonChiTiet();
                 entity.setMaHD(rs.getInt("MaHD"));

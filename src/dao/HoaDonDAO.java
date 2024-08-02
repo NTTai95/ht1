@@ -31,6 +31,7 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
     String SELECT_BY_KEYWORK = "Select * from HoaDon where MaNV like ?";
     String SELECT_LIST = "Select * from HoaDon where MaNV like ?";
     
+    String SELECT_BY_TRANGTHAI = "Select * form HoaDon where TrangThai like ?";
     @Override
     public void insert(HoaDon entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -131,4 +132,8 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
      public List<HoaDon> selectByList(String MaNV,String keyword){
         return this.selectBySQL(SELECT_LIST, "%"+keyword+"%", MaNV);       
     }
+     public List<HoaDon> selectByTrangThai1(Integer trangThai){
+        return this.selectBySQL(SELECT_TRANGTHAI, trangThai);
+    }
+    
 }
