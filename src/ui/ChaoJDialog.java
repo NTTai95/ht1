@@ -27,6 +27,7 @@ public class ChaoJDialog extends javax.swing.JDialog {
      */
     public ChaoJDialog(javax.swing.JFrame parent, boolean modal, int time) {
         super(parent, modal);
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Loading");
         initComponents();
         init(time);
     }

@@ -69,7 +69,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenuItem14 = new javax.swing.JMenuItem();
         mnuTroGiup = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        mnuFill = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -196,11 +196,10 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnDangXuat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBanHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnMonAn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnDangXuat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnBanHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMonAn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHoaDon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnKetThuc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
@@ -403,11 +402,11 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(mnuTroGiup);
 
-        jMenu1.setBackground(new java.awt.Color(102, 102, 102));
-        jMenu1.setText("                                                                                                                                                               ");
-        jMenu1.setMargin(new java.awt.Insets(3, 50, 3, 50));
-        jMenu1.setOpaque(true);
-        jMenuBar1.add(jMenu1);
+        mnuFill.setBackground(new java.awt.Color(102, 102, 102));
+        mnuFill.setText("                                                                                                                                                               ");
+        mnuFill.setMargin(new java.awt.Insets(3, 50, 3, 50));
+        mnuFill.setOpaque(true);
+        jMenuBar1.add(mnuFill);
 
         setJMenuBar(jMenuBar1);
 
@@ -452,6 +451,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void btnMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonAnActionPerformed
         // TODO add your handling code here:
+        openMonAn();
     }//GEN-LAST:event_btnMonAnActionPerformed
 
     private void btnBanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanHangActionPerformed
@@ -576,7 +576,6 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
@@ -594,6 +593,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniHoaDon;
     private javax.swing.JMenuItem mniMonAn;
     private javax.swing.JMenuItem mniNhanVien;
+    private javax.swing.JMenu mnuFill;
     private javax.swing.JMenu mnuHeThong;
     private javax.swing.JMenuItem mnuKetThuc;
     private javax.swing.JMenu mnuQuanLy;
@@ -602,14 +602,16 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     void setChucVu() {
-        if (Auth.isManager()) {
+        if (!Auth.isManager()) {
             mnuThongKe.setVisible(false);
             mnuQuanLy.setVisible(false);
 
             btnHoaDon.setVisible(false);
             btnMonAn.setVisible(false);
+            
+            mnuFill.setText(mnuFill.getText()+"                        ");
         }
-        lblChucVu.setText((!Auth.isManager()?"Quản lý: ":"Nhân viên: ")+Auth.user.getTenNV());
+        lblChucVu.setText((Auth.isManager()?"Quản lý: ":"Nhân viên: ")+Auth.user.getTenNV());
     }
 
     void init() {
@@ -636,8 +638,9 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     }
 
     void ketThuc() {
-        MsgBox.alert(this, "Bạn có chắc chắn muốn kết thúc!");
-        System.exit(0);
+        if(MsgBox.confirm(this, "Bạn có chắc muốn thoát không?")){
+            System.exit(0);
+        }
     }
 
     void openMonAn() {

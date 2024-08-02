@@ -297,7 +297,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="mnuFill">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="66" type="rgb"/>
@@ -358,12 +358,10 @@
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="btnDangXuat" max="32767" attributes="0"/>
-                          <Component id="btnBanHang" max="32767" attributes="0"/>
-                          <Component id="btnMonAn" max="32767" attributes="0"/>
-                          <Component id="btnHoaDon" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="btnDangXuat" max="32767" attributes="0"/>
+                      <Component id="btnBanHang" max="32767" attributes="0"/>
+                      <Component id="btnMonAn" max="32767" attributes="0"/>
+                      <Component id="btnHoaDon" max="32767" attributes="0"/>
                       <Component id="btnKetThuc" max="32767" attributes="0"/>
                       <Component id="jButton7" alignment="0" pref="111" max="32767" attributes="0"/>
                   </Group>

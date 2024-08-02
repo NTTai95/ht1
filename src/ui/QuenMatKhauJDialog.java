@@ -37,6 +37,7 @@ public class QuenMatKhauJDialog extends javax.swing.JDialog {
     
     public QuenMatKhauJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quên Mật Khẩu");
         initComponents();
     }
 

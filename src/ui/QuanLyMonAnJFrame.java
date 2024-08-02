@@ -67,7 +67,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     
     void init(){
         setLocationRelativeTo(null);
-        setTitle("Hệ thống nhà hàng L'ESCALE - QUẢN LÝ MÓN ĂN");
+        setTitle("Hệ thống nhà hàng L'ESCALE - Quản Lý Món Ăn");
         fillTableLM();
         updateSatusLM();
     }
@@ -496,6 +496,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         tblLoaiMon = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Thông tin", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
@@ -1129,6 +1134,12 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             this.editLM();
         }
     }//GEN-LAST:event_tblLoaiMonMousePressed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        new TrangChuJFrame().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
 
 
     /**

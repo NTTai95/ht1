@@ -78,7 +78,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     }
 
     void init() {
-
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Bán Hàng");
         this.loadThucDon();
         this.loadBanAn();
         this.loadComboxLoaiMonAn();

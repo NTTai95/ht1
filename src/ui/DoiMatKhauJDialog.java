@@ -26,6 +26,7 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     
     public DoiMatKhauJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Đổi mật khẩu");
         initComponents();
         lblMaNV.setText(Auth.user.getMaNV());
     }
@@ -44,23 +45,28 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtMatKhauMoi2 = new javax.swing.JTextField();
-        txtMatKhauMoi = new javax.swing.JTextField();
-        txtMatKhauCu = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         lblMaNV = new javax.swing.JLabel();
+        txtMatKhauMoi = new javax.swing.JPasswordField();
+        txtMatKhauCu = new javax.swing.JPasswordField();
+        txtMatKhauMoi2 = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Thay đổi mật khẩu");
 
         jPanel1.setBackground(new java.awt.Color(255, 0, 51));
 
         btnLuu.setBackground(new java.awt.Color(255, 0, 51));
-        btnLuu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnLuu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnLuu.setForeground(new java.awt.Color(255, 255, 255));
         btnLuu.setText("Lưu");
+        btnLuu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255), 3));
+        btnLuu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLuuActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -73,17 +79,6 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Xác minh mật khẩu :");
-
-        txtMatKhauMoi2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
-        txtMatKhauMoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        txtMatKhauMoi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMatKhauMoiActionPerformed(evt);
-            }
-        });
-
-        txtMatKhauCu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -102,6 +97,12 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         lblMaNV.setForeground(new java.awt.Color(255, 255, 255));
         lblMaNV.setText("NV02");
 
+        txtMatKhauMoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtMatKhauCu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        txtMatKhauMoi2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -111,39 +112,38 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnLuu)
-                        .addGap(149, 149, 149))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5)
+                        .addGap(102, 102, 102))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel4)
-                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(33, 33, 33)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtMatKhauMoi)
-                                    .addComponent(txtMatKhauCu)
-                                    .addComponent(txtMatKhauMoi2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtMatKhauMoi2))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 25, Short.MAX_VALUE))))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                                .addComponent(txtMatKhauCu, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtMatKhauMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(102, 102, 102))
+                .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(136, 136, 136))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -183,6 +183,47 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        // TODO add your handling code here:
+        doiMatKhau();
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    public void doiMatKhau(){
+        if(!checkDoiMatKhau()){
+            return;
+        }
+        
+        NhanVien nv = nvDAO.selectById(lblMaNV.getText());
+        
+        System.out.println(txtMatKhauMoi.getText());
+        System.out.println(txtMatKhauMoi2.getText());
+        
+        System.out.println(!txtMatKhauMoi.getText().equals(txtMatKhauMoi2.getText()));
+        
+        if(!txtMatKhauMoi.getText().equals(txtMatKhauMoi2.getText())){
+            MsgBox.alert(this, "Mật khẩu mới không khớp!");
+            return;
+        }
+        
+        if(!nv.getMatKhau().equals(txtMatKhauCu.getText())){
+            MsgBox.alert(this, "Mật khẩu không khớp!");
+            return;
+        }
+        
+        nv.setMatKhau(txtMatKhauMoi.getText());
+        
+        nvDAO.update(nv);
+        
+        MsgBox.alert(this, "Đã đổi mật khẩu!");
+        
+        Auth.user = null;
+        
+        this.dispose();
+        this.getOwner().dispose();
+        
+        new LoginJFrame().setVisible(true);
+    }
+    
     public boolean checkDoiMatKhau(){
         if(txtMatKhauCu.getText().trim().equals("")){
             MsgBox.alert(this, "Vui lòng nhập mật khẩu củ!");
@@ -197,26 +238,6 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         return true;
     }
     
-    private void txtMatKhauMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauMoiActionPerformed
-        // TODO add your handling code here:
-        if(!checkDoiMatKhau()){
-            return;
-        }
-        
-        NhanVien nv = nvDAO.selectById(lblMaNV.getText());
-        if(!nv.getMatKhau().equals(txtMatKhauCu.getText())){
-            MsgBox.alert(this, "Mật khẩu củ không khớp!");
-            return;
-        }else if(txtMatKhauMoi.getText().equals(txtMatKhauMoi2.getText())){
-            MsgBox.alert(this, "Mật khẩu mới không khớp!");
-            return;
-        }else{
-            nv.setMatKhau(txtMatKhauMoi.getText());
-            nvDAO.update(nv);
-            MsgBox.alert(this, "Đã đổi mật khẩu!");
-        }
-    }//GEN-LAST:event_txtMatKhauMoiActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -271,8 +292,8 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lblMaNV;
-    private javax.swing.JTextField txtMatKhauCu;
-    private javax.swing.JTextField txtMatKhauMoi;
-    private javax.swing.JTextField txtMatKhauMoi2;
+    private javax.swing.JPasswordField txtMatKhauCu;
+    private javax.swing.JPasswordField txtMatKhauMoi;
+    private javax.swing.JPasswordField txtMatKhauMoi2;
     // End of variables declaration//GEN-END:variables
 }

@@ -70,6 +70,11 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)), "Danh Sách", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 0, 51))); // NOI18N
 
@@ -312,6 +317,12 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         fillTABLEfIND();
     }//GEN-LAST:event_txtTimNVKeyPressed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        new TrangChuJFrame().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -380,7 +391,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     void init() {
       //  setIconImage(XImage.getAppIcon());
         setLocationRelativeTo(null);
-        setTitle("L'ESCALE - Quản lý hóa đơn");
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quản Lý Hóa Đơn");
         fillTable();
         //fillTableHoaDonChiTiet();
         

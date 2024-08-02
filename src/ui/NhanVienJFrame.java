@@ -25,6 +25,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
      * Creates new form NhanVienJFrame
      */
     public NhanVienJFrame() {
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quản Lý Nhân Viên");
         initComponents();
         init();
     }

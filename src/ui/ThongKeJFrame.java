@@ -23,6 +23,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
      * Creates new form ThongKeJFrame
      */
     public ThongKeJFrame() {
+        setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Thống Kê");
         initComponents();
         fillComboBoxLoaiMon();
     }
