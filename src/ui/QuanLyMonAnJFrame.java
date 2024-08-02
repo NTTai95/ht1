@@ -316,19 +316,44 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             MonAn ma = MAdao.selectById(maMon);
             if (ma != null) {
                 this.setForm(ma);
-                this.updateStatus();
+                
             }
         } catch (Exception e) {
 //            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
         }
+        
     }
     
     void updateStatus(){
         boolean edit = this.row >= 0 ;
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);
-        
+        btnXoa.setEnabled(edit);        
+    }
+    
+    public boolean checkMonAn() {
+        if (txtTenMonAn.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Tên món ăn không được bỏ trống!");
+            return false;
+        } else if (txtDonGia.getText().trim().equals("")) {
+            JOptionPane.showMessageDialog(this, "Đơn giá không được bỏ trống!");
+            return false;
+        } else if (!txtDonGia.getText().trim().matches("-?\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(this, "Đơn giá không được nhập chữ!");
+            return false;
+        } else {
+        try {
+            double donGia = Double.parseDouble(txtDonGia.getText().trim());            
+            if (donGia <= 0) {
+                JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0!");
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!");
+            return false;
+        }
+    }
+        return true;
     }
     
     void updateStatusLM(){
@@ -1022,7 +1047,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMonAnMousePressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        insert();
+        if(checkMonAn() == true){
+            insert();
+        }
+        
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void cboLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonActionPerformed
@@ -1046,7 +1074,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        update();
+        if(checkMonAn() == true){
+            update();
+        }
+        
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -1066,6 +1097,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2) {
             this.row = tblMonAn.getSelectedRow();
             this.edit();
+            btnThem.setEnabled(false);
+            btnSua.setEnabled(true);
+            btnXoa.setEnabled(true);
         }
     }//GEN-LAST:event_tblMonAnMouseClicked
 
