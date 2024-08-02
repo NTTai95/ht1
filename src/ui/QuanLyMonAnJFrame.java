@@ -69,7 +69,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setTitle("Hệ thống nhà hàng L'ESCALE - Quản Lý Món Ăn");
         fillTableLM();
-        updateSatusLM();
+        updateStatusLM();
+        updateStatus();
     }
     
     public QuanLyMonAnJFrame() {
@@ -82,6 +83,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         init();
 
         txtMaMon.setText(generateNewMaMon());
+        txtMaLoai1.setEnabled(false);
+        txtMaLoai1.setText(generateNewMaLoai());
     }
     
     public void fillTableLM(){
@@ -160,71 +163,27 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             System.out.println(e);
         }
     }
-
-
-
     
 
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
         model.removeAllElements();
         model.addElement("ALL");
-//        try {
         List<LoaiMon> list = LMdao.selectAll();
-        for (LoaiMon cd : list) {
-            model.addElement(cd);
+        for (LoaiMon lm : list) {
+            model.addElement(lm);
         }
     }
 
     void fillComboBoxLoaiMonTT() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMonTT.getModel();
         model.removeAllElements();
-//        try {
         List<LoaiMon> list = LMdao.selectAll();
-        for (LoaiMon cd : list) {
-            model.addElement(cd);
+        for (LoaiMon lm : list) {
+            model.addElement(lm);
         }
     }
 
-
-//    public void fillTableByLoai() {
-//        DefaultTableModel model = modelTableHA;
-//        model.setRowCount(0);
-//        
-//        LoaiMon kh = (LoaiMon) cboLoaiMon.getSelectedItem();
-//        
-//        if (kh != null) {
-//            System.out.println("filltableMonAn MaLoai: " + kh.getMaLoai());
-//            List<MonAn> list = MAdao.selectByLoaiMon(kh.getMaLoai());
-//            System.out.println("list: " + list.size());
-//            for (int i = 0; i < list.size(); i++) {
-//                MonAn hv = list.get(i);
-//
-//                Object[] row = {
-//                     hv.getMaMon(), hv.getTenMon(), hv.getDonGia(),new ImageIcon("./"+hv.getAnh())
-//                };
-//                model.addRow(row);
-//            }
-//        }
-//        fillTable();
-//    }
-//    public void fillTableByFindName() {
-//        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
-//        model.setRowCount(0);
-//
-//        String keyword = txtTimKiem.getText();
-//        List<MonAn> list = MAdao.selectByKeyWord(MonAn.maMon(), keyword);
-//        for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
-//            model.addRow(new Object[]{
-//                ma.getMaLoai(),
-//                ma.getMaMon(),              
-//                ma.getTenMon(),
-//                ma.getDonGia(),
-//                ma.getAnh()
-//            });
-//        }
-//    }
-    
     public void fillTableByFindName() {
         DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
         model.setRowCount(0);
@@ -239,9 +198,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             });
         }
     }
-
-    
-    
     
     public void updateMaLoai() {
         LoaiMon selectedLoaiMon = (LoaiMon) cboLoaiMonTT.getSelectedItem();
@@ -254,6 +210,12 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         int rowCount = MAdao.getCountRow(); // Lấy số lượng dòng hiện tại
         int newNumber = rowCount + 1; // Tăng lên 1
         return "M0" + newNumber; // Tạo mã món ăn mới
+    }
+    
+    public String generateNewMaLoai() {
+        int rowCount = LMdao.getCountRow(); 
+        int newNumber = rowCount + 1; 
+        return "ML0" + newNumber; 
     }
 
     void setForm(MonAn model) {
@@ -301,22 +263,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         return null;
     }
 
-    void edit() {
-        try {
-            String maMon = (String) tblMonAn.getValueAt(this.row, 0);
-            MonAn ma = MAdao.selectById(maMon);
-            if (ma != null) {
-                setForm(ma);
-            }
-        } catch (Exception e) {
-//            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
-        }
-    }
-
     void clearForm() {
         this.setForm1(new MonAn());
         row = -1;
-
+        updateStatus();
     }
 
     void insert() {
@@ -360,12 +310,33 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         }
     }
     
-    void updateSatusLM(){
+    void edit() {
+        try {
+            String maMon = (String) tblMonAn.getValueAt(this.row, 0);
+            MonAn ma = MAdao.selectById(maMon);
+            if (ma != null) {
+                this.setForm(ma);
+                this.updateStatus();
+            }
+        } catch (Exception e) {
+//            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
+        }
+    }
+    
+    void updateStatus(){
         boolean edit = this.row >= 0 ;
-        txtMaLoai1.setEnabled(!edit);
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
         btnXoa.setEnabled(edit);
+        
+    }
+    
+    void updateStatusLM(){
+        boolean edit = this.row >= 0 ;
+        txtMaLoai1.setEnabled(!edit);
+        btnThem1.setEnabled(!edit);
+        btnSua1.setEnabled(edit);
+        btnXoa1.setEnabled(edit);
         
     }
     
@@ -374,7 +345,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             String maloai = (String) tblLoaiMon.getValueAt(this.row, 0);
             LoaiMon lm = daolm.selectById(maloai);
             this.setFormLM(lm);
-            this.updateSatusLM();
+            this.updateStatusLM();
         } catch (Exception e) {
         }
         
@@ -384,7 +355,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         LoaiMon lm = new LoaiMon();
         this.setFormLM(lm);
         row = -1;
-        updateSatusLM();
+        updateStatusLM();
+        txtMaLoai1.setEnabled(false);
+        txtMaLoai1.setText(generateNewMaLoai());
     }
     
     void setFormLM(LoaiMon model){
@@ -831,7 +804,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
         jLabel10.setText("Mã loại:");
 
-        txtMaLoai1.setEnabled(false);
         txtMaLoai1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaLoai1ActionPerformed(evt);
@@ -1069,6 +1041,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
         clearForm();
+        fillComboBoxLoaiMonTT();
 
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
@@ -1092,7 +1065,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         }
         if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2) {
             this.row = tblMonAn.getSelectedRow();
-            edit();
+            this.edit();
         }
     }//GEN-LAST:event_tblMonAnMouseClicked
 
