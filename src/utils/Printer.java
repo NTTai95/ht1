@@ -1,6 +1,5 @@
 package utils;
 
-import com.itextpdf.text.pdf.Pfm2afm;
 import dao.HoaDonChiTietDAO;
 import dao.HoaDonDAO;
 import dao.KhachHangDAO;
@@ -18,8 +17,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
 
 public class Printer {
 
@@ -176,7 +173,7 @@ public class Printer {
                 System.err.println("Y: " + y);
 
                 String[] header = new String[]{"Tên món", "Số lượng", "T.Tiền"};
-                float[] widthColumn = new float[]{0.6f, 1.5f, 2.5f};
+                float[] widthColumn = new float[]{0.6f, 0.15f, 0.25f};
                 drawTable3clm(g2d, pf.getImageableWidth(), y, widthColumn, header, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
 
                 int thanhToan = 0;

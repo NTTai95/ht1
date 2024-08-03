@@ -7,17 +7,43 @@ package ui;
 import dao.LoaiMonDAO;
 import dao.ThongKeDAO;
 import entity.LoaiMon;
+import entity.ThongKe;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JLayeredPane;
 import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.RefineryUtilities;
+import entity.ThongKe.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetUtilities;
+import org.jfree.data.xy.XYDataset;
 
 /**
  *
  * @author ADMIN
  */
 public class ThongKeJFrame extends javax.swing.JFrame {
+
     LoaiMonDAO LMdao = new LoaiMonDAO();
     ThongKeDAO TKdao = new ThongKeDAO();
+    SimpleDateFormat fmThoiGian = new SimpleDateFormat("dd/MM");
 
     /**
      * Creates new form ThongKeJFrame
@@ -26,6 +52,9 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Thống Kê");
         initComponents();
         fillComboBoxLoaiMon();
+        loadBieuDoMonAn();
+        loadBieuDoDoanhThu();
+        loadCboNgayLap();
     }
 
     /**
@@ -37,26 +66,19 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         cboLoaiMon = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblMonAn = new javax.swing.JTable();
+        pnlThongKe = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        clrTuNgay = new com.toedter.calendar.JDateChooser();
+        clrDenNgay = new com.toedter.calendar.JDateChooser();
+        pnlDoanhThu = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(204, 0, 51));
-        jLabel1.setText("THỐNG KÊ");
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel2.setText("LOẠI MÓN ĂN");
@@ -69,47 +91,44 @@ public class ThongKeJFrame extends javax.swing.JFrame {
             }
         });
 
-        tblMonAn.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        pnlThongKe.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-            },
-            new String [] {
-                "Mã Món", "Tên Món", "Số lượng bán"
-            }
-        ));
-        jScrollPane1.setViewportView(tblMonAn);
-        if (tblMonAn.getColumnModel().getColumnCount() > 0) {
-            tblMonAn.getColumnModel().getColumn(0).setMinWidth(100);
-            tblMonAn.getColumnModel().getColumn(0).setMaxWidth(200);
-            tblMonAn.getColumnModel().getColumn(2).setMinWidth(100);
-            tblMonAn.getColumnModel().getColumn(2).setMaxWidth(200);
-        }
+        javax.swing.GroupLayout pnlThongKeLayout = new javax.swing.GroupLayout(pnlThongKe);
+        pnlThongKe.setLayout(pnlThongKeLayout);
+        pnlThongKeLayout.setHorizontalGroup(
+            pnlThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlThongKeLayout.setVerticalGroup(
+            pnlThongKeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 666, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cboLoaiMon, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(108, 108, 108))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cboLoaiMon, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 873, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(cboLoaiMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlThongKe, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("DOANH SỐ MÓN ĂN", jPanel1);
@@ -120,18 +139,32 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel4.setText("ĐẾN NGÀY");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        clrTuNgay.setDateFormatString("dd-MM-yyyy");
+        clrTuNgay.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                clrTuNgayPropertyChange(evt);
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        });
+
+        clrDenNgay.setDateFormatString("dd-MM-yyyy");
+        clrDenNgay.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                clrDenNgayPropertyChange(evt);
+            }
+        });
+
+        pnlDoanhThu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        javax.swing.GroupLayout pnlDoanhThuLayout = new javax.swing.GroupLayout(pnlDoanhThu);
+        pnlDoanhThu.setLayout(pnlDoanhThuLayout);
+        pnlDoanhThuLayout.setHorizontalGroup(
+            pnlDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlDoanhThuLayout.setVerticalGroup(
+            pnlDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 669, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -142,13 +175,15 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(clrTuNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE))
+                        .addComponent(clrDenNgay, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 727, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnlDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -156,16 +191,16 @@ public class ThongKeJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clrTuNgay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(clrDenNgay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(5, 5, 5)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jLabel4)))
-                    .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addComponent(pnlDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("DOANH THU", jPanel2);
@@ -174,23 +209,13 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(11, 11, 11)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jTabbedPane1))
         );
 
         pack();
@@ -198,22 +223,32 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonActionPerformed
-        fillTableMonAn();
+        loadBieuDoMonAn();
     }//GEN-LAST:event_cboLoaiMonActionPerformed
+
+    private void clrTuNgayPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrTuNgayPropertyChange
+        // TODO add your handling code here:
+        loadCboNgayLap();
+    }//GEN-LAST:event_clrTuNgayPropertyChange
+
+    private void clrDenNgayPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_clrDenNgayPropertyChange
+        // TODO add your handling code here:
+        loadCboNgayLap();
+    }//GEN-LAST:event_clrDenNgayPropertyChange
 
     /**
      * @param args the command line arguments
      */
-    
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
         model.removeAllElements();
+        model.addElement("All");
         List<LoaiMon> list = LMdao.selectAll();
         for (LoaiMon lm : list) {
             model.addElement(lm);
         }
     }
-    
+
 //    void fillTableMonAn() {
 //        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
 //        model.setRowCount(0);
@@ -228,25 +263,115 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 //        }
 //    }
     
-    public void fillTableMonAn() {
-        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
-        model.setRowCount(0);
-        tblMonAn.setModel(model);
-
-        // Retrieve the selected item from the combo box
-        LoaiMon lm = (LoaiMon) cboLoaiMon.getSelectedItem();
-        if (lm != null) {
-            // Fetch the data using the selected item
-            List<Object[]> list = TKdao.getSum(lm.getMaLoai());
-            for (Object[] row : list) {
-                double soluong = (double) row[2];
-                model.addRow(new Object[]{
-                    row[0], row[1], soluong
-                });
-            }
+    public void loadCboNgayLap(){
+        NgayLap nl = TKdao.getNgayLap();
+        
+        if( clrDenNgay.getDate() == null || clrTuNgay.getDate() == null){
+            clrTuNgay.setSelectableDateRange(nl.getMin(), nl.getMax());
+            clrDenNgay.setSelectableDateRange(nl.getMin(), nl.getMax());
+            clrTuNgay.setDate(nl.getMin());
+            clrDenNgay.setDate(nl.getMax());
+            return;
         }
+        
+        
+        clrTuNgay.setMaxSelectableDate(clrDenNgay.getDate());
+        clrDenNgay.setMinSelectableDate(clrTuNgay.getDate());
+        
+        clrTuNgay.repaint();
+        clrDenNgay.repaint();
+        
+        System.out.println("ui.ThongKeJFrame.loadCboNgayLap()");
+        
+        loadBieuDoDoanhThu();
     }
     
+    public void loadBieuDoDoanhThu() {
+        List<DoanhThu> list = TKdao.getDoanhThu(clrTuNgay.getDate(), clrDenNgay.getDate());
+
+        double[] data = new double[]{};
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(DoanhThu dt : list){
+            dataset.addValue(dt.getTongTien(), "Tổng Tiền", fmThoiGian.format(dt.getNgayLap()));
+        }
+        // 1. Tạo dữ liệu cho biểu đồ miền
+        
+        
+
+        // 2. Tạo biểu đồ miền
+        JFreeChart areaChart = ChartFactory.createAreaChart("Biểu đồ doanh thu theo tháng", // Tiêu đề biểu đồ
+                "Thời Gian",                        // Nhãn trục x
+                "Tổng Tiền", 
+                dataset,                        // Dữ liệu
+                PlotOrientation.VERTICAL,       // Hướng của biểu đồ
+                false,                           // Hiển thị chú thích
+                true,                           // Hiển thị tooltip
+                false                           // URL generation
+        );
+
+        // 3. Tạo ChartPanel từ JFreeChart
+        ChartPanel chartPanel = new ChartPanel(areaChart);
+        
+        pnlDoanhThu.removeAll();
+        
+        // Tạo ChartPanel từ biểu đồ và thiết lập kích thước
+        chartPanel.setBounds(0, 0, pnlDoanhThu.getWidth(), pnlDoanhThu.getHeight());
+        pnlDoanhThu.add(chartPanel, JLayeredPane.PALETTE_LAYER);
+
+        // Cập nhật giao diện
+        pnlDoanhThu.revalidate();
+        pnlDoanhThu.repaint();
+
+    }
+
+    public void loadBieuDoMonAn() {
+        LoaiMon lm = null;
+        if (cboLoaiMon.getSelectedIndex() == 0) {
+            lm = new LoaiMon("%", "%");
+        } else {
+            lm = (LoaiMon) cboLoaiMon.getSelectedItem();
+        }
+
+        if (lm == null) {
+            return;
+        }
+        List<DoanhThuMonAn> list = TKdao.getSum(lm.getMaLoai());
+
+        // Tạo dataset mới cho biểu đồ
+        DefaultPieDataset dataset = new DefaultPieDataset();
+        for (DoanhThuMonAn lm1 : list) {
+            dataset.setValue(lm1.getTenMon(), lm1.getSoLuong());
+        }
+
+        // Tạo biểu đồ mới với dữ liệu
+        JFreeChart chart = ChartFactory.createPieChart(
+                "Món ăn", // Tiêu đề biểu đồ
+                dataset // Dữ liệu biểu đồ
+
+        );
+
+        // Lấy đối tượng PiePlot từ biểu đồ
+        PiePlot plot = (PiePlot) chart.getPlot();
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0} - {2}"));
+        // {0} Tên dữ liệu
+        // {1} giá trị dữ liệu
+        // {2} giá trị dữ liệu theo phần trăm
+        // {3} tổng các giá trị
+
+        // Xóa các thành phần cũ trong pnlThongKe
+        pnlThongKe.removeAll();
+
+        // Tạo ChartPanel từ biểu đồ và thiết lập kích thước
+        ChartPanel chartPanel = new ChartPanel(chart);
+        chartPanel.setBounds(0, 0, pnlThongKe.getWidth(), pnlThongKe.getHeight());
+        pnlThongKe.add(chartPanel, JLayeredPane.PALETTE_LAYER);
+
+        // Cập nhật giao diện
+        pnlThongKe.revalidate();
+        pnlThongKe.repaint();
+
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -281,18 +406,15 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cboLoaiMon;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
-    private javax.swing.JLabel jLabel1;
+    private com.toedter.calendar.JDateChooser clrDenNgay;
+    private com.toedter.calendar.JDateChooser clrTuNgay;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable tblMonAn;
+    private javax.swing.JPanel pnlDoanhThu;
+    private javax.swing.JPanel pnlThongKe;
     // End of variables declaration//GEN-END:variables
 }
