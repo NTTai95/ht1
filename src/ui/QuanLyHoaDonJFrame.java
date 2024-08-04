@@ -11,6 +11,7 @@ import entity.HoaDonChiTiet;
 import entity.MonAn;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -83,7 +84,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Mã hóa đơn", "Ngày lập", "Mã khách hàng", "Mã nhân viên", "Mã bàn", "Trạng thái", "Ghi chú", "Thành tiền"
+                "Mã hóa đơn", "Ngày lập", "Mã khách hàng", "Mã nhân viên", "Mã bàn", "Trạng thái", "Ghi chú", "Tổng tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -176,7 +177,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã hóa đơn", "Tên món", "Đơn giá", "Số lượng", "Tổng tiền"
+                "Mã hóa đơn", "Tên món", "Đơn giá", "Số lượng", "Thành tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -218,17 +219,13 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                                 .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel12))
+                        .addGap(11, 11, 11)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(txtMaHD, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtTenMon, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(txtMaHD, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTenMon, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -407,6 +404,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
 
            List<HoaDon> list = dao.selectAll();
             for (HoaDon hd : list){
+                double tongTien = daoct.selectSum(hd.getMaHD());
                 Object[] row = {
                    hd.getMaHD(),
                    hd.getNgayLap(),
@@ -415,10 +413,9 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                    hd.getMaB(),
                    convertStatus(hd.getTrangThai()),
                    hd.getGhiChu(),
-
+                   tongTien
                 };
                 model.addRow(row);
-
             }
 
         } catch (Exception e) {
@@ -426,69 +423,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         }
            
     }
-//    void tongTien(Integer maHD) {
-//        float tongTien = 0;
-//
-//        // Lấy tổng tiền từ DAO
-//        try {
-//            tongTien = daoct.selectHDCT_SUM(maHD);
-//        } catch (Exception e) {
-//            e.printStackTrace(); // Hoặc xử lý lỗi theo cách bạn muốn
-//        }
-//
-//        // Cập nhật tổng tiền vào bảng tblHoaDon
-//        DefaultTableModel modelHoaDon = (DefaultTableModel) tblHoaDon.getModel();
-//        modelHoaDon.setRowCount(0); // Xóa tất cả các dòng cũ
-//        modelHoaDon.addRow(new Object[]{"Tổng tiền:", tongTien}); // Thêm dòng tổng tiền mới
-//    }
-    
-//    void tongTien(){
-//        DefaultTableModel modelhdct =(DefaultTableModel) tblH  void tongTien(Integer maHD) {
  
-//        float tongTien = 0;
-//        
-//        List<HoaDonChiTiet> list = daoct.selectHDCT_SUM(maHD);
-//         for(int i = 0; i < modelhdct.getRowCount(); i++) {
-//             float donGia = (float) modelhdct.getValueAt(i, 2);
-//             int soLuong = (int) modelhdct.getValueAt(i, 3);
-//             tongTien += donGia * soLuong;
-//         }
-//         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
-//         model.setRowCount(0); // Xóa tất cả các dòng cũ
-//         model.addRow(new Object[]{tongTien}); // Thêm dòng tổng tiền mới
-//        
-//
-//    }
-    
-
-//    void fillTableHoaDonChiTiet(){
-//        DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
-//        model.setRowCount(0);
-//        
-//         int maHoaDon = (int) tblHoaDon.getValueAt(selectedRow, 0);
-//        try {
-//            
-//            List<HoaDonChiTiet> list = daoct.selectWithDetails(maHoaDon);
-//              for (HoaDonChiTiet hdct : list){
-//                  float tongTien = hdct.getDonGia() * hdct.getSoLuong();
-//                  Object[] row = {
-//                      hdct.getMaHD(),
-//                      //hdct.getMaMon(),
-//                      hdct.getTenMon(),
-//                      hdct.getDonGia(),
-//                      hdct.getSoLuong(),
-//                      tongTien
-//                      
-//                  };
-//                 
-//                  model.addRow(row);
-//              }
-//            
-//        } catch (Exception e) {
-//             MsgBox.alert(this, "Lỗi truy vần dữ liệu!");
-//        }
-//        
-//    }
 
       void click(){
           int selectedRow = tblHoaDon.getSelectedRow();
@@ -526,6 +461,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         try {
             List<HoaDon> list = dao.selectByKeyWord(tim);
             for(HoaDon hd : list){
+                 double tongTien = daoct.selectSum(hd.getMaHD());
                 Object[] row = {
                    hd.getMaHD(),
                    hd.getNgayLap(),
@@ -533,7 +469,9 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                    hd.getMaNV(),
                    hd.getMaB(),
                    convertStatus(hd.getTrangThai()),
-                   hd.getGhiChu()
+                   hd.getGhiChu(),
+                   tongTien
+                    
                 };
                 model.addRow(row);
             }
@@ -541,7 +479,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         }
         
     }
-    void fillTableFindTrangThai(){
+    void fillTableFindTrangThai() {
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
 
@@ -560,30 +498,33 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         
         if(list != null && !list.isEmpty()){
         for (HoaDon hd : list) {
+             double tongTien = daoct.selectSum(hd.getMaHD());
             Object[] row = {
+                
                 hd.getMaHD(),
                 hd.getNgayLap(),
                 hd.getMaKH(),
                 hd.getMaNV(),
                 hd.getMaB(),
                 convertStatus(hd.getTrangThai()),
-                hd.getGhiChu()
+                hd.getGhiChu(),
+                tongTien
             };
             model.addRow(row);
          }
+
+          
         }
         } catch (NumberFormatException e) {
         System.err.println("Lỗi chuyển đổi trạng thái: " + e.getMessage());
-        }
+        } catch (SQLException e) {
+        e.printStackTrace();
+    }
     }
 
     void edit() {
     try {
         int row = tblHDCT.getSelectedRow();
-//        if (row == -1) {
-//            JOptionPane.showMessageDialog(null, "Vui lòng chọn một hàng trước!");
-//            return;
-//        }
 
         int maHoaDon = (int) tblHDCT.getValueAt(row, 0);
         List<HoaDonChiTiet> hdctList = daoct.selectWithDetails(maHoaDon);
@@ -596,7 +537,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         }
     } catch (Exception e) {
         e.printStackTrace();
-        JOptionPane.showMessageDialog(null, "Error retrieving order details: " + e.getMessage());
+
     }
 }
     

@@ -440,11 +440,17 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }
-    void valiForm(){
-        List<String> erros = new ArrayList<>();
+     public boolean checkLoaiMon(){
+        
         if(txtTenLoai.getText().isEmpty()){
-            erros.add("Vui lòng nhập tên loại món!");
-        }
+            JOptionPane.showMessageDialog(this, "Tên loại món không được bỏ trống!");
+            return false;
+        }else if (txtTenLoai.getText().trim().matches("-?\\d+(\\.\\d+)?")){
+            JOptionPane.showMessageDialog(this, "Tên loại không được nhập số!");
+        return false;
+    }
+        return true;
+        
     }
     
     /**
@@ -1126,11 +1132,16 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMaLoai1ActionPerformed
 
     private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
-        insertLM();
+        if(checkLoaiMon() == true){
+            insertLM();
+        }
+        
     }//GEN-LAST:event_btnThem1ActionPerformed
 
     private void btnSua1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSua1ActionPerformed
-        updateLM();
+        if(checkLoaiMon() == true){
+            updateLM();
+        }
     }//GEN-LAST:event_btnSua1ActionPerformed
 
     private void btnXoa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoa1ActionPerformed
