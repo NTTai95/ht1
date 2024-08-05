@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.swing.JFrame;
 import javax.swing.Timer;
 import utils.Auth;
 import utils.MsgBox;
@@ -65,8 +66,8 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         mniNhanVien = new javax.swing.JMenuItem();
         mnuThongKe = new javax.swing.JMenu();
-        jMenuItem13 = new javax.swing.JMenuItem();
-        jMenuItem14 = new javax.swing.JMenuItem();
+        mniDoanhSo = new javax.swing.JMenuItem();
+        mniDoanhThu = new javax.swing.JMenuItem();
         mnuTroGiup = new javax.swing.JMenu();
         jMenuItem15 = new javax.swing.JMenuItem();
         mnuFill = new javax.swing.JMenu();
@@ -365,17 +366,27 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             }
         });
 
-        jMenuItem13.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jMenuItem13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Best.png"))); // NOI18N
-        jMenuItem13.setText("DOANH SỐ MÓN ĂN");
-        jMenuItem13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        mnuThongKe.add(jMenuItem13);
+        mniDoanhSo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mniDoanhSo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Best.png"))); // NOI18N
+        mniDoanhSo.setText("DOANH SỐ MÓN ĂN");
+        mniDoanhSo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mniDoanhSo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniDoanhSoActionPerformed(evt);
+            }
+        });
+        mnuThongKe.add(mniDoanhSo);
 
-        jMenuItem14.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jMenuItem14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Diagram.png"))); // NOI18N
-        jMenuItem14.setText("DOANH THU ");
-        jMenuItem14.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        mnuThongKe.add(jMenuItem14);
+        mniDoanhThu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mniDoanhThu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Diagram.png"))); // NOI18N
+        mniDoanhThu.setText("DOANH THU ");
+        mniDoanhThu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mniDoanhThu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniDoanhThuActionPerformed(evt);
+            }
+        });
+        mnuThongKe.add(mniDoanhThu);
 
         jMenuBar1.add(mnuThongKe);
 
@@ -398,6 +409,11 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jMenuItem15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Address book.png"))); // NOI18N
         jMenuItem15.setText("GIỚI THIỆU");
         jMenuItem15.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem15ActionPerformed(evt);
+            }
+        });
         mnuTroGiup.add(jMenuItem15);
 
         jMenuBar1.add(mnuTroGiup);
@@ -527,7 +543,29 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private void mniNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniNhanVienActionPerformed
         // TODO add your handling code here:
         new NhanVienJFrame().setVisible(true);
+        dispose();
     }//GEN-LAST:event_mniNhanVienActionPerformed
+
+    private void mniDoanhSoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhSoActionPerformed
+        // TODO add your handling code here:
+        ThongKeJFrame thongKe = new ThongKeJFrame();
+        thongKe.selectTab(0);
+        thongKe.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_mniDoanhSoActionPerformed
+
+    private void mniDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuActionPerformed
+        // TODO add your handling code here:
+        ThongKeJFrame thongKe = new ThongKeJFrame();
+        thongKe.selectTab(1);
+        thongKe.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_mniDoanhThuActionPerformed
+
+    private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
+        // TODO add your handling code here:
+        new GioiThieuJDialog(this,true).setVisible(true);
+    }//GEN-LAST:event_jMenuItem15ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -577,8 +615,6 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem13;
-    private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem15;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
@@ -590,6 +626,8 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JMenuItem mniBanHang;
+    private javax.swing.JMenuItem mniDoanhSo;
+    private javax.swing.JMenuItem mniDoanhThu;
     private javax.swing.JMenuItem mniHoaDon;
     private javax.swing.JMenuItem mniMonAn;
     private javax.swing.JMenuItem mniNhanVien;
