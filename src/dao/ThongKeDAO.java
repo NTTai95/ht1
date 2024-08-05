@@ -30,16 +30,17 @@ public class ThongKeDAO {
             + "FROM HoaDonChiTiet\n"
             + "JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon\n"
             + "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n"
-            + "WHERE LoaiMon.MaLoai like ?\n"
+            + "JOIN HoaDon ON HoaDonChiTiet.MaHD = HoaDon.MaHD\n"
+            + "WHERE LoaiMon.MaLoai like ? AND HoaDon.TrangThai like '1'\n"
             + "GROUP BY MonAn.TenMon;";
 
     String DoanhThu_SQL = "SELECT CONVERT(date, hd.NgayLap, 103), SUM(hdct.SoLuongMon * hdct.DonGia)\n"
             + "From HoaDonChiTiet hdct Join HoaDon hd on hdct.MaHD = hd.MaHD\n"
-            + "Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103)\n"
+            + "Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'\n"
             + "GROUP BY CONVERT(date, hd.NgayLap, 103)\n"
             + "ORDER BY CONVERT(date, hd.NgayLap, 103) asc";
 
-    String Ngaylap_SQL = "SELECT MIN(CONVERT(date, hd.NgayLap, 103)), MAX(CONVERT(date, hd.NgayLap, 103)) FROM HoaDon hd";
+    String Ngaylap_SQL = "SELECT MIN(CONVERT(date, hd.NgayLap, 103)), MAX(CONVERT(date, hd.NgayLap, 103)) FROM HoaDon hd WHERE hd.TrangThai like '1'";
 
     public List<DoanhThuMonAn> getSum(String maLoai) {
         List<DoanhThuMonAn> list = new ArrayList<>();

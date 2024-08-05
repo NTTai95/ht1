@@ -299,7 +299,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         
 
         // 2. Tạo biểu đồ miền
-        JFreeChart areaChart = ChartFactory.createAreaChart("Biểu đồ doanh thu theo tháng", // Tiêu đề biểu đồ
+        JFreeChart areaChart = ChartFactory.createAreaChart("Biểu đồ doanh thu", // Tiêu đề biểu đồ
                 "Thời Gian",                        // Nhãn trục x
                 "Tổng Tiền", 
                 dataset,                        // Dữ liệu
@@ -346,7 +346,10 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         // Tạo biểu đồ mới với dữ liệu
         JFreeChart chart = ChartFactory.createPieChart(
                 "Món ăn", // Tiêu đề biểu đồ
-                dataset // Dữ liệu biểu đồ
+                dataset, // Dữ liệu biểu đồ
+                false,
+                true,
+                false
 
         );
 
