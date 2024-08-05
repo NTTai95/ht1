@@ -28,8 +28,7 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
     String COUNT_ROW = "SELECT COUNT(*) FROM HoaDon";
     String SELECT_HDCT = "Select * from HoaDonChiTiet Where MaHD = ?";
     String UPDATA_HDCT = "UPDATE HoaDonChiTiet SET MaHD = ? WHERE MaHD like ?";
-
-    
+       
     @Override
     public void insert(HoaDonChiTiet entity) {
         XJdbc.executeUpdate(INSERT_SQL,
@@ -94,7 +93,22 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
     public List<HoaDonChiTiet> selectHDCT(String maHD){
         return this.selectBySQL(SELECT_HDCT, maHD);
     }
+    
+   public double selectSum(Integer maHD) throws SQLException {
+    String sql = "SELECT SUM(DonGia * SoLuongMon) AS TongTien FROM HoaDonChiTiet WHERE MaHD = ?";
+    double tongTien = 0;
 
+    try {
+        ResultSet rs = XJdbc.executeQuery(sql, maHD);
+        if (rs.next()) {
+            tongTien = rs.getDouble("TongTien");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return tongTien;
+}
     
     public List<HoaDonChiTiet> selectWithDetails(Integer maHD) {
         String sql = "SELECT hd.MaHD, ma.TenMon, hdct.DonGia, hdct.SoLuongMon, nv.TenNV, kh.TENKH " +
@@ -108,7 +122,7 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
         List<HoaDonChiTiet> list = new ArrayList<>();
         try {
             
-            ResultSet rs = XJdbc.executeQuery(sql);
+            ResultSet rs = XJdbc.executeQuery(sql, maHD);
             while (rs.next()) {
                 HoaDonChiTiet entity = new HoaDonChiTiet();
                 entity.setMaHD(rs.getInt("MaHD"));
