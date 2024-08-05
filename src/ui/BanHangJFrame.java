@@ -567,15 +567,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
         int x = list.size() + 1;
         String maKH = "";
         if (x < 10) {
-            maKH = "0000" + x;
+            maKH = "KH0000" + x;
         } else if (x < 100) {
-            maKH = "000" + x;
+            maKH = "KH000" + x;
         } else if (x < 1000) {
-            maKH = "00" + x;
+            maKH = "KH00" + x;
         } else if (x < 10000) {
-            maKH = "0" + x;
+            maKH = "KH0" + x;
         } else {
-             maKH = "" + x;
+             maKH = "KH" + x;
         }
         khTemp.setMaKH(maKH);
         for (int i = 0; i < list.size(); i++) {
@@ -1863,7 +1863,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     private void btntimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntimKiemActionPerformed
         // TODO add your handling code here:
-        new TrangChuJFrame().setVisible(true);
+        fillTable();
     }//GEN-LAST:event_btntimKiemActionPerformed
 
     private void tblListKHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblListKHMouseClicked

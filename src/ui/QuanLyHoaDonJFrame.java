@@ -67,7 +67,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         txtMaHD = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -296,8 +296,8 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-//        new TrangChuJFrame().setVisible(true);
-//        dispose();
+        new TrangChuJFrame().setVisible(true);
+        dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void cboTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTrangThaiActionPerformed
