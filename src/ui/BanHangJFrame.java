@@ -176,7 +176,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
             ImageIcon anh = new ImageIcon("./" + hinhAnh);
             Image img = anh.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
-            
+
             model.addRow(new Object[]{ma.get(i).getMaMon(), new ImageIcon(img), "<html><h2 style=\"color: red; margin-top: 0px;\">" + tenMon + "</h2><h4 style=\"margin: 0px;\">" + gia + "</h4><i style=\"margin: 0px;\">" + loaiMon + "</i></html>"});
         }
 
@@ -383,10 +383,27 @@ public class BanHangJFrame extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
         List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
 
+        int rowS = tblHoaDonChiTiet.getSelectedRow();
+        if(rowS == -1){
+            return;
+        }
+        try {
+            if (Integer.parseInt(tblHoaDonChiTiet.getValueAt(rowS, 2).toString()) < 1) {
+                MsgBox.alert(this, "Số lượng phải lớn hơn 0!");
+                loadHoaDonChiTiet(hdctTemp);
+                return;
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "Số lượng không hợp lệ!");
+            loadHoaDonChiTiet(hdctTemp);
+            return;
+        }
+
         for (int i = 0; i < model.getRowCount(); i++) {
             if (hdctTemp.get(i).getSoLuong() != Integer.parseInt(model.getValueAt(i, 2).toString())) {
                 hdctTemp.get(i).setSoLuong(Integer.parseInt(model.getValueAt(i, 2).toString()));
                 hdctDAO.update(hdctTemp.get(i));
+                tblHoaDonChiTiet.setValueAt(hdctTemp.get(i).getDonGia() * hdctTemp.get(i).getSoLuong(), i, 4);
             }
         }
 
@@ -593,7 +610,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             return null;
         }
         kh.setTenKH(txtTenKH.getText());
-        if(!txtSDT.getText().matches(".*\\D.*")){
+        if (!txtSDT.getText().matches(".*\\D.*")) {
             MsgBox.alert(this, "Số điện thoại không được nhập chữ");
             return null;
         }
@@ -1040,6 +1057,11 @@ public class BanHangJFrame extends javax.swing.JFrame {
         tblHoaDonChiTiet.setGridColor(new java.awt.Color(255, 102, 102));
         tblHoaDonChiTiet.setSelectionBackground(new java.awt.Color(255, 204, 204));
         tblHoaDonChiTiet.setShowGrid(true);
+        tblHoaDonChiTiet.addHierarchyListener(new java.awt.event.HierarchyListener() {
+            public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
+                tblHoaDonChiTietHierarchyChanged(evt);
+            }
+        });
         tblHoaDonChiTiet.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 tblHoaDonChiTietAncestorAdded(evt);
@@ -1111,11 +1133,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 .addComponent(cuon, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTongTien, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel7))
-                    .addComponent(btnXoaMonAn))
-                .addContainerGap(7, Short.MAX_VALUE))
+                    .addComponent(lblTongTien, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnXoaMonAn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(7, 7, 7))
         );
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1758,8 +1779,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
 
         KhachHang kh = getForm();
-        if(kh == null){
-           return;
+        if (kh == null) {
+            return;
         }
         kh = getKhachHangNew(kh);
 
@@ -2045,6 +2066,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private void txtTenKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenKHActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTenKHActionPerformed
+
+    private void tblHoaDonChiTietHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietHierarchyChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblHoaDonChiTietHierarchyChanged
 
     /**
      * @param args the command line arguments

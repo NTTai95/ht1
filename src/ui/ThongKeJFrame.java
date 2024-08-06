@@ -25,11 +25,18 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.RefineryUtilities;
 import entity.ThongKe.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.AreaRenderer;
+import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DatasetUtilities;
@@ -324,6 +331,14 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 false                           // URL generation
         );
 
+        CategoryPlot plot = (CategoryPlot) areaChart.getPlot();
+        AreaRenderer renderer = new AreaRenderer();
+        renderer.setBaseToolTipGenerator(new StandardCategoryToolTipGenerator(
+                "{1} - {2}đ",
+                NumberFormat.getInstance()
+        ));
+        plot.setRenderer(renderer);
+        
         // 3. Tạo ChartPanel từ JFreeChart
         ChartPanel chartPanel = new ChartPanel(areaChart);
         
