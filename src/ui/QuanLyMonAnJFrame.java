@@ -41,7 +41,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     MonAnDAO MAdao = new MonAnDAO();
     int row = -1;
     LoaiMonDAO LMdao = new LoaiMonDAO();
-    
+
     LoaiMonDAO daolm = new LoaiMonDAO();
     int rowlm = 0;
 
@@ -65,15 +65,14 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyMon_LoaiMon
      */
-    
-    void init(){
+    void init() {
         setLocationRelativeTo(null);
         setTitle("Hệ thống nhà hàng L'ESCALE - Quản Lý Món Ăn - Loại Món");
         fillTableLM();
         updateStatusLM();
         updateStatus();
     }
-    
+
     public QuanLyMonAnJFrame() {
 
         initComponents();
@@ -87,21 +86,21 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         txtMaLoai1.setEnabled(false);
         txtMaLoai1.setText(generateNewMaLoai());
     }
-    
-    public void fillTableLM(){
+
+    public void fillTableLM() {
         DefaultTableModel model = (DefaultTableModel) tblLoaiMon.getModel();
         model.setRowCount(0);
-        try{
+        try {
             List<LoaiMon> list = daolm.selectAll();
-            for(LoaiMon lm : list){
-                Object[] row ={
-                  lm.getMaLoai(),
-                  lm.getTenLoai()
+            for (LoaiMon lm : list) {
+                Object[] row = {
+                    lm.getMaLoai(),
+                    lm.getTenLoai()
                 };
                 model.addRow(row);
-              
+
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             MsgBox.alert(this, "Lỗi truy vẫn dữ liệu");
         }
     }
@@ -111,60 +110,41 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         model.setRowCount(0);
         try {
             LoaiMon lm = cboLoaiMon.getSelectedIndex() == 0 ? null : (LoaiMon) cboLoaiMon.getSelectedItem();
-            String maLM = lm == null ? "All" : lm.getMaLoai();
+            String maLM = lm == null ? "%" : lm.getMaLoai();
 
-            List<MonAn> list = MAdao.selectAll();
+            String tenMon = txtTimKiem.getText();
+            double min = -1;
+            double max = -1;
+            if (cboDonGia.getSelectedIndex() != 0) {
+                min = Double.parseDouble(cboDonGia.getSelectedItem().toString().split(" - ")[0]);
+                max = Double.parseDouble(cboDonGia.getSelectedItem().toString().split(" - ")[1]);
+            }
 
-            System.out.println(maLM);
+            List<MonAn> list = MAdao.selectByKeyWord(tenMon, maLM);
 
             for (MonAn cd : list) {
-                if (cd.getMaLoai().equalsIgnoreCase(maLM) || maLM.equalsIgnoreCase("All")) {
+
+                if (cd.getDonGia() > min && cd.getDonGia() < max) {
+                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
+                    Object[] row = {
+                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
+                    };
+                    model.addRow(row);
+                } else if (min == -1 && max == -1) {
                     Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
                     Object[] row = {
                         cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
                     };
                     model.addRow(row);
                 }
+
             }
             tblMonAn.setModel(model);
-            System.out.println("ui.QuanLyMonAnJFrame.fillTable()");
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-    
-    public void fillTableByPrice() {
-        DefaultTableModel model = modelTableHA;
-        model.setRowCount(0);
-        try {
-            MonAn lm = cboLoaiMon.getSelectedIndex() == 0 ? null : (MonAn) cboLoaiMon.getSelectedItem();
-            String maLM = lm == null ? "All" : (String.valueOf(lm.getDonGia()));
-
-            
-            String priceRange = cboDonGia.getSelectedItem().toString();
-            String[] prices = priceRange.split("-");
-            double minPrice = Double.parseDouble(prices[0].trim());    
-            double maxPrice = Double.parseDouble(prices[1].trim());
-
-            List<MonAn> list = MAdao.selectAll();
-
-            for (MonAn cd : list) {
-                if ((cd.getMaLoai().equalsIgnoreCase(maLM) || maLM.equalsIgnoreCase("All")) &&
-                    cd.getDonGia() >= minPrice && cd.getDonGia() <= maxPrice) {
-                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
-                    Object[] row = {
-                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
-                    };
-                    model.addRow(row);
-                }
-            }
-            tblMonAn.setModel(model);
-            System.out.println("ui.QuanLyMonAnJFrame.fillTable()");
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-    
 
     void fillComboBoxLoaiMon() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cboLoaiMon.getModel();
@@ -185,21 +165,6 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         }
     }
 
-    public void fillTableByFindName() {
-        DefaultTableModel model = (DefaultTableModel) tblMonAn.getModel();
-        model.setRowCount(0);
-
-        String keyword = txtTimKiem.getText();
-        List<MonAn> list = MAdao.selectByKeyWord(keyword);
-        for (MonAn ma : list) { // Duyệt nh rồi đưa lên table như bình thường
-            model.addRow(new Object[]{                
-                ma.getMaMon(),              
-                ma.getTenMon(),
-                ma.getDonGia(),                
-            });
-        }
-    }
-    
     public void updateMaLoai() {
         LoaiMon selectedLoaiMon = (LoaiMon) cboLoaiMonTT.getSelectedItem();
         if (selectedLoaiMon != null) {
@@ -212,11 +177,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         int newNumber = rowCount + 1; // Tăng lên 1
         return "M0" + newNumber; // Tạo mã món ăn mới
     }
-    
+
     public String generateNewMaLoai() {
-        int rowCount = LMdao.getCountRow(); 
-        int newNumber = rowCount + 1; 
-        return "ML0" + newNumber; 
+        int rowCount = LMdao.getCountRow();
+        int newNumber = rowCount + 1;
+        return "ML0" + newNumber;
     }
 
     void setForm(MonAn model) {
@@ -225,7 +190,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         txtTenMonAn.setText(model.getTenMon());
         txtDonGia.setText(String.valueOf(model.getDonGia()));
         if (!model.getAnh().equals("")) {
-            lblAnh.setIcon(new ImageIcon("./" + model.getAnh()));
+            ImageIcon anh = new ImageIcon("./" + model.getAnh());
+            Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
+            lblAnh.setIcon(new ImageIcon(img));
             lblAnh.setToolTipText(model.getAnh());
         }
     }
@@ -254,7 +221,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }
 
     ImageIcon chonAnh() throws IOException {
+
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+
             fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
             File file = fileChooser.getSelectedFile();
             XImage.save(file);
@@ -299,7 +268,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 //        }else{
         if (MsgBox.confirm(this, "Bạn thực sự muốn xoá món ăn này?")) {
             String maMon = tblMonAn.getValueAt(row, 0).toString();
-            System.out.println(tblMonAn.getValueAt(row, 0).toString());
+
             try {
                 MAdao.delete(maMon);
                 this.fillTable();
@@ -310,28 +279,28 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             }
         }
     }
-    
+
     void edit() {
         try {
             String maMon = (String) tblMonAn.getValueAt(this.row, 0);
             MonAn ma = MAdao.selectById(maMon);
             if (ma != null) {
                 this.setForm(ma);
-                
+
             }
         } catch (Exception e) {
 //            MsgBox.alert(this, "Lỗi truy vấn dữ liệu");
         }
-        
+
     }
-    
-    void updateStatus(){
-        boolean edit = this.row >= 0 ;
+
+    void updateStatus() {
+        boolean edit = this.row >= 0;
         btnThem.setEnabled(!edit);
         btnSua.setEnabled(edit);
-        btnXoa.setEnabled(edit);        
+        btnXoa.setEnabled(edit);
     }
-    
+
     public boolean checkMonAn() {
         if (txtTenMonAn.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Tên món ăn không được bỏ trống!");
@@ -343,30 +312,30 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Đơn giá không được nhập chữ!");
             return false;
         } else {
-        try {
-            double donGia = Double.parseDouble(txtDonGia.getText().trim());            
-            if (donGia <= 0) {
-                JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0!");
+            try {
+                double donGia = Double.parseDouble(txtDonGia.getText().trim());
+                if (donGia <= 0) {
+                    JOptionPane.showMessageDialog(this, "Đơn giá phải lớn hơn 0!");
+                    return false;
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!");
                 return false;
             }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Đơn giá không hợp lệ!");
-            return false;
         }
-    }
         return true;
     }
-    
-    void updateStatusLM(){
-        boolean edit = this.row >= 0 ;
+
+    void updateStatusLM() {
+        boolean edit = this.row >= 0;
         txtMaLoai1.setEnabled(!edit);
         btnThem1.setEnabled(!edit);
         btnSua1.setEnabled(edit);
         btnXoa1.setEnabled(edit);
-        
+
     }
-    
-    void editLM(){
+
+    void editLM() {
         try {
             String maloai = (String) tblLoaiMon.getValueAt(this.row, 0);
             LoaiMon lm = daolm.selectById(maloai);
@@ -374,10 +343,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             this.updateStatusLM();
         } catch (Exception e) {
         }
-        
+
     }
-    
-    void clearFormLM(){
+
+    void clearFormLM() {
         LoaiMon lm = new LoaiMon();
         this.setFormLM(lm);
         row = -1;
@@ -385,22 +354,22 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         txtMaLoai1.setEnabled(false);
         txtMaLoai1.setText(generateNewMaLoai());
     }
-    
-    void setFormLM(LoaiMon model){
+
+    void setFormLM(LoaiMon model) {
         txtMaLoai1.setText(model.getMaLoai());
         txtTenLoai.setText(model.getTenLoai());
-        
+
     }
-    
-    LoaiMon getFormLM(){
+
+    LoaiMon getFormLM() {
         LoaiMon model = new LoaiMon();
         model.setMaLoai(txtMaLoai1.getText());
         model.setTenLoai(txtTenLoai.getText());
-        
+
         return model;
     }
 
-    void insertLM(){
+    void insertLM() {
         LoaiMon lm = getFormLM();
         try {
             daolm.insert(lm);
@@ -411,8 +380,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Thêm mới thất bại!");
         }
     }
-    
-    void updateLM(){
+
+    void updateLM() {
         LoaiMon lm = getFormLM();
         try {
             daolm.update(lm);
@@ -422,37 +391,38 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Cập nhật thất bại!");
         }
     }
-    
-    void deleteLM(){
+
+    void deleteLM() {
         LoaiMon lm = getFormLM();
         try {
             MsgBox.confirm(this, "Bạn có chắc chắn muốn xóa!");
-                String maloai = txtMaLoai1.getText();
-                try {
-                    daolm.delete(maloai);
-                    this.fillTableLM();
-                    this.clearFormLM();
-                    MsgBox.alert(this, "Xóa thành công loại món!");
-                } catch (Exception e) {
-                    MsgBox.alert(this, "Xóa thất bại!");
-                }
-            
+            String maloai = txtMaLoai1.getText();
+            try {
+                daolm.delete(maloai);
+                this.fillTableLM();
+                this.clearFormLM();
+                MsgBox.alert(this, "Xóa thành công loại món!");
+            } catch (Exception e) {
+                MsgBox.alert(this, "Xóa thất bại!");
+            }
+
         } catch (Exception e) {
         }
     }
-     public boolean checkLoaiMon(){
-        
-        if(txtTenLoai.getText().isEmpty()){
+
+    public boolean checkLoaiMon() {
+
+        if (txtTenLoai.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tên loại món không được bỏ trống!");
             return false;
-        }else if (txtTenLoai.getText().trim().matches("-?\\d+(\\.\\d+)?")){
+        } else if (txtTenLoai.getText().trim().matches("-?\\d+(\\.\\d+)?")) {
             JOptionPane.showMessageDialog(this, "Tên loại không được nhập số!");
-        return false;
-    }
+            return false;
+        }
         return true;
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -535,7 +505,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 lblAnhMousePressed(evt);
             }
         });
-        jPanel1.add(lblAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 150));
+        jPanel1.add(lblAnh, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 130));
 
         jLabel3.setText("Mã món ăn:");
 
@@ -597,23 +567,23 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(27, 27, 27)
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42)
                         .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
                         .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(40, 40, 40)
-                        .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -633,17 +603,16 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                                             .addGap(18, 18, 18)
                                             .addComponent(txtTenMonAn, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())))
+                                .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cboLoaiMonTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -652,7 +621,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8)
                             .addComponent(txtMaLoai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(13, 13, 13)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtMaMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -664,7 +633,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThem)
@@ -761,6 +730,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 cboDonGiaActionPerformed(evt);
             }
         });
+        cboDonGia.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                cboDonGiaPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -802,7 +776,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(199, Short.MAX_VALUE)
+                .addContainerGap(200, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(176, 176, 176))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1042,7 +1016,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             try {
                 ImageIcon anh = chonAnh();
-                lblAnh.setIcon(anh != null ? anh : lblAnh.getIcon());
+                Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
+                lblAnh.setIcon(anh != null ? new ImageIcon(img) : lblAnh.getIcon());
                 lblAnh.setToolTipText("src/img/" + anh.getDescription().substring(anh.getDescription().lastIndexOf("\\") + 1));
             } catch (IOException ex) {
                 Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -1059,14 +1034,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMonAnMousePressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        if(checkMonAn() == true){
+        if (checkMonAn() == true) {
             insert();
         }
-        
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void cboLoaiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonActionPerformed
-
         fillTable();
 
     }//GEN-LAST:event_cboLoaiMonActionPerformed
@@ -1086,10 +1060,10 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        if(checkMonAn() == true){
+        if (checkMonAn() == true) {
             update();
         }
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -1116,11 +1090,11 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_tblMonAnMouseClicked
 
     private void cboDonGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboDonGiaActionPerformed
-        fillTableByPrice();
+        fillTable();
     }//GEN-LAST:event_cboDonGiaActionPerformed
 
     private void txtTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKeyPressed
-        fillTableByFindName();
+        fillTable();
     }//GEN-LAST:event_txtTimKiemKeyPressed
 
     private void txtTenLoaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenLoaiActionPerformed
@@ -1132,14 +1106,14 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMaLoai1ActionPerformed
 
     private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
-        if(checkLoaiMon() == true){
+        if (checkLoaiMon() == true) {
             insertLM();
         }
-        
+
     }//GEN-LAST:event_btnThem1ActionPerformed
 
     private void btnSua1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSua1ActionPerformed
-        if(checkLoaiMon() == true){
+        if (checkLoaiMon() == true) {
             updateLM();
         }
     }//GEN-LAST:event_btnSua1ActionPerformed
@@ -1153,7 +1127,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLamMoi1ActionPerformed
 
     private void tblLoaiMonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLoaiMonMousePressed
-        if (evt.getClickCount() == 2){
+        if (evt.getClickCount() == 2) {
             this.row = tblLoaiMon.getSelectedRow();
             this.editLM();
         }
@@ -1165,6 +1139,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    private void cboDonGiaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_cboDonGiaPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboDonGiaPropertyChange
 
     /**
      * @param args the command line arguments

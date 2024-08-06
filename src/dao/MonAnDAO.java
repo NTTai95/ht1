@@ -26,7 +26,7 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
     
     String SELECT_BY_LoaiMon = "select* from MonAn where MaLoai = ?";
     String GET_PRICE = "SELECT * FROM MonAn WHERE DonGia BETWEEN ? AND ?";
-    String SELECT_BY_KEYWORD = "select* from MonAn where TenMon like ?";
+    String SELECT_BY_KEYWORD = "select* from MonAn where TenMon like ? AND MaLoai like ?";
     String SELECT_IN_LIST = "SELECT * FROM MonAn WHERE TenMon LIKE ?";
     
     
@@ -105,8 +105,8 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
         return 0;
     }
     
-    public List<MonAn> selectByKeyWord(String keyword){
-        return this.selectBySQL(SELECT_BY_KEYWORD, "%"+keyword+"%");       
+    public List<MonAn> selectByKeyWord(String tenMon, String maLoai){
+        return this.selectBySQL(SELECT_BY_KEYWORD, "%"+tenMon+"%", maLoai);       
     }
     
     public List<MonAn> selectlnList(String maMon, String keywork){

@@ -18,6 +18,7 @@ import entity.LoaiMon;
 import entity.MonAn;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.util.List;
@@ -173,7 +174,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
             String loaiMon = lmDAO.selectById(ma.get(i).getMaLoai()).getTenLoai();
             String hinhAnh = ma.get(i).getAnh();
 
-            model.addRow(new Object[]{ma.get(i).getMaMon(), new ImageIcon("./" + hinhAnh), "<html><h2 style=\"color: red; margin-top: 0px;\">" + tenMon + "</h2><h4 style=\"margin: 0px;\">" + gia + "</h4><i style=\"margin: 0px;\">" + loaiMon + "</i></html>"});
+            ImageIcon anh = new ImageIcon("./" + hinhAnh);
+            Image img = anh.getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+            
+            model.addRow(new Object[]{ma.get(i).getMaMon(), new ImageIcon(img), "<html><h2 style=\"color: red; margin-top: 0px;\">" + tenMon + "</h2><h4 style=\"margin: 0px;\">" + gia + "</h4><i style=\"margin: 0px;\">" + loaiMon + "</i></html>"});
         }
 
         tblThucDon.setModel(model);

@@ -27,20 +27,67 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Giới thiệu");
+        setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel2.setText("<html><div style=\"font-family: 'Roboto', Arial, sans-serif; background-color: #e9ecef; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;\">     <div style=\"padding: 40px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);\">         <h1 style=\"text-align: center; color: #333333; font-size: 2.8em; margin-bottom: 20px; font-weight: 600;\">Giới thiệu về Phần mềm và Công ty</h1>         <p style=\"line-height: 1.7; color: #495057; font-size: 1.15em; margin-bottom: 25px;\">             Chào mừng bạn đến với <span style=\"color: #007bff; font-weight: 500;\">5 cái bánh bèo</span>, nơi hội tụ của sự đổi mới và chất lượng trong phát triển phần mềm. Chúng tôi tự hào là một công ty phát triển phần mềm hàng đầu, cung cấp các giải pháp công nghệ tiên tiến được thiết kế để đáp ứng nhu cầu đặc biệt của từng khách hàng. Đội ngũ của chúng tôi, gồm những chuyên gia dày dạn kinh nghiệm, cam kết mang đến sự xuất sắc trong từng sản phẩm và dịch vụ.         </p>         <p style=\"line-height: 1.7; color: #495057; font-size: 1.15em; margin-bottom: 25px;\">             Phần mềm mới nhất của chúng tôi không chỉ mang lại hiệu quả cao trong việc quản lý công việc mà còn tích hợp những công nghệ tiên tiến nhất, giúp tối ưu hóa quy trình làm việc của bạn. Với giao diện thân thiện, tính năng mạnh mẽ và độ tin cậy cao, sản phẩm của chúng tôi chắc chắn sẽ đáp ứng nhu cầu của cả những doanh nghiệp lớn và nhỏ.         </p>         <p style=\"line-height: 1.7; color: #495057; font-size: 1.15em; margin-bottom: 25px;\">             Tại <span style=\"color: #007bff; font-weight: 500;\">5 cái bánh bèo</span>, chúng tôi không ngừng nỗ lực để tạo ra một môi trường sáng tạo và hợp tác. Sứ mệnh của chúng tôi là kết nối công nghệ với trải nghiệm người dùng, đảm bảo rằng mỗi giải pháp đều vượt qua mong đợi của khách hàng. Hãy cùng chúng tôi kiến tạo tương lai của phát triển phần mềm với những bước tiến vững chắc và hiệu quả.         </p>         <p style=\"line-height: 1.7; color: #495057; font-size: 1.15em;\">             Chúng tôi chân thành cảm ơn bạn đã chọn <span style=\"color: #007bff; font-weight: 500;\">5 cái bánh bèo</span>. Cùng nhau, chúng ta sẽ đạt được những thành công lớn lao và bền vững.         </p>     </div> </div> </html>");
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 0, 0, 0, new java.awt.Color(204, 204, 204)));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/logo.png"))); // NOI18N
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
+        jLabel3.setText("<html><div style=\"font-family: 'Roboto', Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;\">     <div style=\"width: 100%; padding: 30px; border-radius: 8px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); box-sizing: border-box;\"><ul style=\"list-style-type: none; padding: 0; margin: 0;\">             <li style=\"border-bottom: 1px solid #ddd; padding: 5px 0; color: #495057;\">                 <strong style=\"color: #007bff;\">Nguyễn Tấn Tài</strong> - PC09243 <span style=\"font-style: italic; color: #777;\">(Nhóm trưởng)</span>             </li>             <li style=\"border-bottom: 1px solid #ddd; padding: 5px 0; color: #495057;\">                 <strong style=\"color: #007bff;\">Nguyễn Thị Ngọc Nghi</strong> - PC0330             </li>             <li style=\"border-bottom: 1px solid #ddd; padding: 5px 0; color: #495057;\">                 <strong style=\"color: #007bff;\">Huỳnh Thụy Khả Tú</strong> - PC09312             </li>             <li style=\"border-bottom: 1px solid #ddd; padding: 5px 0; color: #495057;\">                 <strong style=\"color: #007bff;\">Nguyễn Hoàng Duy</strong> - PC09255             </li>             <li style=\"padding: 5px 0; color: #495057;\">                 <strong style=\"color: #007bff;\">Nguyễn Lê Tuyết Hương</strong> - PC09166             </li>         </ul>     </div> </div> </html>");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(0, 14, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 488, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -86,5 +133,9 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
