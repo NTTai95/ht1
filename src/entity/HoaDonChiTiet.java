@@ -4,6 +4,8 @@
  */
 package entity;
 
+import dao.MonAnDAO;
+
 /**
  *
  * @author admin
@@ -83,7 +85,7 @@ public class HoaDonChiTiet {
         this.soLuong = soLuong;
     }
     public String getTenMon() {
-        return tenMon;
+        return new MonAnDAO().selectById(maMon).getTenMon();
     }
 
     public void setTenMon(String tenMon) {

@@ -4,15 +4,22 @@
  */
 package ui;
 
+import com.edusys.dao.KhoaHocDAO;
 import dao.HoaDonChiTietDAO;
 import dao.HoaDonDAO;
+import dao.KhachHangDAO;
+import dao.NhanVienDAO;
 import entity.HoaDon;
 import entity.HoaDonChiTiet;
 import entity.MonAn;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.MsgBox;
@@ -23,9 +30,13 @@ import utils.XImage;
  * @author admin
  */
 public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
+
     HoaDonDAO dao = new HoaDonDAO();
     HoaDonChiTietDAO daoct = new HoaDonChiTietDAO();
+    DecimalFormat fmTien = new DecimalFormat("#,#00");
+    DateTimeFormatter fmThoiGian = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     int row = 0;
+
     /**
      * Creates new form QuanLyHoaDonJFrame
      */
@@ -33,7 +44,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         initComponents();
         init();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +61,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHoaDon = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        btnHuy = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         cboTrangThai = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
@@ -61,7 +72,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtTenMon = new javax.swing.JTextField();
+        txtNgayLap = new javax.swing.JTextField();
         txtTenKhachHang = new javax.swing.JTextField();
         txtTenNV = new javax.swing.JTextField();
         txtMaHD = new javax.swing.JTextField();
@@ -88,7 +99,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, true, true
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -110,7 +121,12 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
             tblHoaDon.getColumnModel().getColumn(4).setPreferredWidth(30);
         }
 
-        jButton1.setText("Hủy");
+        btnHuy.setText("Hủy");
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Trạng thái:");
 
@@ -148,7 +164,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,7 +179,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(btnHuy)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -171,17 +187,17 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
 
         tblHDCT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã hóa đơn", "Tên món", "Đơn giá", "Số lượng", "Thành tiền"
+                "Tên món", "Đơn giá", "Số lượng", "Thành tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -196,11 +212,19 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tblHDCT);
 
-        jLabel1.setText("Tên món:");
+        jLabel1.setText("Ngày lập:");
 
         jLabel2.setText("Tên khách hàng:");
 
         jLabel3.setText("Tên nhân viên:");
+
+        txtNgayLap.setEditable(false);
+
+        txtTenKhachHang.setEditable(false);
+
+        txtTenNV.setEditable(false);
+
+        txtMaHD.setEditable(false);
 
         jLabel12.setText("Mã hóa đơn:");
 
@@ -222,7 +246,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(txtMaHD, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtTenMon, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(txtTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -239,7 +263,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtTenMon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNgayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -278,20 +302,16 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
-//      if (evt.getClickCount() == 2) {
-//            this.row = tblHDCT.getSelectedRow();
-//            this.edit();
-//        }
-            this.edit();
+
     }//GEN-LAST:event_tblHDCTMousePressed
 
     private void tblHoaDonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMousePressed
-            click();
-           
+        click();
+
     }//GEN-LAST:event_tblHoaDonMousePressed
 
     private void txtTimNVKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimNVKeyPressed
-        fillTableFindNV();
+        fillTable();
     }//GEN-LAST:event_txtTimNVKeyPressed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -301,8 +321,13 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void cboTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTrangThaiActionPerformed
-        fillTableFindTrangThai();
+        fillTable();
     }//GEN-LAST:event_cboTrangThaiActionPerformed
+
+    private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
+        // TODO add your handling code here:
+        huy();
+    }//GEN-LAST:event_btnHuyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -340,12 +365,12 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnHuy;
     private javax.swing.JComboBox<String> cboTrangThai;
     private javax.swing.ButtonGroup grpBanAn;
     private javax.swing.ButtonGroup grpGhiChu;
     private javax.swing.ButtonGroup grpNgayLap;
     private javax.swing.ButtonGroup grpThanhTien;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
@@ -359,200 +384,122 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     private javax.swing.JTable tblHDCT;
     private javax.swing.JTable tblHoaDon;
     private javax.swing.JTextField txtMaHD;
+    private javax.swing.JTextField txtNgayLap;
     private javax.swing.JTextField txtTenKhachHang;
-    private javax.swing.JTextField txtTenMon;
     private javax.swing.JTextField txtTenNV;
     private javax.swing.JTextField txtTimNV;
     // End of variables declaration//GEN-END:variables
-     
+
     void init() {
         setLocationRelativeTo(null);
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quản Lý Hóa Đơn");
         fillTable();
         //fillTableHoaDonChiTiet();
-        
+
     }
+
     private String convertStatus(int statusCode) {
-    switch (statusCode) {
-        case -1:
-            return "Đã hủy";
-        case 0:
-            return "Đã thanh toán";
-        case 1:
-            return "Chưa thanh toán";
-        default:
-            return "trạng thái không xác định";
+        switch (statusCode) {
+            case -1:
+                return "<html><p style='color:red'>Đã hủy</p></html>";
+            case 1:
+                return "Đã thanh toán";
+            case 0:
+                return "<html><p style='color:blue'>Chưa thanh toán</p></html>";
+            default:
+                return "trạng thái không xác định";
         }
     }
-    private int convertStatus1(String status) {
-    switch (status) {
-        case "Chưa thanh toán":
-            return 1;
-        case "Đã thanh toán":
-            return 0;
-        case "Đã hủy":
-            return -1;
-        default:
-            return 0; 
-    }
-}
-    void fillTable(){
-         
+
+    void fillTable() {
+
         DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
         model.setRowCount(0);
-        try {
+//        try {
+        String maNV = txtTimNV.getText();
+        String trangThai = "%";
+        System.out.println(cboTrangThai.getSelectedIndex());
+        switch (cboTrangThai.getSelectedIndex()) {
+            case 1:
+                trangThai = "1";
+                break;
+            case 2:
+                trangThai = "0";
+                break;
+            case 3:
+                trangThai = "-1";
+                break;
+        }
 
-           List<HoaDon> list = dao.selectAll();
-            for (HoaDon hd : list){
+        List<HoaDon> list = dao.selectByKeyWord(maNV, trangThai);
+        for (HoaDon hd : list) {
+            try {
                 double tongTien = daoct.selectSum(hd.getMaHD());
                 Object[] row = {
-                   hd.getMaHD(),
-                   hd.getNgayLap(),
-                   hd.getMaKH(),
-                   hd.getMaNV(),
-                   hd.getMaB(),
-                   convertStatus(hd.getTrangThai()),
-                   hd.getGhiChu(),
-                   tongTien
+                    hd.getMaHD(),
+                    fmThoiGian.format(hd.getNgayLap()),
+                    hd.getMaKH(),
+                    hd.getMaNV(),
+                    hd.getMaB(),
+                    convertStatus(hd.getTrangThai()),
+                    hd.getGhiChu(),
+                    fmTien.format(tongTien)
                 };
                 model.addRow(row);
+            } //        } catch (Exception e) {
+            //            MsgBox.alert(this, "Lỗi truy vần dữ liệu!");
+            //        }
+            catch (SQLException ex) {
+                Logger.getLogger(QuanLyHoaDonJFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-        } catch (Exception e) {
-            MsgBox.alert(this, "Lỗi truy vần dữ liệu!");
         }
-           
-    }
- 
 
-      void click(){
-          int selectedRow = tblHoaDon.getSelectedRow();
-            if (selectedRow >= 0) {
-                int maHoaDon = (int) tblHoaDon.getValueAt(selectedRow, 0); 
-                
-                try {
-                    List<HoaDonChiTiet> chiTietList = daoct.selectWithDetails(maHoaDon);
-                    DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
-                    model.setRowCount(0);
-                    for (HoaDonChiTiet hdct : chiTietList) {
-                        float thanhTien = hdct.getDonGia() * hdct.getSoLuong();
-                        Object[] row = {
-                                hdct.getMaHD(),
-                                hdct.getTenMon(),
-                                hdct.getDonGia(),
-                                hdct.getSoLuong(),
-                                thanhTien
-                        };
-                        model.addRow(row);
-                    }
-                       
-                } catch (Exception ex) {
-                   MsgBox.alert(this, "Lỗi truy vấn chi tiết hóa đơn!");
-                   
+    }
+
+    void click() {
+        int selectedRow = tblHoaDon.getSelectedRow();
+        if (selectedRow >= 0) {
+            int maHoaDon = (int) tblHoaDon.getValueAt(selectedRow, 0);
+            HoaDon hdTemp = dao.selectById(maHoaDon);
+            txtMaHD.setText("" + hdTemp.getMaHD());
+            txtNgayLap.setText(fmThoiGian.format(hdTemp.getNgayLap()));
+            txtTenKhachHang.setText(new KhachHangDAO().selectById(hdTemp.getMaKH()).getTenKH());
+            txtTenNV.setText(new NhanVienDAO().selectById(hdTemp.getMaNV()).getTenNV());
+            try {
+                List<HoaDonChiTiet> chiTietList = daoct.selectHDCT("" + maHoaDon);
+
+                DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
+                model.setRowCount(0);
+                for (HoaDonChiTiet hdct : chiTietList) {
+                    float thanhTien = hdct.getDonGia() * hdct.getSoLuong();
+                    Object[] row = {
+                        hdct.getTenMon(),
+                        fmTien.format(hdct.getDonGia()),
+                        hdct.getSoLuong(),
+                        fmTien.format(thanhTien)
+                    };
+                    model.addRow(row);
                 }
+
+            } catch (Exception ex) {
+                MsgBox.alert(this, "Lỗi truy vấn chi tiết hóa đơn!");
+
             }
-      }
-    
-    void fillTableFindNV(){
-        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
-        model.setRowCount(0);
-        
-        String tim = txtTimNV.getText();
-        try {
-            List<HoaDon> list = dao.selectByKeyWord(tim);
-            for(HoaDon hd : list){
-                 double tongTien = daoct.selectSum(hd.getMaHD());
-                Object[] row = {
-                   hd.getMaHD(),
-                   hd.getNgayLap(),
-                   hd.getMaKH(),
-                   hd.getMaNV(),
-                   hd.getMaB(),
-                   convertStatus(hd.getTrangThai()),
-                   hd.getGhiChu(),
-                   tongTien
-                    
-                };
-                model.addRow(row);
-            }
-        } catch (Exception e) {
         }
-        
-    }
-    void fillTableFindTrangThai() {
-        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
-        model.setRowCount(0);
-
-        
-        Object selectedStatus = cboTrangThai.getSelectedItem();
-        String trangThai =  selectedStatus == null || cboTrangThai.getSelectedIndex() == 0 ? "All" : selectedStatus.toString();
-
-        List<HoaDon> list;
-        try {
-        if ("All".equals(trangThai)) {
-            list = dao.selectAll();
-        }else {
-            int trangThaiNumeric = convertStatus1(trangThai); 
-            list = dao.selectByTrangThai1((trangThaiNumeric));
-        }
-        
-        if(list != null && !list.isEmpty()){
-        for (HoaDon hd : list) {
-             double tongTien = daoct.selectSum(hd.getMaHD());
-            Object[] row = {
-                
-                hd.getMaHD(),
-                hd.getNgayLap(),
-                hd.getMaKH(),
-                hd.getMaNV(),
-                hd.getMaB(),
-                convertStatus(hd.getTrangThai()),
-                hd.getGhiChu(),
-                tongTien
-            };
-            model.addRow(row);
-         }
-
-          
-        }
-        } catch (NumberFormatException e) {
-        System.err.println("Lỗi chuyển đổi trạng thái: " + e.getMessage());
-        } catch (SQLException e) {
-        e.printStackTrace();
-    }
     }
 
-    void edit() {
-    try {
-        int row = tblHDCT.getSelectedRow();
-
-        int maHoaDon = (int) tblHDCT.getValueAt(row, 0);
-        List<HoaDonChiTiet> hdctList = daoct.selectWithDetails(maHoaDon);
-
-        if (hdctList != null && !hdctList.isEmpty()) {
-            HoaDonChiTiet hdct = hdctList.get(row);
-            setForm(hdct);
-        } else {
-            JOptionPane.showMessageDialog(null, "Không tìm thấy chi tiết cho hóa đơn đã chọn.");
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-
-    }
-}
-    
     void setForm(HoaDonChiTiet model) {
         txtMaHD.setText(String.valueOf(model.getMaHD()));
-        txtTenMon.setText(model.getTenMon());
+        txtNgayLap.setText(model.getTenMon());
         txtTenKhachHang.setText(model.getTenKhachHang());
         txtTenNV.setText(model.getTenNhanVien());
 
-       
     }
-    HoaDonChiTiet getForm(){
+
+    HoaDonChiTiet getForm() {
         HoaDonChiTiet model = new HoaDonChiTiet();
         model.setMaHD(Integer.valueOf(txtMaHD.getText()));
-        model.setTenMon(txtTenMon.getText());
+        model.setTenMon(txtNgayLap.getText());
         model.setTenKhachHang(txtTenKhachHang.getText());
         model.setTenNhanVien(txtTenNV.getText());
 
@@ -560,40 +507,35 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     }
 
     void huy() {
-    DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
 
-    try {
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            String reason = JOptionPane.showInputDialog("Vui lòng nhập lý do hủy!");
+        try {
+            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                String reason = JOptionPane.showInputDialog("Vui lòng nhập lý do hủy!");
 
-            if (reason != null && !reason.trim().isEmpty()) {
-                int[] selectedRows = tblHoaDon.getSelectedRows();
+                if (reason != null && !reason.trim().isEmpty()) {
+                    int[] selectedRows = tblHoaDon.getSelectedRows();
 
-                for (int i : selectedRows) {
-                    model.setValueAt("Đã hủy", i, 5);
-                    model.setValueAt(reason, i, 6);
+                    for (int i : selectedRows) {
 
-                    int id = (Integer) model.getValueAt(i, 0);
-                    HoaDon hd = new HoaDon();
-                    hd.setMaHD(id);
-                    hd.setTrangThai(-1);
-                    hd.setGhiChu(reason);
+                        int id = (Integer) tblHoaDon.getValueAt(i, 0);
+                        HoaDon hd = new HoaDon();
+                        hd.setMaHD(id);
+                        hd.setMaB((String) tblHoaDon.getValueAt(i, 4));
+                        hd.setTrangThai(-1);
+                        hd.setGhiChu(reason);
 
-                    dao.update(hd);
+                        dao.update(hd);
+                    }
+                    fillTable();
+                    JOptionPane.showMessageDialog(this, "Hóa đơn đã được hủy!");
+                } else {
+                    MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
                 }
-
-                JOptionPane.showMessageDialog(this, "Hóa đơn đã được hủy!");
-            } else {
-                MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
     }
-}
 
-    
-    
-    
 }

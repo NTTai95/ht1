@@ -94,14 +94,14 @@ public class HoaDonChiTietDAO extends SysDAO<HoaDonChiTiet, String>{
         return this.selectBySQL(SELECT_HDCT, maHD);
     }
     
-   public double selectSum(Integer maHD) throws SQLException {
+   public double selectSum(int maHD) throws SQLException {
     String sql = "SELECT SUM(DonGia * SoLuongMon) AS TongTien FROM HoaDonChiTiet WHERE MaHD = ?";
     double tongTien = 0;
 
     try {
         ResultSet rs = XJdbc.executeQuery(sql, maHD);
         if (rs.next()) {
-            tongTien = rs.getDouble("TongTien");
+            tongTien = rs.getDouble(1);
         }
     } catch (SQLException e) {
         e.printStackTrace();
