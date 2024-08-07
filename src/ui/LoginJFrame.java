@@ -26,6 +26,7 @@ public class LoginJFrame extends javax.swing.JFrame {
     public LoginJFrame() {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Đăng nhập");
         initComponents();
+        Auth.user = null;
     }
 
     /**
@@ -200,11 +201,19 @@ public class LoginJFrame extends javax.swing.JFrame {
         }
         System.out.println("Login: " + nv.getMaNV());
         System.out.println("Login: " + nv.getTenNV());
+
         Auth.user = nv;
         this.dispose();
+        openWelcome();
         new TrangChuJFrame().setVisible(true);
-
     }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    void openWelcome() {
+        if (Auth.isLogin()) {
+            new ChaoJDialog(this, true, 30).setVisible(true);
+        }
+
+    }
 
     /**
      * @param args the command line arguments

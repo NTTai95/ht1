@@ -665,15 +665,6 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         }).start();
 
         setChucVu();
-
-        this.openWelcome();
-    }
-
-    void openWelcome() {
-        if (!Auth.isLogin()) {
-            new ChaoJDialog(this, true, 30).setVisible(true);
-        }
-
     }
 
     void ketThuc() {
