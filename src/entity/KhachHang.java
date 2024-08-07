@@ -10,9 +10,6 @@ package entity;
  */
 public class KhachHang {
 
-    public static void insert(KhachHang kh) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     String maKH;
     String tenKH;
     String SDT;

@@ -9,8 +9,11 @@ package entity;
  * @author admin
  */
 public class BanAn {
+
     String MaB;
     boolean trangThai;
+    String viTri;
+    String ghiChu;
 
     public String getMaB() {
         return MaB;
@@ -43,13 +46,12 @@ public class BanAn {
     public void setGhiChu(String ghiChu) {
         this.ghiChu = ghiChu;
     }
-    String viTri;
-    String ghiChu;
+
     public BanAn() {
     }
 
     public BanAn(String MaB) {
         this.MaB = MaB;
     }
-    
+
 }
