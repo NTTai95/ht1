@@ -15,8 +15,6 @@ import static java.awt.print.Printable.PAGE_EXISTS;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Printer {
 

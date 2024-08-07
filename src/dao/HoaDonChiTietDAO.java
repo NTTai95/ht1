@@ -4,13 +4,11 @@
  */
 package dao;
 
-import entity.HoaDon;
 import entity.HoaDonChiTiet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import static utils.Auth.user;
 import utils.XJdbc;
 
 

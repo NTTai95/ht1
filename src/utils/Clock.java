@@ -8,13 +8,8 @@ package utils;
  *
  * @author admin
  */
-import javax.swing.*;
-import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.concurrent.BlockingQueue;
 
 public class Clock extends Thread {
 
