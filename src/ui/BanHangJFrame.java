@@ -605,7 +605,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             return null;
         }
         kh.setTenKH(txtTenKH.getText());
-        if (!txtSDT.getText().matches(".*\\D.*")) {
+        if (!txtSDT.getText().matches("\\d{9,}")) {
             MsgBox.alert(this, "Số điện thoại không được nhập chữ");
             return null;
         }

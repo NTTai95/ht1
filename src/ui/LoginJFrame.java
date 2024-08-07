@@ -162,7 +162,7 @@ public class LoginJFrame extends javax.swing.JFrame {
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 0, 390, 450));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon("D:\\DuAn1\\quanlybanhang\\quanlynhahang\\src\\img\\400360970_913848526916133_5979970040266248220_n.jpg")); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/400360970_913848526916133_5979970040266248220_n.jpg"))); // NOI18N
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(-300, 0, 740, 450));
 
         pack();

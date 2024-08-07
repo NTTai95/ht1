@@ -186,7 +186,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel8.setText("L'ESCALE");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, -1, -1));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\DuAn1\\quanlybanhang\\quanlynhahang\\src\\img\\Nen.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/400360970_913848526916133_5979970040266248220_n.jpg"))); // NOI18N
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 510));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

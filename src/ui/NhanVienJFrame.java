@@ -129,7 +129,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
             }
         });
 
-        btnHideShow.setIcon(new javax.swing.ImageIcon("D:\\DuAn1Demo\\quanlynhahang7\\src\\icon\\show.png")); // NOI18N
+        btnHideShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/show.png"))); // NOI18N
         btnHideShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHideShowActionPerformed(evt);
