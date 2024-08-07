@@ -667,6 +667,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 MsgBox.alert(this, "Đã xóa khách hàng '" + tblListKH.getValueAt(i, 1) + " (" + tblListKH.getValueAt(i, 2) + ")'");
             }
         }
+        clearForm();
         fillTable();
     }
 
@@ -684,7 +685,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
             String SDT = tblListKH.getValueAt(i, 2).toString();
             khTemp.setSDT(SDT);
-            if (SDT.matches(".*\\D.*") && SDT.length() < 9) {
+            if (SDT.matches(".*\\D.*") || SDT.length() < 9) {
                 MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại Không hợp lệ '" + tblListKH.getValueAt(i, 2) + "'");
                 continue;
             } else if (checkTrungSDT(khTemp)) {
@@ -695,6 +696,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
             khDAO.update(khTemp);
         }
+        clearForm();
         fillTable();
         MsgBox.alert(this, "Cập nhật khách hàng thành công!");
     }
@@ -1853,6 +1855,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             setFormKhachHang();
             txtSDT.setText("");
             txtTenKH.setText("");
+            clearForm();
             this.fillTable();
             MsgBox.alert(this, "Thêm thành công!");
         } catch (Exception e) {
