@@ -25,7 +25,6 @@ public class MonAnDAO extends SysDAO<MonAn, String> {
     String COUNT_ROW = "SELECT COUNT(*) FROM MonAn";
     
     String SELECT_BY_LoaiMon = "select* from MonAn where MaLoai = ?";
-    String GET_PRICE = "SELECT * FROM MonAn WHERE DonGia BETWEEN ? AND ?";
     String SELECT_BY_KEYWORD = "select* from MonAn where TenMon like ? AND MaLoai like ?";
     String SELECT_IN_LIST = "SELECT * FROM MonAn WHERE TenMon LIKE ?";
     

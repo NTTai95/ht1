@@ -117,13 +117,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
             for (MonAn cd : list) {
 
                 if (cd.getDonGia() > min && cd.getDonGia() < max) {
-                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
+                    Image hinhAnh = new ImageIcon(cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
                     Object[] row = {
                         cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
                     };
                     model.addRow(row);
                 } else if (min == -1 && max == -1) {
-                    Image hinhAnh = new ImageIcon("./" + cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
+                    Image hinhAnh = new ImageIcon(cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
                     Object[] row = {
                         cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
                     };
@@ -182,7 +182,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         txtTenMonAn.setText(model.getTenMon());
         txtDonGia.setText(String.valueOf(model.getDonGia()));
         if (!model.getAnh().equals("")) {
-            ImageIcon anh = new ImageIcon("./" + model.getAnh());
+            ImageIcon anh = new ImageIcon(model.getAnh());
             Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
             lblAnh.setIcon(new ImageIcon(img));
             lblAnh.setToolTipText(model.getAnh());
@@ -1010,7 +1010,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 ImageIcon anh = chonAnh();
                 Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
                 lblAnh.setIcon(anh != null ? new ImageIcon(img) : lblAnh.getIcon());
-                lblAnh.setToolTipText("src/img/" + anh.getDescription().substring(anh.getDescription().lastIndexOf("\\") + 1));
+                lblAnh.setToolTipText(anh.getDescription());
             } catch (IOException ex) {
                 Logger.getLogger(QuanLyMonAnJFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
