@@ -272,7 +272,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnXoaMonAn.setEnabled(false);
             btnThongBaoBep.setEnabled(false);
             btnThanhToan.setEnabled(false);
-            jButton1.setEnabled(false);
+            btnChuyenBan.setEnabled(false);
             return;
         }
 
@@ -288,7 +288,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     btnXoaMonAn.setEnabled(false);
                     btnThongBaoBep.setEnabled(true);
                     btnThanhToan.setEnabled(true);
-                    jButton1.setEnabled(true);
+                    btnChuyenBan.setEnabled(true);
                     return;
                 }
             }
@@ -310,7 +310,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnXoaMonAn.setEnabled(false);
             btnThongBaoBep.setEnabled(false);
             btnThanhToan.setEnabled(false);
-            jButton1.setEnabled(false);
+            btnChuyenBan.setEnabled(false);
         }
     }
 
@@ -350,7 +350,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     public void themMonAn() {
         if (!checkHoaDon()) {
-            System.out.println("Khong The Them Mon An");
+            MsgBox.alert(this, "Vui lòng thêm khách hàng trước!");
             return;
         }
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
@@ -384,7 +384,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
 
         int rowS = tblHoaDonChiTiet.getSelectedRow();
-        if(rowS == -1){
+        if (rowS == -1) {
             return;
         }
         try {
@@ -761,6 +761,64 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         return baTemp;
     }
+    
+    public void chuyenBanAn(){
+       String maBA = JOptionPane.showInputDialog(this, "Nhập mã bàn muốn chuyển :", "Chuyển Bàn Ăn", JOptionPane.QUESTION_MESSAGE);
+        maBA = maBA == null ? null : maBA.toUpperCase();
+
+        if (maBA == null) {
+            return;
+        };
+        
+        if (!maBA.startsWith("B") || maBA.length() < 4 || !maBA.substring(1).matches("[0-9]{3}")) {
+            JOptionPane.showMessageDialog(this, "Mã bàn ăn không hợp lệ!");
+            return;
+        }
+
+        List<BanAn> baAn = baDAO.selectByTrangThai(false);
+        for (BanAn ba1 : baAn) {
+            if (ba1.getMaB().equalsIgnoreCase(maBA)) {
+                MsgBox.alert(this, "Bàn ăn '" + maBA + "' không được sử dụng!");
+                return;
+            }
+        }
+
+        List<BanAn> baAll = baDAO.selectAll();
+        boolean check = true;
+        for (BanAn ba1 : baAll) {
+            if (ba1.getMaB().equalsIgnoreCase(maBA)) {
+                check = false;
+                break;
+            }
+        }
+        if (check) {
+            MsgBox.alert(this, "Không tìm thấy bàn ăn '" + maBA + "'");
+            return;
+        }
+        
+        check = false;
+        for (HoaDon hd1 : hd) {
+            if (hd1.getMaB().equalsIgnoreCase(maBA)) {
+                check = true;
+            }
+        }
+
+        if (check) {
+            MsgBox.alert(this, "Không thể chuyển sang bàn đang có khách!");
+            return;
+        }
+        
+        HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
+        
+        hdTemp.setMaB(maBA);
+        
+        hdDAO.update(hdTemp);
+        
+        hd = hdDAO.selectByTrangThai("0");
+        
+        loadBanAn();
+        loadHoaDon();
+    }
 
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -805,7 +863,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         txtKhachTra = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtThoiLai = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnChuyenBan = new javax.swing.JButton();
         pnlKhachHang = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         txtTenKH = new javax.swing.JTextField();
@@ -1243,9 +1301,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Chuyển bàn");
+        btnChuyenBan.setBackground(new java.awt.Color(0, 153, 255));
+        btnChuyenBan.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnChuyenBan.setForeground(new java.awt.Color(255, 255, 255));
+        btnChuyenBan.setText("Chuyển bàn");
+        btnChuyenBan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChuyenBanActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -1285,12 +1349,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(btnThongBaoBep, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnTaoHD, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addComponent(btnGopBan, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(5, 5, 5)
-                                .addComponent(jButton1)))
+                                .addComponent(btnChuyenBan)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnInHoaDon, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1337,7 +1401,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     .addComponent(btnInHoaDon)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btnGopBan)
-                        .addComponent(jButton1)))
+                        .addComponent(btnChuyenBan)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnThongBaoBep)
@@ -1810,8 +1874,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
         if (!checkHoaDon()) {
             return;
         }
-        Printer.inThongBaoBep(lblMaHoaDon.getText());
-        JOptionPane.showMessageDialog(this, "Đã in thông báo bếp!");
+        if (Printer.inThongBaoBep(lblMaHoaDon.getText())) {
+            JOptionPane.showMessageDialog(this, "Đã in thông báo bếp!");
+        } else {
+            MsgBox.alert(this, "Thông báo bếp chưa được in!");
+        }
+
     }//GEN-LAST:event_btnThongBaoBepActionPerformed
 
     private void cboBATrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboBATrangThaiActionPerformed
@@ -1852,8 +1920,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
         String tienKhachTra = txtKhachTra.getText().replaceAll("\\.", "");
         tienKhachTra = tienKhachTra.replaceAll(",", "");
         tienKhachTra = tienKhachTra.replaceAll(" ", "");
-        Printer.inHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra));
-        JOptionPane.showMessageDialog(this, "Đã in hóa đơn!");
+        if (Printer.inHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra))) {
+            JOptionPane.showMessageDialog(this, "Đã in hóa đơn!");
+        } else {
+            MsgBox.alert(this, "Hóa đơn chưa được in!");
+        }
+
     }//GEN-LAST:event_btnInHoaDonActionPerformed
 
     private void tblThucDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThucDonMouseClicked
@@ -2071,6 +2143,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblHoaDonChiTietHierarchyChanged
 
+    private void btnChuyenBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChuyenBanActionPerformed
+        // TODO add your handling code here:
+        if(!checkHoaDon()){
+            return;
+        }
+        
+        chuyenBanAn();
+    }//GEN-LAST:event_btnChuyenBanActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2120,6 +2201,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCapNhat;
     private javax.swing.JButton btnCapNhatBanAn;
+    private javax.swing.JButton btnChuyenBan;
     private javax.swing.JButton btnDoiTrangThai;
     private javax.swing.JButton btnGopBan;
     private javax.swing.JButton btnInHoaDon;
@@ -2134,7 +2216,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboBATrangThai;
     private javax.swing.JComboBox<String> cboLoaiMonAn;
     private javax.swing.JScrollPane cuon;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

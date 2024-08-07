@@ -47,7 +47,7 @@ public class Printer {
     private static final Font fontHeader = new Font("Arial", Font.BOLD, 12);
     private static final Font fontBody = new Font("Arial", Font.PLAIN, 12);
 
-    public static void inThongBaoBep(String maHD) {
+    public static boolean inThongBaoBep(String maHD) {
         PrinterJob job = PrinterJob.getPrinterJob();
 
         PageFormat pf = job.defaultPage();
@@ -114,13 +114,15 @@ public class Printer {
         if (job.printDialog()) {
             try {
                 job.print();
+                return true;
             } catch (PrinterException ex) {
-                Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
         }
+        return false;
     }
 
-    public static void inHoaDon(String maHD, float KHTra) {
+    public static boolean inHoaDon(String maHD, float KHTra) {
         PrinterJob job = PrinterJob.getPrinterJob();
 
         PageFormat pf = job.defaultPage();
@@ -218,10 +220,12 @@ public class Printer {
         if (job.printDialog()) {
             try {
                 job.print();
+                return true;
             } catch (PrinterException ex) {
-                Logger.getLogger(Printer.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
         }
+        return false;
     }
 
     private static void drawTable3clm(Graphics2D g2d, double width, int y, float[] widthColumn, String[] header, List<HoaDonChiTiet> list) {
