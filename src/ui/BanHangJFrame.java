@@ -498,7 +498,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             txtThoiLai.setText("Nhập tiền trả!");
             return false;
         }
-        if (txtKhachTra.getText().matches("^[^a-zA-Z\s]+$")) {
+        try {
             String strTongTien = lblTongTien.getText().replaceAll("\\.", "");
             int tongTien = Integer.parseInt(strTongTien);
             String tienKhachTra = txtKhachTra.getText().replaceAll("\\.", "");
@@ -509,7 +509,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 txtThoiLai.setText(fmTien.format(Integer.parseInt(tienKhachTra) - tongTien));
                 return true;
             }
-        } else {
+        } catch(Exception e) {
             txtThoiLai.setText("không hợp lệ!");
         }
         return false;
