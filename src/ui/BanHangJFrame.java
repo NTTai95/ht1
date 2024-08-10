@@ -268,6 +268,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnThongBaoBep.setEnabled(false);
             btnThanhToan.setEnabled(false);
             btnChuyenBan.setEnabled(false);
+            txtKhachTra.setText("");
+            tinhTienThoi();
             return;
         }
 
@@ -284,6 +286,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     btnThongBaoBep.setEnabled(true);
                     btnThanhToan.setEnabled(true);
                     btnChuyenBan.setEnabled(true);
+                    txtKhachTra.setText("");
+                    tinhTienThoi();
                     return;
                 }
             }
@@ -306,6 +310,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnThongBaoBep.setEnabled(false);
             btnThanhToan.setEnabled(false);
             btnChuyenBan.setEnabled(false);
+            txtKhachTra.setText("");
+            tinhTienThoi();
         }
     }
 
@@ -367,7 +373,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         hdctNew.setDonGia(maTemp.getDonGia());
         hdctDAO.insert(hdctNew);
 
-        hdctTemp.add(hdctNew);
+        hdctTemp = hdctDAO.selectHDCT(String.valueOf(maHD));
 
         loadHoaDonChiTiet(hdctTemp);
         tinhTienThoi();
@@ -505,6 +511,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             tienKhachTra = tienKhachTra.replaceAll(",", "");
             if (Integer.parseInt(tienKhachTra) < tongTien) {
                 txtThoiLai.setText("Chưa đủ!");
+                return false;
             } else {
                 txtThoiLai.setText(fmTien.format(Integer.parseInt(tienKhachTra) - tongTien));
                 return true;
@@ -746,7 +753,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     public void banAnNEW() {
         int rowBanAn = baDAO.getCountRow() + 1;
 
-        txtMaBanAn.setText("B" + (rowBanAn < 10 ? "0" + rowBanAn : rowBanAn < 100 ? "00" + rowBanAn : rowBanAn));
+        txtMaBanAn.setText("B" + (rowBanAn < 10 ? "00" + rowBanAn : rowBanAn < 100 ? "0" + rowBanAn : rowBanAn));
     }
 
     public BanAn getFromBanAn() {
@@ -954,6 +961,11 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tblBanAn);
+        if (tblBanAn.getColumnModel().getColumnCount() > 0) {
+            tblBanAn.getColumnModel().getColumn(0).setMaxWidth(70);
+            tblBanAn.getColumnModel().getColumn(2).setPreferredWidth(150);
+            tblBanAn.getColumnModel().getColumn(2).setMaxWidth(150);
+        }
 
         jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
@@ -1109,7 +1121,9 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblHoaDonChiTiet.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         tblHoaDonChiTiet.setGridColor(new java.awt.Color(255, 102, 102));
+        tblHoaDonChiTiet.setRowHeight(25);
         tblHoaDonChiTiet.setSelectionBackground(new java.awt.Color(255, 204, 204));
         tblHoaDonChiTiet.setShowGrid(true);
         tblHoaDonChiTiet.addHierarchyListener(new java.awt.event.HierarchyListener() {
@@ -1149,6 +1163,23 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
         cuon.setViewportView(tblHoaDonChiTiet);
+        if (tblHoaDonChiTiet.getColumnModel().getColumnCount() > 0) {
+            tblHoaDonChiTiet.getColumnModel().getColumn(0).setMinWidth(40);
+            tblHoaDonChiTiet.getColumnModel().getColumn(0).setPreferredWidth(40);
+            tblHoaDonChiTiet.getColumnModel().getColumn(0).setMaxWidth(40);
+            tblHoaDonChiTiet.getColumnModel().getColumn(1).setMinWidth(130);
+            tblHoaDonChiTiet.getColumnModel().getColumn(1).setPreferredWidth(180);
+            tblHoaDonChiTiet.getColumnModel().getColumn(1).setMaxWidth(250);
+            tblHoaDonChiTiet.getColumnModel().getColumn(2).setMinWidth(30);
+            tblHoaDonChiTiet.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tblHoaDonChiTiet.getColumnModel().getColumn(2).setMaxWidth(100);
+            tblHoaDonChiTiet.getColumnModel().getColumn(3).setMinWidth(50);
+            tblHoaDonChiTiet.getColumnModel().getColumn(3).setPreferredWidth(90);
+            tblHoaDonChiTiet.getColumnModel().getColumn(3).setMaxWidth(130);
+            tblHoaDonChiTiet.getColumnModel().getColumn(4).setMinWidth(50);
+            tblHoaDonChiTiet.getColumnModel().getColumn(4).setPreferredWidth(90);
+            tblHoaDonChiTiet.getColumnModel().getColumn(4).setMaxWidth(130);
+        }
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 0, 51));
@@ -1565,6 +1596,14 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tblListKH);
+        if (tblListKH.getColumnModel().getColumnCount() > 0) {
+            tblListKH.getColumnModel().getColumn(0).setMinWidth(100);
+            tblListKH.getColumnModel().getColumn(0).setPreferredWidth(150);
+            tblListKH.getColumnModel().getColumn(0).setMaxWidth(200);
+            tblListKH.getColumnModel().getColumn(2).setMinWidth(250);
+            tblListKH.getColumnModel().getColumn(2).setPreferredWidth(250);
+            tblListKH.getColumnModel().getColumn(2).setMaxWidth(450);
+        }
 
         btnXoa.setBackground(new java.awt.Color(255, 0, 51));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1742,6 +1781,20 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane2.setViewportView(tblListBanAn);
+        if (tblListBanAn.getColumnModel().getColumnCount() > 0) {
+            tblListBanAn.getColumnModel().getColumn(0).setMinWidth(60);
+            tblListBanAn.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tblListBanAn.getColumnModel().getColumn(0).setMaxWidth(100);
+            tblListBanAn.getColumnModel().getColumn(1).setMinWidth(100);
+            tblListBanAn.getColumnModel().getColumn(1).setPreferredWidth(120);
+            tblListBanAn.getColumnModel().getColumn(1).setMaxWidth(160);
+            tblListBanAn.getColumnModel().getColumn(2).setMinWidth(50);
+            tblListBanAn.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tblListBanAn.getColumnModel().getColumn(2).setMaxWidth(500);
+            tblListBanAn.getColumnModel().getColumn(3).setMinWidth(50);
+            tblListBanAn.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tblListBanAn.getColumnModel().getColumn(3).setMaxWidth(500);
+        }
 
         btnCapNhatBanAn.setBackground(new java.awt.Color(0, 153, 255));
         btnCapNhatBanAn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -1969,9 +2022,13 @@ public class BanHangJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng");
             return;
         }
+        int rowTemp = row;
         hdDAO.insert(getFrom(0));
         hd = hdDAO.selectByTrangThai("0");
         loadBanAn();
+        row = rowTemp;
+        tblBanAn.setRowSelectionInterval(row, row);
+        loadHoaDon();
     }//GEN-LAST:event_btnTaoHDActionPerformed
 
     private void tblHoaDonChiTietFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietFocusGained
@@ -1994,6 +2051,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
             System.out.println("Hóa đơn không hợp lệ");
             return;
         }
+        
+        if (!tinhTienThoi()) {
+            JOptionPane.showMessageDialog(this, "Tiền khách trả chưa nhập hoặc chưa đủ!");
+            return;
+        }
+        
         HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
         hdTemp.setTrangThai(1);
 

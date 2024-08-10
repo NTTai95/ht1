@@ -36,14 +36,14 @@ public class Printer {
 
     private static final int width = 80;
     private static final int sizeHeader = 210;
-    private static final int sizeFooter = 140;
+    private static final int sizeFooter = 200;
     private static final int margin_left_right = 2;
     private static final int margin_top_bottom = 5;
-    private static final Font fontTieuDe = new Font("Arial", Font.BOLD, 14);
-    private static final Font fontPlain = new Font("Arial", Font.PLAIN, 10);
-    private static final Font fontBold = new Font("Arial", Font.BOLD, 10);
-    private static final Font fontHeader = new Font("Arial", Font.BOLD, 12);
-    private static final Font fontBody = new Font("Arial", Font.PLAIN, 12);
+    private static final Font fontTieuDe = new Font("Arial", Font.BOLD, 12);
+    private static final Font fontPlain = new Font("Arial", Font.PLAIN, 7);
+    private static final Font fontBold = new Font("Arial", Font.BOLD, 8);
+    private static final Font fontHeader = new Font("Arial", Font.BOLD, 8);
+    private static final Font fontBody = new Font("Arial", Font.PLAIN, 8);
 
     public static boolean inThongBaoBep(String maHD) {
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -52,7 +52,7 @@ public class Printer {
 
         HoaDon hd = hdDAO.selectById(Integer.parseInt(maHD));
 
-        int heightHDCT = getHeightHDCT(hdctDAO.selectHDCT(maHD), fontHeader, (float) (mmToPonit(width) * 0.7));
+        int heightHDCT = getHeightHDCT((double) pf.getImageableWidth(), new float[]{0.6f, 0.15f, 0.25f} ,hdctDAO.selectHDCT(maHD)) + 25;
         System.out.println(heightHDCT);
 
         Paper pr = new Paper();
@@ -74,7 +74,6 @@ public class Printer {
 
 //                g2d.setColor(new Color(0, 0, 0, 55));
 //                g2d.fillRect(0, 0, (int) pf.getImageableWidth(), (int) pf.getImageableHeight());
-
                 g2d.setColor(Color.black);
 
                 int y = 14;
@@ -127,13 +126,14 @@ public class Printer {
 
         HoaDon hd = hdDAO.selectById(Integer.parseInt(maHD));
 
-        int heightHDCT = getHeightHDCT(hdctDAO.selectHDCT(maHD), fontHeader, (float) (mmToPonit(width) * 0.7));
-        System.out.println(heightHDCT);
+        int heightHDCT = getHeightHDCT((double) pf.getImageableWidth(), new float[]{0.6f, 0.15f, 0.25f} ,hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()))) + 25;
 
         Paper pr = new Paper();
         pr.setSize(mmToPonit(width), sizeHeader + heightHDCT + sizeFooter);
 
-        pr.setImageableArea(mmToPonit(margin_left_right), mmToPonit(margin_top_bottom), (mmToPonit(width) - mmToPonit(margin_left_right)) * 1.745, sizeHeader + heightHDCT + sizeFooter);
+        pr.setImageableArea(mmToPonit(margin_left_right) + 5, mmToPonit(margin_top_bottom), (mmToPonit(width) - ((mmToPonit(margin_left_right) + 5) * 2)), sizeHeader + heightHDCT + sizeFooter);
+
+        System.out.println(sizeHeader + heightHDCT + sizeFooter);
 
         pf.setPaper(pr);
 
@@ -181,11 +181,11 @@ public class Printer {
                     thanhToan += (hdct.getSoLuong() * hdct.getDonGia());
                 }
 
-                y += getHeightHDCT(hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())), fontHeader, (float) pf.getImageableWidth()) + 15;
+                y += getHeightHDCT((double) pf.getImageableWidth(), widthColumn ,hdctDAO.selectHDCT(String.valueOf(hd.getMaHD()))) + 25;
 
                 g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
 
-                y += 20;
+                y += 25;
 
                 drawLeft("THANH TOÁN", fontHeader, g2d, pf.getImageableWidth(), y);
                 drawRight(fmTien.format(thanhToan) + "đ", fontBody, g2d, pf.getImageableWidth(), y);
@@ -234,7 +234,7 @@ public class Printer {
         float widthColumn3 = (float) (width * widthColumn[2]);
         int fontSize = fontHeader.getSize() + 8;
         g2d.setFont(fontHeader);
-        g2d.drawString(header[0], x, y);
+        g2d.drawString(header[0], x, y);// y + 15;
 
         textWidth = g2d.getFontMetrics().stringWidth(header[1]);
         x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
@@ -244,8 +244,9 @@ public class Printer {
         drawRight(header[2], fontHeader, g2d, width, y);
         x = 0;
         fontSize = fontBody.getSize() + 8;
-        y += fontSize;
+        y += fontSize; // y = 15 + fontSize (fontBody.getSize() + 8)
         g2d.setFont(fontBody);
+
         for (HoaDonChiTiet hdct : list) {
             int i = -1;
             String text = maDAO.selectById(hdct.getMaMon()).getTenMon();
@@ -260,12 +261,12 @@ public class Printer {
                     break;
                 }
             }
-
+//for (HoaDonChiTiet hdct : list) while(true) if(textWidth > widthColumn1) => i = textTemp.lastIndexOf(" ")
             x = 0;
 
             if (i > 0) {
                 g2d.drawString(text.substring(0, i), x, y);
-                y += fontSize;
+                y += fontSize; // y = 15 + fontSize for(if()(+ fontSize))
                 g2d.drawString(text.substring(i + 1, text.length()), x, y);
                 y -= 8;
             } else {
@@ -326,21 +327,24 @@ public class Printer {
         return (float) (mm * (72 / 25.4));
     }
 
-    private static int getHeightHDCT(List<HoaDonChiTiet> list, Font font, float widthColumn) {
+    private static int getHeightHDCT(double width, float[] widthColumn, List<HoaDonChiTiet> list) {
         int y = 0;
+        int textWidth;
+        int fontSize = fontHeader.getSize() + 8;
+        float widthColumn1 = (float) (width * widthColumn[0]);
 
-        int fontSize = font.getSize() + 8;
-
+        fontSize = fontBody.getSize() + 8;
+        y += fontSize;
         for (HoaDonChiTiet hdct : list) {
             int i = -1;
             String text = maDAO.selectById(hdct.getMaMon()).getTenMon();
 
-            int textWidth = getTextWidth(text, font);
+            textWidth = getStringWidth(fontBody, text);
             while (true) {
                 String textTemp = text.substring(0, i == -1 ? text.length() - 1 : i);
-                if (textWidth > widthColumn) {
+                if (textWidth > widthColumn1) {
                     i = textTemp.lastIndexOf(" ");
-                    textWidth = getTextWidth(text.substring(0, i), font);
+                    textWidth = getStringWidth(fontBody,text.substring(0, i));
                 } else {
                     break;
                 }
@@ -349,7 +353,7 @@ public class Printer {
             if (i > 0) {
                 y += fontSize;
                 y -= 8;
-            }
+            } else
 
             if (i > 0) {
                 y += fontSize + 10;
@@ -357,22 +361,31 @@ public class Printer {
                 y += fontSize;
             }
         }
-        return y;
+        return y+20;
     }
-
-    private static int getTextWidth(String text, Font font) {
-        // Tạo một BufferedImage tạm thời để lấy đối tượng Graphics
+    
+    public static int getStringWidth(Font font, String text) {
+        // Tạo một BufferedImage tạm thời để tạo Graphics2D
         BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics g = img.getGraphics();
-        g.setFont(font);
-        FontMetrics fm = g.getFontMetrics();
-        int width = fm.stringWidth(text);
-        g.dispose(); // Giải phóng tài nguyên đồ họa
-        return width;
+        Graphics2D g2d = img.createGraphics();
+
+        try {
+            // Cài đặt font cho Graphics2D
+            g2d.setFont(font);
+
+            // Lấy FontMetrics từ Graphics2D
+            FontMetrics fm = g2d.getFontMetrics();
+
+            // Trả về chiều rộng của văn bản
+            return fm.stringWidth(text);
+        } finally {
+            // Dọn dẹp tài nguyên
+            g2d.dispose();
+        }
     }
 
     public static void main(String[] args) {
-        inHoaDon("2", 1000000);
+        inHoaDon("7", 4000000);
 //        inThongBaoBep("1");
     }
 }

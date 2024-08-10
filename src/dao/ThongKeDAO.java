@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import utils.XJdbc;
 import entity.ThongKe.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,22 +25,39 @@ public class ThongKeDAO {
 //                        "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n" +
 //                        "WHERE LoaiMon.MaLoai = ?;";
 
-    String SUM_SQL = "SELECT MonAn.TenMon, SUM(HoaDonChiTiet.SoLuongMon) as SoLuongBan\n"
-            + "FROM HoaDonChiTiet\n"
-            + "JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon\n"
-            + "JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai\n"
-            + "JOIN HoaDon ON HoaDonChiTiet.MaHD = HoaDon.MaHD\n"
-            + "WHERE LoaiMon.MaLoai like ? AND HoaDon.TrangThai like '1'\n"
-            + "GROUP BY MonAn.TenMon;";
+    String SUM_SQL = """
+                     SELECT MonAn.TenMon, SUM(HoaDonChiTiet.SoLuongMon) as SoLuongBan
+                     FROM HoaDonChiTiet
+                     JOIN MonAn ON HoaDonChiTiet.MaMon = MonAn.MaMon
+                     JOIN LoaiMon ON MonAn.MaLoai = LoaiMon.MaLoai
+                     JOIN HoaDon ON HoaDonChiTiet.MaHD = HoaDon.MaHD
+                     WHERE LoaiMon.MaLoai like ? AND HoaDon.TrangThai like '1'
+                     GROUP BY MonAn.TenMon;""";
 
-    String DoanhThu_SQL = "SELECT CONVERT(date, hd.NgayLap, 103), SUM(hdct.SoLuongMon * hdct.DonGia)\n"
-            + "From HoaDonChiTiet hdct Join HoaDon hd on hdct.MaHD = hd.MaHD\n"
-            + "Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'\n"
-            + "GROUP BY CONVERT(date, hd.NgayLap, 103)\n"
-            + "ORDER BY CONVERT(date, hd.NgayLap, 103) asc";
+    String DoanhThu_SQL = """
+                          SELECT CONVERT(date, hd.NgayLap, 103), SUM(hdct.SoLuongMon * hdct.DonGia)
+                          From HoaDonChiTiet hdct Join HoaDon hd on hdct.MaHD = hd.MaHD
+                          Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'
+                          GROUP BY CONVERT(date, hd.NgayLap, 103)
+                          ORDER BY CONVERT(date, hd.NgayLap, 103) asc""";
 
     String Ngaylap_SQL = "SELECT MIN(CONVERT(date, hd.NgayLap, 103)), MAX(CONVERT(date, hd.NgayLap, 103)) FROM HoaDon hd WHERE hd.TrangThai like '1'";
 
+    String DoanhThuHomNay_SQL = """
+                                Select Sum(hdct.SoLuongMon * hdct.DonGia) from HoaDon hd Join
+                                HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
+                                Where convert(Date,hd.NgayLap) = Convert(Date, GETDATE())""";
+
+    String DoanhThuThangNay_SQL = """
+                                Select Sum(hdct.SoLuongMon * hdct.DonGia) from HoaDon hd Join
+                                HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
+                                Where Month(hd.NgayLap) = Month(GETDATE()) AND Year(hd.NgayLap) = Year(GETDATE())""";
+    
+    String SoLuongHomNay_SQL = """
+                                Select Sum(hdct.SoLuongMon) 
+                                from HoaDon hd Join HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
+                                Where convert(Date,hd.NgayLap) = Convert(Date, GETDATE())""";
+    
     public List<DoanhThuMonAn> getSum(String maLoai) {
         List<DoanhThuMonAn> list = new ArrayList<>();
         try {
@@ -74,17 +93,17 @@ public class ThongKeDAO {
             throw new RuntimeException(e);
         }
     }
-    
-    public NgayLap getNgayLap(){
+
+    public NgayLap getNgayLap() {
         try {
             ResultSet rs = XJdbc.executeQuery(Ngaylap_SQL);
 
-            if(rs.next()) {
+            if (rs.next()) {
                 NgayLap nl = new NgayLap();
                 nl.setMin(rs.getDate(1));
                 nl.setMax(rs.getDate(2));
                 rs.getStatement().getConnection().close();
-            return nl;
+                return nl;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -92,6 +111,50 @@ public class ThongKeDAO {
         return null;
     }
 
+    public int getDoanhThuHomNay() {
+        try {
+            ResultSet rs = XJdbc.executeQuery(DoanhThuHomNay_SQL);
+            
+            if(rs.next()){        
+                int doanhThuHomNay = rs.getInt(1);
+                rs.getStatement().getConnection().close();
+                return  doanhThuHomNay;    
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ThongKeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public int getDoanhThuThang(){
+        try {
+            ResultSet rs = XJdbc.executeQuery(DoanhThuThangNay_SQL);
+            
+            if(rs.next()){
+                int doanhThuThang = rs.getInt(1);
+                rs.getStatement().getConnection().close();
+                return  doanhThuThang;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ThongKeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+    
+    public int getSoLuongBanHomNay(){
+        try {
+            ResultSet rs = XJdbc.executeQuery(SoLuongHomNay_SQL);
+            
+            if(rs.next()){
+                int soLuongHomNay = rs.getInt(1);
+                rs.getStatement().getConnection().close();
+                return soLuongHomNay;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ThongKeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 //    public List<Object[]> getSum(int maLoai) {
 //        List<Object[]> resultList = new ArrayList<>();
 //        

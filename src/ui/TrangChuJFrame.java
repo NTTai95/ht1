@@ -4,9 +4,11 @@
  */
 package ui;
 
+import dao.ThongKeDAO;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
@@ -22,6 +24,9 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     /**
      * Creates new form TrangChuJFrame1
      */
+    ThongKeDAO tkDAO = new ThongKeDAO();
+    DecimalFormat fmTien = new DecimalFormat("#,#00");
+    
     public TrangChuJFrame() {
         initComponents();
         setChucVu();
@@ -50,6 +55,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        lblDoanhThuQuanLy = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         mnuHeThong = new javax.swing.JMenu();
@@ -174,17 +180,25 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Verdana", 2, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("CẦN THƠ");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 340, 180, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 270, 180, -1));
 
         jLabel7.setFont(new java.awt.Font("STZhongsong", 3, 36)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("NHÀ HÀNG");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, -1));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Wide Latin", 1, 60)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("L'ESCALE");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, -1, -1));
+
+        lblDoanhThuQuanLy.setBackground(new java.awt.Color(255, 255, 255));
+        lblDoanhThuQuanLy.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblDoanhThuQuanLy.setForeground(new java.awt.Color(255, 255, 255));
+        lblDoanhThuQuanLy.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblDoanhThuQuanLy.setText("<html>\n<div style=\"background-color: rgba(0, 0, 0, 0.5); padding: 5px 10px;\" >\n\t<p>Doanh thu hôm nay:</p>\n\t<p style=\"margin-top:10px\">Doanh thu tháng này:</p>\n\t<p style=\"margin-top:10px\">Số lượng bán hôm nay:</p>\n</div>\n</html>");
+        lblDoanhThuQuanLy.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jPanel2.add(lblDoanhThuQuanLy, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 120));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/400360970_913848526916133_5979970040266248220_n.jpg"))); // NOI18N
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 510));
@@ -624,6 +638,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JPopupMenu.Separator jSeparator6;
     private javax.swing.JLabel lblChucVu;
+    private javax.swing.JLabel lblDoanhThuQuanLy;
     private javax.swing.JLabel lblDongHo;
     private javax.swing.JMenuItem mniBanHang;
     private javax.swing.JMenuItem mniDoanhSo;
@@ -646,10 +661,15 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
             btnHoaDon.setVisible(false);
             btnMonAn.setVisible(false);
+            lblDoanhThuQuanLy.setVisible(false);
             
             mnuFill.setText(mnuFill.getText()+"                        ");
+        }else{
+            setDoanhThu();
+            lblDoanhThuQuanLy.setVisible(true);
         }
         lblChucVu.setText((Auth.isManager()?"Quản lý: ":"Nhân viên: ")+Auth.user.getTenNV());
+        
     }
 
     void init() {
@@ -664,6 +684,22 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         }).start();
 
         setChucVu();
+    }
+    
+    void setDoanhThu(){
+        
+        String doanhThuHomNay = fmTien.format(tkDAO.getDoanhThuHomNay())+" VNĐ";
+        String doanhThuThangNay = fmTien.format(tkDAO.getDoanhThuThang())+" VNĐ";
+        String soLuongBanHomNay = String.valueOf(tkDAO.getSoLuongBanHomNay());
+        
+        String textHTML = "<html><div style='background-color: rgba(0, 0, 0, 0.5); padding: 10px 30px 10px 10px;'>"
+                + "<p>Doanh thu hôm nay: <span style='font-weight: bold;'>"+doanhThuHomNay+"</span></p>"
+                + "<p style='margin-top:10px'>Doanh thu tháng này: <span style='font-weight: bold;'>"+doanhThuThangNay+"</span></p>"
+                + "<p style='margin-top:10px'>Số lượng bán hôm nay: <span style='font-weight: bold;'>"+soLuongBanHomNay+"</span></p>"
+                + "</div>"
+                + "</html>";
+        
+        lblDoanhThuQuanLy.setText(textHTML);
     }
 
     void ketThuc() {
