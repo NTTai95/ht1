@@ -4,13 +4,28 @@
  */
 package ui;
 
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpServer;
 import dao.ThongKeDAO;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 import utils.Auth;
 import utils.MsgBox;
@@ -26,7 +41,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
      */
     ThongKeDAO tkDAO = new ThongKeDAO();
     DecimalFormat fmTien = new DecimalFormat("#,#00");
-    
+
     public TrangChuJFrame() {
         initComponents();
         setChucVu();
@@ -74,6 +89,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         mniDoanhSo = new javax.swing.JMenuItem();
         mniDoanhThu = new javax.swing.JMenuItem();
         mnuTroGiup = new javax.swing.JMenu();
+        mniHDSD = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
         mnuFill = new javax.swing.JMenu();
 
@@ -418,6 +434,15 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             }
         });
 
+        mniHDSD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Control panel.png"))); // NOI18N
+        mniHDSD.setText("HƯỚNG DẪN SỬ DỤNG");
+        mniHDSD.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniHDSDActionPerformed(evt);
+            }
+        });
+        mnuTroGiup.add(mniHDSD);
+
         jMenuItem15.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jMenuItem15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Address book.png"))); // NOI18N
         jMenuItem15.setText("GIỚI THIỆU");
@@ -501,47 +526,47 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-        new GioiThieuJDialog(this,true).setVisible(true);
+        new GioiThieuJDialog(this, true).setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void mnuHeThongMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuHeThongMouseEntered
         // TODO add your handling code here:
-        mnuHeThong.setBackground(new Color(70,70,70));
+        mnuHeThong.setBackground(new Color(70, 70, 70));
     }//GEN-LAST:event_mnuHeThongMouseEntered
 
     private void mnuHeThongMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuHeThongMouseExited
         // TODO add your handling code here:
-        mnuHeThong.setBackground(new Color(102,102,102));
+        mnuHeThong.setBackground(new Color(102, 102, 102));
     }//GEN-LAST:event_mnuHeThongMouseExited
 
     private void mnuQuanLyMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuQuanLyMouseEntered
         // TODO add your handling code here:
-        mnuQuanLy.setBackground(new Color(70,70,70));
+        mnuQuanLy.setBackground(new Color(70, 70, 70));
     }//GEN-LAST:event_mnuQuanLyMouseEntered
 
     private void mnuQuanLyMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuQuanLyMouseExited
         // TODO add your handling code here:
-        mnuQuanLy.setBackground(new Color(102,102,102));
+        mnuQuanLy.setBackground(new Color(102, 102, 102));
     }//GEN-LAST:event_mnuQuanLyMouseExited
 
     private void mnuThongKeMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuThongKeMouseEntered
         // TODO add your handling code here:
-        mnuThongKe.setBackground(new Color(70,70,70));
+        mnuThongKe.setBackground(new Color(70, 70, 70));
     }//GEN-LAST:event_mnuThongKeMouseEntered
 
     private void mnuThongKeMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuThongKeMouseExited
         // TODO add your handling code here:
-        mnuThongKe.setBackground(new Color(102,102,102));
+        mnuThongKe.setBackground(new Color(102, 102, 102));
     }//GEN-LAST:event_mnuThongKeMouseExited
 
     private void mnuTroGiupMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuTroGiupMouseEntered
         // TODO add your handling code here:
-        mnuTroGiup.setBackground(new Color(70,70,70));
+        mnuTroGiup.setBackground(new Color(70, 70, 70));
     }//GEN-LAST:event_mnuTroGiupMouseEntered
 
     private void mnuTroGiupMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuTroGiupMouseExited
         // TODO add your handling code here:
-        mnuTroGiup.setBackground(new Color(102,102,102));
+        mnuTroGiup.setBackground(new Color(102, 102, 102));
     }//GEN-LAST:event_mnuTroGiupMouseExited
 
     private void mnuKetThucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuKetThucActionPerformed
@@ -578,8 +603,13 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
         // TODO add your handling code here:
-        new GioiThieuJDialog(this,true).setVisible(true);
+        new GioiThieuJDialog(this, true).setVisible(true);
     }//GEN-LAST:event_jMenuItem15ActionPerformed
+
+    private void mniHDSDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniHDSDActionPerformed
+        // TODO add your handling code here:
+        openHDSD();
+    }//GEN-LAST:event_mniHDSDActionPerformed
 
     /**
      * @param args the command line arguments
@@ -643,6 +673,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniBanHang;
     private javax.swing.JMenuItem mniDoanhSo;
     private javax.swing.JMenuItem mniDoanhThu;
+    private javax.swing.JMenuItem mniHDSD;
     private javax.swing.JMenuItem mniHoaDon;
     private javax.swing.JMenuItem mniMonAn;
     private javax.swing.JMenuItem mniNhanVien;
@@ -662,14 +693,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             btnHoaDon.setVisible(false);
             btnMonAn.setVisible(false);
             lblDoanhThuQuanLy.setVisible(false);
-            
-            mnuFill.setText(mnuFill.getText()+"                        ");
-        }else{
+
+            mnuFill.setText(mnuFill.getText() + "                        ");
+        } else {
             setDoanhThu();
             lblDoanhThuQuanLy.setVisible(true);
         }
-        lblChucVu.setText((Auth.isManager()?"Quản lý: ":"Nhân viên: ")+Auth.user.getTenNV());
-        
+        lblChucVu.setText((Auth.isManager() ? "Quản lý: " : "Nhân viên: ") + Auth.user.getTenNV());
+
     }
 
     void init() {
@@ -685,32 +716,32 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         setChucVu();
     }
-    
-    void setDoanhThu(){
-        
-        String doanhThuHomNay = fmTien.format(tkDAO.getDoanhThuHomNay())+" VNĐ";
-        String doanhThuThangNay = fmTien.format(tkDAO.getDoanhThuThang())+" VNĐ";
+
+    void setDoanhThu() {
+
+        String doanhThuHomNay = fmTien.format(tkDAO.getDoanhThuHomNay()) + " VNĐ";
+        String doanhThuThangNay = fmTien.format(tkDAO.getDoanhThuThang()) + " VNĐ";
         String soLuongBanHomNay = String.valueOf(tkDAO.getSoLuongBanHomNay());
-        
+
         String textHTML = "<html><div style='background-color: rgba(0, 0, 0, 0.5); padding: 10px 30px 10px 10px;'>"
-                + "<p>Doanh thu hôm nay: <span style='font-weight: bold;'>"+doanhThuHomNay+"</span></p>"
-                + "<p style='margin-top:10px'>Doanh thu tháng này: <span style='font-weight: bold;'>"+doanhThuThangNay+"</span></p>"
-                + "<p style='margin-top:10px'>Số lượng bán hôm nay: <span style='font-weight: bold;'>"+soLuongBanHomNay+"</span></p>"
+                + "<p>Doanh thu hôm nay: <span style='font-weight: bold;'>" + doanhThuHomNay + "</span></p>"
+                + "<p style='margin-top:10px'>Doanh thu tháng này: <span style='font-weight: bold;'>" + doanhThuThangNay + "</span></p>"
+                + "<p style='margin-top:10px'>Số lượng bán hôm nay: <span style='font-weight: bold;'>" + soLuongBanHomNay + "</span></p>"
                 + "</div>"
                 + "</html>";
-        
+
         lblDoanhThuQuanLy.setText(textHTML);
     }
 
     void ketThuc() {
-        if(MsgBox.confirm(this, "Bạn có chắc muốn thoát không?")){
+        if (MsgBox.confirm(this, "Bạn có chắc muốn thoát không?")) {
             System.exit(0);
         }
     }
 
     void openMonAn() {
-      new QuanLyMonAnJFrame().setVisible(true);
-      dispose();
+        new QuanLyMonAnJFrame().setVisible(true);
+        dispose();
     }
 
     void openQLHoaDon() {
@@ -722,5 +753,70 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         new BanHangJFrame().setVisible(true);
         dispose();
     }
-    
+
+    public void openHDSD() {
+        try {
+            // Thiết lập đường dẫn tới thư mục dự án của bạn
+            String projectDir = "./src/HDSD"; // Đường dẫn tới thư mục chứa dự án của bạn
+            
+            // Tạo server tại địa chỉ 127.0.0.1 và cổng 5500
+            HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 5500), 0);
+            
+            // Đăng ký handler cho mọi yêu cầu
+            server.createContext("/", new HttpHandler() {
+                @Override
+                public void handle(HttpExchange exchange) throws IOException {
+                    // Lấy đường dẫn của file được yêu cầu
+                    String requestedFile = exchange.getRequestURI().getPath();
+                    
+                    // Nếu không có file cụ thể nào được yêu cầu, trả về index.html
+                    if (requestedFile.equals("/")) {
+                        requestedFile = "/HDSD.html";
+                    }
+                    
+                    // Tạo đường dẫn đầy đủ tới file
+                    Path filePath = Paths.get(projectDir, requestedFile);
+                    
+                    // Kiểm tra xem file có tồn tại không
+                    if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
+                        // Đoán loại nội dung và thiết lập header
+                        String contentType = Files.probeContentType(filePath);
+                        exchange.getResponseHeaders().set("Content-Type", contentType);
+                        
+                        // Đọc nội dung file và gửi phản hồi
+                        byte[] response = Files.readAllBytes(filePath);
+                        exchange.sendResponseHeaders(200, response.length);
+                        OutputStream output = exchange.getResponseBody();
+                        output.write(response);
+                        output.close();
+                    } else {
+                        // Nếu file không tồn tại, trả về lỗi 404
+                        String errorMsg = "404 (Not Found)\n";
+                        exchange.sendResponseHeaders(404, errorMsg.length());
+                        OutputStream output = exchange.getResponseBody();
+                        output.write(errorMsg.getBytes());
+                        output.close();
+                    }
+                }
+            });
+            
+            // Bắt đầu server
+            server.setExecutor(null);
+            server.start();
+            System.out.println("Server đang chạy tại http://127.0.0.1:5500/");
+            
+            // Mở trình duyệt tự động
+            if (Desktop.isDesktopSupported()) {
+                try {
+                    Desktop.getDesktop().browse(new URI("http://127.0.0.1:5500/"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Desktop không được hỗ trợ trên hệ thống này!");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(TrangChuJFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -1,0 +1,260 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    background-size: 100% 100%;
+    margin-bottom: 0px;
+    /* display: flex;  -- css2 */
+    /* background-color: rgb(212, 56, 56); -- css2 */
+    /* position: relative; -- css2 */
+}
+
+nav {
+    min-height: 50px;
+    background-color: rgb(166, 51, 51);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+}
+
+.top {
+    list-style: none;
+    min-height: 20px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.top-img {
+    margin-left: 5px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    line-height: 15px;
+    font-size: 12px;
+    font-family: Arial, sans-serif;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.search input[type="search"] {
+    border-radius: 4px 0 0 4px;
+    padding: 7px 9px;
+    width: 300px;
+    border: 3px solid rgb(166, 51, 51);
+    /* border: none; -- css2 */
+    /* outline: none; -- css2 */
+    /* margin: 0px; -- css2 */
+    /* width: 200px; -- css2 */
+}
+
+.search button {
+    padding: 7px 10px;
+    border: 2px;
+    border-radius: 5px 5px 5px 5px;
+    background-color: rgb(166, 51, 51);
+    color: white;
+    margin-right: 5px;
+    margin-left: 10px;
+    height: 35px;
+    width: 100px;
+    /* background-color: black; -- css2 */
+}
+
+.search button:hover {
+    background-color: white;
+    color: black;
+    border: 3px solid rgb(166, 51, 51);
+    /* background-color: rgb(242, 143, 159); -- css2 */
+    /* color: white; -- css2 */
+}
+
+/*phần main nav*/
+.main-nav {
+    align-content: center;
+    /*  -- css2 */
+}
+
+.main-nav ul {
+    list-style: none;
+}
+
+.main-nav ul li {
+    float: left;
+    padding: 0 15px;
+    position: relative;
+    color: white;
+    
+}
+
+.main-nav ul li a {
+    display: inline-block;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    line-height: 50px;
+    color: white;
+}
+
+.main-nav ul li a:hover {
+    background-color: white;
+    color: rgb(166, 51, 51);
+    /* background-color: rgb(242, 143, 159); -- css2 */
+    /* color: black; -- css2 */
+}
+
+.container {
+    display: flex;
+    background-color: white;
+}
+
+aside {
+    width: 35%;
+    background-color: white;
+    padding: 3px;
+    margin: 0px 20px;
+    color: rgb(166, 51, 51);
+    /* width: 55%; -- css2 */
+}
+
+.menu-doc {
+    border: 1px solid rgb(166, 51, 51);
+    padding: 10px;
+    /* border: 1px solid black; -- css2 */
+}
+
+hr {
+    border: none;
+    background-color: rgb(166, 51, 51);
+    height: 2px;
+    /* background-color: black; -- css2 */
+}
+
+h3 {
+    text-align: center;
+}
+
+.menu-doc ul {
+    list-style: none;
+}
+
+.menu-doc ul li {
+    padding: 10px 35px;
+    border: 1px solid lightgray;
+}
+
+.menu-doc ul li a {
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    line-height: 40px;
+    color: rgb(166, 51, 51);
+}
+
+.menu-doc ul li:hover {
+    background-color: #c5e9c3;
+}
+
+.new {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    padding: 20px;
+}
+
+.item h1 {
+    font-size: 25px;
+}
+
+.item p {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+.infor {
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.infor img {
+    margin-top: 10px;
+}
+
+.infor p {
+    font-size: 16px;
+    font-size: 18px;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+h6 {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+h5 {
+    font-size: 28px;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+footer {
+    display: flex;
+    background-color: rgb(208, 74, 74);
+    color: #ffffff;
+    padding: 50px;
+    /* color: white; -- css2 */
+    /* padding: 10px; -- css2 */
+    /* width: 100vw; -- css2 */
+    /* margin-bottom: 0px; -- css2 */
+    /* min-height: 100px; -- css2 */
+    /* padding-left: 10px; -- css2 */
+    /* padding-top: 10px; -- css2 */
+    /* padding-bottom: 10px; -- css2 */
+    /* position: absolute; -- css2 */
+    /* bottom: 0px; -- css2 */
+}
+
+
+.item-new {
+    margin-top: 10px;
+}
+
+.item-new img {
+    margin-top: 10px;
+}
+
+.item-new p {
+    font-size: 16px;
+}
+
+.tin {
+    text-align: left;
+    padding: 20px;
+    margin-left: 110px;
+}
+
+.fanpage {
+    margin: 20px;
+}
+
+.fanpage iframe:hover {
+    box-shadow: 0px 5px 10px 10px lightpink;
+}

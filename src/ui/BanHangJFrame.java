@@ -16,8 +16,10 @@ import entity.HoaDonChiTiet;
 import entity.KhachHang;
 import entity.LoaiMon;
 import entity.MonAn;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Image;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.ImageIcon;
@@ -823,8 +825,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         loadBanAn();
         loadHoaDon();
     }
-
-
+    
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
