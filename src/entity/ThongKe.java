@@ -69,6 +69,55 @@ public class ThongKe {
         }
     }
     
+    public static class DoanhThuCT{
+        int MaHD;        
+        Date ngayLap;
+        String MaKH;
+        int tongTien;
+
+        public DoanhThuCT() {
+        }
+        
+        public DoanhThuCT(int MaHD, Date ngayLap, String MaKH, int tongTien) {
+            this.MaHD = MaHD;
+            this.ngayLap = ngayLap;           
+            this.MaKH = MaKH;
+            this.tongTien = tongTien;
+        }
+
+        public double getTongTien() {
+            return tongTien;
+        }
+
+        public void setTongTien(int tongTien) {
+            this.tongTien = tongTien;
+        }
+
+        public Date getNgayLap() {
+            return ngayLap;
+        }
+
+        public void setNgayLap(Date ngayLap) {
+            this.ngayLap = ngayLap;
+        }
+        
+        public int getMaHD() {
+            return MaHD;
+        }
+
+        public void setMaHD(int MaHD) {
+            this.MaHD = MaHD;
+        }
+        
+        public String getMaKH() {
+            return MaKH;
+        }
+
+        public void setMaKH(String MaKH) {
+            this.MaKH = MaKH;
+        }
+    }
+    
     public static class NgayLap{
         Date min;
         Date max;
