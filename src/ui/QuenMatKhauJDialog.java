@@ -19,6 +19,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.ImageIcon;
 import utils.MsgBox;
 
 /**
@@ -39,6 +40,9 @@ public class QuenMatKhauJDialog extends javax.swing.JDialog {
         super(parent, modal);
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quên Mật Khẩu");
         initComponents();
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**

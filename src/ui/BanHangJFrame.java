@@ -75,6 +75,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
     public BanHangJFrame() {
         initComponents();
         init();
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     void init() {

@@ -63,6 +63,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         fillTableLM();
         updateStatusLM();
         updateStatus();
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     public QuanLyMonAnJFrame() {

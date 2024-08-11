@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import utils.Auth;
 import utils.MsgBox;
@@ -46,6 +47,9 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         initComponents();
         setChucVu();
         init();
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**
@@ -757,7 +761,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     public void openHDSD() {
         try {
             // Thiết lập đường dẫn tới thư mục dự án của bạn
-            String projectDir = "./src/HDSD"; // Đường dẫn tới thư mục chứa dự án của bạn
+            String projectDir = "./HDSD"; // Đường dẫn tới thư mục chứa dự án của bạn
             
             // Tạo server tại địa chỉ 127.0.0.1 và cổng 5500
             HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 5500), 0);

@@ -8,6 +8,7 @@ import dao.NhanVienDAO;
 import entity.NhanVien;
 import java.awt.Color;
 import java.awt.Font;
+import javax.swing.ImageIcon;
 import utils.Auth;
 import utils.MsgBox;
 
@@ -26,6 +27,9 @@ public class LoginJFrame extends javax.swing.JFrame {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Đăng nhập");
         initComponents();
         Auth.user = null;
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**

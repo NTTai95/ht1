@@ -4,6 +4,8 @@
  */
 package ui;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author admin
@@ -16,6 +18,9 @@ public class GioiThieuJDialog extends javax.swing.JDialog {
     public GioiThieuJDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**

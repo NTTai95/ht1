@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 /*
@@ -25,6 +26,8 @@ public class ChaoJDialog extends javax.swing.JDialog {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Loading");
         initComponents();
         init(time);
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     void init(int time) {

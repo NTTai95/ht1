@@ -28,6 +28,9 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quản Lý Nhân Viên");
         initComponents();
         init();
+        
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**
@@ -354,11 +357,11 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(txt_matKhau.getEchoChar() == '\u2022'){
             txt_matKhau.setEchoChar((char)0);
-            ImageIcon icon = new ImageIcon("./src/icon/hide.png");
+            ImageIcon icon = new ImageIcon("./img/hide.png");
             btnHideShow.setIcon(icon);
         }else{
             txt_matKhau.setEchoChar('\u2022');
-            ImageIcon icon = new ImageIcon("./src/icon/show.png");
+            ImageIcon icon = new ImageIcon("./img/show.png");
             btnHideShow.setIcon(icon);
         }
     }//GEN-LAST:event_btnHideShowActionPerformed

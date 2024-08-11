@@ -2,6 +2,7 @@ package ui;
 
 import dao.NhanVienDAO;
 import entity.NhanVien;
+import javax.swing.ImageIcon;
 import utils.Auth;
 import utils.MsgBox;
 
@@ -29,6 +30,8 @@ public class DoiMatKhauJDialog extends javax.swing.JDialog {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Đổi mật khẩu");
         initComponents();
         lblMaNV.setText(Auth.user.getMaNV());
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
     }
 
     /**
