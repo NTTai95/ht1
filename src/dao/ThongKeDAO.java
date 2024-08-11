@@ -40,6 +40,14 @@ public class ThongKeDAO {
                           Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'
                           GROUP BY CONVERT(date, hd.NgayLap, 103)
                           ORDER BY CONVERT(date, hd.NgayLap, 103) asc""";
+    
+    String DoanhThuCT_SQL = """
+                          SELECT hd.MaHD, CONVERT(date, hd.NgayLap, 103) as NgayLap, hd.MaKH, SUM(hdct.SoLuongMon * hdct.DonGia) as TongTien
+                          From HoaDonChiTiet hdct Join HoaDon hd on hdct.MaHD = hd.MaHD
+                          Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'
+                          GROUP BY CONVERT(date, hd.NgayLap, 103), hd.MaHD, hd.MaKH
+                          ORDER BY CONVERT(date, hd.NgayLap, 103) asc;""";
+
 
     String Ngaylap_SQL = "SELECT MIN(CONVERT(date, hd.NgayLap, 103)), MAX(CONVERT(date, hd.NgayLap, 103)) FROM HoaDon hd WHERE hd.TrangThai like '1'";
 
@@ -57,6 +65,8 @@ public class ThongKeDAO {
                                 Select Sum(hdct.SoLuongMon) 
                                 from HoaDon hd Join HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
                                 Where convert(Date,hd.NgayLap) = Convert(Date, GETDATE())""";
+    
+    
     
     public List<DoanhThuMonAn> getSum(String maLoai) {
         List<DoanhThuMonAn> list = new ArrayList<>();
@@ -85,6 +95,26 @@ public class ThongKeDAO {
                 DoanhThu dt = new DoanhThu();
                 dt.setNgayLap(rs.getDate(1));
                 dt.setTongTien(rs.getInt(2));
+                list.add(dt);
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
+    public List<DoanhThuCT> getDoanhThuCT(Date tuNgayCT, Date denNgayCT) {
+        List<DoanhThuCT> list = new ArrayList<>();
+        try {
+            ResultSet rs = XJdbc.executeQuery(DoanhThuCT_SQL, tuNgayCT, denNgayCT);
+
+            while (rs.next()) {
+                DoanhThuCT dt = new DoanhThuCT();
+                dt.setMaHD(rs.getInt(1));
+                dt.setNgayLap(rs.getDate(2));
+                dt.setMaKH(rs.getString(3));
+                dt.setTongTien(rs.getInt(4));
                 list.add(dt);
             }
             rs.getStatement().getConnection().close();
