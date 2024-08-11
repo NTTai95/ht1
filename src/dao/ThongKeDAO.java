@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import utils.XJdbc;
 import entity.ThongKe.*;
-import entity.ThongKe.DoanhThuTheoNam;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,13 +65,6 @@ public class ThongKeDAO {
                                 Select Sum(hdct.SoLuongMon) 
                                 from HoaDon hd Join HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
                                 Where convert(Date,hd.NgayLap) = Convert(Date, GETDATE())""";
-    
-    String doanhThuTheoNam_SQL = """
-                                 SELECT MONTH(hd.NgayLap),  SUM(hdct.DonGia * hdct.SoLuongMon)
-                                 FROM HoaDon hd join HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
-                                 WHERE hd.TrangThai like '1' AND Year(hd.NgayLap) = ?
-                                 Group By MONTH(hd.NgayLap)
-                                 """;
     
     
     
@@ -192,24 +184,6 @@ public class ThongKeDAO {
             Logger.getLogger(ThongKeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
-    }
-    
-    public List<DoanhThuTheoNam> getDoanhThuTheoNam(int year){
-        try {
-            ResultSet rs = XJdbc.executeQuery(doanhThuTheoNam_SQL, year);
-            List<DoanhThuTheoNam> list = new ArrayList<>();
-            
-            while(rs.next()){
-                DoanhThuTheoNam dttn = new DoanhThuTheoNam();
-                dttn.setMonth(rs.getInt(1));
-                dttn.setTongTien(rs.getLong(2));
-                list.add(dttn);
-            }
-            return list;
-        } catch (SQLException ex) {
-            Logger.getLogger(ThongKeDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 //    public List<Object[]> getSum(int maLoai) {
 //        List<Object[]> resultList = new ArrayList<>();

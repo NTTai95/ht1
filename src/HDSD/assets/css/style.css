@@ -258,8 +258,3 @@ footer {
 .fanpage iframe:hover {
     box-shadow: 0px 5px 10px 10px lightpink;
 }
-
-.chinh a:hover{
-    color: brown !important;
-    font-size: 25px;
-}

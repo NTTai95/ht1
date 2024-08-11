@@ -69,35 +69,6 @@ public class ThongKe {
         }
     }
     
-    public static class DoanhThuTheoNam{
-        int month;
-        long TongTien;
-
-        public DoanhThuTheoNam() {
-        }
-
-        public DoanhThuTheoNam(int month, long TongTien) {
-            this.month = month;
-            this.TongTien = TongTien;
-        }
-
-        public int getMonth() {
-            return month;
-        }
-
-        public void setMonth(int month) {
-            this.month = month;
-        }
-
-        public long getTongTien() {
-            return TongTien;
-        }
-
-        public void setTongTien(long TongTien) {
-            this.TongTien = TongTien;
-        }
-    }
-    
     public static class DoanhThuCT{
         int MaHD;        
         Date ngayLap;
