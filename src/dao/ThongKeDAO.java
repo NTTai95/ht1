@@ -74,12 +74,19 @@ public class ThongKeDAO {
                                  Group By MONTH(hd.NgayLap)
                                  """;
     
+    String doanhSoMonAn_SQL = """
+                              Select ma.TenMon,sum(hdct.SoLuongMon) as SoLuong
+                              from HoaDon hd join HoaDonChiTiet hdct on hd.MaHD = hdct.MaHD
+                              join MonAn ma on hdct.MaMon = ma.MaMon
+                              Where Convert(date, hd.NgayLap) BETWEEN Convert(date, ?) AND Convert(date, ?)
+                              group by ma.TenMon
+                              order by soLuong asc
+                              """;
     
-    
-    public List<DoanhThuMonAn> getSum(String maLoai) {
+    public List<DoanhThuMonAn> getDoanhThuMonAn(Date tuNgay, Date denNgay) {
         List<DoanhThuMonAn> list = new ArrayList<>();
         try {
-            ResultSet rs = XJdbc.executeQuery(SUM_SQL, maLoai);
+            ResultSet rs = XJdbc.executeQuery(doanhSoMonAn_SQL, tuNgay, denNgay);
 
             while (rs.next()) {
                 DoanhThuMonAn dtma = new DoanhThuMonAn();
