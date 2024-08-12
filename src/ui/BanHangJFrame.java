@@ -1305,7 +1305,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
         lblMaHoaDon.setText("0");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("khách trả:");
 
         txtKhachTra.setText("0");
@@ -1321,7 +1320,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Thối lại:");
 
         txtThoiLai.setText("0");
