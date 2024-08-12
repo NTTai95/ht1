@@ -105,8 +105,8 @@ public class Printer {
                 g2d.drawRect(0, y, (int) pf.getImageableWidth(), 0);
 
                 y += 15; // Giảm khoảng cách
-                String[] header = new String[]{"Tên Món", "SL"}; // Rút gọn "Số lượng" thành "SL"
-                float[] widthColumn = new float[]{0.7f, 0.3f, 0f}; // Điều chỉnh tỷ lệ cột cho phù hợp
+                String[] header = new String[]{"Tên Món", "SL", "Đơn giá"}; // Rút gọn "Số lượng" thành "SL"
+                float[] widthColumn = new float[]{0.6f, 0.2f, 0.2f}; // Điều chỉnh tỷ lệ cột cho phù hợp
                 drawTable2clm(g2d, pf.getImageableWidth(), y, widthColumn, header, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
 
                 return PAGE_EXISTS;
@@ -239,7 +239,8 @@ public class Printer {
         int textWidth;
         float widthColumn1 = (float) (width * widthColumn[0]);
         float widthColumn2 = (float) (width * widthColumn[1]);
-        int fontSize = fontHeader.getSize() + 6; 
+        float widthColumn3 = (float) (width * widthColumn[2]); // Добавьте ширину для третьей колонки
+        int fontSize = fontHeader.getSize() + 6; // Уменьшаем размер шрифта заголовка
         g2d.setFont(fontHeader);
         g2d.drawString(header[0], x, y);
 
@@ -247,6 +248,11 @@ public class Printer {
         x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
 
         g2d.drawString(header[1], x, y);
+
+        // Добавьте заголовок для третьей колонки
+        textWidth = g2d.getFontMetrics().stringWidth(header[2]);
+        x = (int) (widthColumn1 + widthColumn2 + ((widthColumn3 - textWidth) / 2));
+        g2d.drawString(header[2], x, y);
 
         x = 0;
         fontSize = fontBody.getSize() + 6;
@@ -283,6 +289,12 @@ public class Printer {
             textWidth = g2d.getFontMetrics().stringWidth(text);
 
             x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+            g2d.drawString(text, x, y);
+
+            // Добавьте значение для третьей колонки
+            text = fmTien.format(hdct.getDonGia());
+            textWidth = g2d.getFontMetrics().stringWidth(text);
+            x = (int) (widthColumn1 + widthColumn2 + ((widthColumn3 - textWidth) / 2));
             g2d.drawString(text, x, y);
 
             if (i > 0) {
@@ -449,7 +461,6 @@ public class Printer {
     }
 
     public static void main(String[] args) {
-//        inHoaDon("7", 4000000);
-        inThongBaoBep("7");
+        inHoaDon("7", 4000000);
     }
 }
