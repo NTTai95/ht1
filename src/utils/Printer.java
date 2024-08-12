@@ -30,7 +30,8 @@ public class Printer {
 
     public static String tenNhaHang = "NHÀ HÀNG L'ESCALE CẦN THƠ";
     public static String tieuDe = "HÓA ĐƠN THANH TOÁN";
-    public static String diaChi = "Tầng 4, 01 Ngô Quyền Tan An Ward, Ninh Kieu 92000 Việt Nam";
+    public static String diaChi1 = "Tầng 4, 01 Ngô Quyền Tan An Ward,";
+    public static String diaChi2 = " Ninh Kieu, 92000 Việt Nam";
     public static String camOn = "Trân trọng cảm ơn!";
 
     public static String phieuCheBien = "PHIẾU CHẾ BIẾN";
@@ -138,7 +139,7 @@ public class Printer {
             pr.setImageableArea(mmToPonit(margin_left_right), mmToPonit(margin_top_bottom), mmToPonit(Printer.width) - (mmToPonit(margin_left_right) * 2), sizeHeader + heightHDCT + sizeFooter);
         } else {
 
-            int heightHDCT = getHeightHDCT((double) pf.getImageableWidth(), new float[]{0.7f, 0.3f, 0f}, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
+            int heightHDCT = getHeightHDCT((double) pf.getImageableWidth(), new float[]{0.6f, 0.1f, 0.3f}, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
 
             pr.setSize(mmToPonit(width), sizeHeader + heightHDCT + sizeFooter);
 
@@ -160,7 +161,9 @@ public class Printer {
                 g2d.setColor(Color.black);
                 drawCenter(tenNhaHang, fontTieuDe, g2d, pfo.getImageableWidth(), y);
                 y += 12; 
-                drawCenter(diaChi, fontDiaChi, g2d, pfo.getImageableWidth(), y);
+                drawCenter(diaChi1, fontDiaChi, g2d, pfo.getImageableWidth(), y);
+                y +=10;
+                drawCenter(diaChi2, fontDiaChi, g2d, pfo.getImageableWidth(), y);
                 y += 35; 
                 drawCenter(tieuDe, fontTieuDe, g2d, pfo.getImageableWidth(), y);
                 y += 12; 
@@ -178,7 +181,7 @@ public class Printer {
                 y += 18; 
 
                 String[] header = new String[]{"Tên món", "SL", "T.Tiền"}; 
-                float[] widthColumn = new float[]{0.5f, 0.2f, 0.3f}; 
+                float[] widthColumn = new float[]{0.6f, 0.1f, 0.3f}; 
                 drawTable3clm(g2d, pfo.getImageableWidth(), y, widthColumn, header, hdctDAO.selectHDCT(String.valueOf(hd.getMaHD())));
 
                 int thanhToan = 0;
