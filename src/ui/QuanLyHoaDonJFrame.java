@@ -508,22 +508,20 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     void huy() {
 
         try {
-
+            int[] selectedRows = tblHoaDon.getSelectedRows();
+            for (int i : selectedRows) {
+                String trangThai = (String) tblHoaDon.getValueAt(i, 5);
+                if ("Đã thanh toán".equals(trangThai)) {
+                    JOptionPane.showMessageDialog(this, "Hóa đơn đã thanh toán không thể bị hủy.");
+                    return;
+                }
+            }
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
                 String reason = JOptionPane.showInputDialog("Vui lòng nhập lý do hủy!");
 
                 if (reason != null && !reason.trim().isEmpty()) {
-                    int[] selectedRows = tblHoaDon.getSelectedRows();
-
                     for (int i : selectedRows) {
-                        
-                        String trangThai = (String) tblHoaDon.getValueAt(i, 5);
-                        if ("Đã thanh toán".equals(trangThai)) {
-                            JOptionPane.showMessageDialog(this, "Hóa đơn đã thanh toán không thể bị hủy.");
-                            return;
-                        }
-                        
                         int id = (Integer) tblHoaDon.getValueAt(i, 0);
                         HoaDon hd = new HoaDon();
                         hd.setMaHD(id);
@@ -540,7 +538,6 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 }
             }
       
-       
         } catch (Exception e) {
             e.printStackTrace();
         }
