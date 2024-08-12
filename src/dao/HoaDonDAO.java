@@ -129,8 +129,4 @@ public class HoaDonDAO extends SysDAO<HoaDon, Integer> {
      public List<HoaDon> selectByList(String MaNV,String keyword){
         return this.selectBySQL(SELECT_LIST, "%"+keyword+"%", MaNV);       
     }
-     public List<HoaDon> selectByTrangThai1(Integer trangThai){
-        return this.selectBySQL(SELECT_TRANGTHAI, trangThai);
-    }
-    
 }

@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
@@ -53,6 +54,9 @@ public class ThongKeJFrame extends javax.swing.JFrame {
      * Creates new form ThongKeJFrame
      */
     public ThongKeJFrame() {
+        ImageIcon icon = new ImageIcon("./img/logo.jpg");
+        setIconImage(icon.getImage());
+        
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Thống Kê");
         initComponents();
         fillComboBoxLoaiMon();
