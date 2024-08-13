@@ -10,6 +10,7 @@ import dao.KhachHangDAO;
 import dao.NhanVienDAO;
 import entity.HoaDon;
 import entity.HoaDonChiTiet;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import utils.MsgBox;
+import utils.XuatExcel;
 
 /**
  *
@@ -39,7 +41,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     public QuanLyHoaDonJFrame() {
         initComponents();
         init();
-        
+
         ImageIcon icon = new ImageIcon("./img/logo.jpg");
         setIconImage(icon.getImage());
     }
@@ -65,6 +67,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         cboTrangThai = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         txtTimNV = new javax.swing.JTextField();
+        btnXuatExcel = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHDCT = new javax.swing.JTable();
@@ -120,6 +123,9 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
             tblHoaDon.getColumnModel().getColumn(4).setPreferredWidth(30);
         }
 
+        btnHuy.setBackground(new java.awt.Color(255, 0, 51));
+        btnHuy.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnHuy.setForeground(new java.awt.Color(255, 255, 255));
         btnHuy.setText("Hủy");
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,6 +150,16 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
             }
         });
 
+        btnXuatExcel.setBackground(new java.awt.Color(51, 255, 0));
+        btnXuatExcel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXuatExcel.setForeground(new java.awt.Color(255, 255, 255));
+        btnXuatExcel.setText("Xuất Excel");
+        btnXuatExcel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -163,7 +179,9 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnHuy, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnXuatExcel, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnHuy)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -177,9 +195,11 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                     .addComponent(txtTimNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 475, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnHuy)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnHuy)
+                    .addComponent(btnXuatExcel))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 51)), "Chi tiết hóa đơn", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12), new java.awt.Color(255, 0, 51))); // NOI18N
@@ -328,6 +348,15 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         huy();
     }//GEN-LAST:event_btnHuyActionPerformed
 
+    private void btnXuatExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelActionPerformed
+        try {
+            // TODO add your handling code here:
+            XuatExcel.printReport(tblHoaDon.getModel(), "Danh Sach Hoa Don");
+        } catch (IOException ex) {
+            MsgBox.alert(this, "Vui lòng đóng file trước khi xuất!");
+        }
+    }//GEN-LAST:event_btnXuatExcelActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -365,6 +394,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnXuatExcel;
     private javax.swing.JComboBox<String> cboTrangThai;
     private javax.swing.ButtonGroup grpBanAn;
     private javax.swing.ButtonGroup grpGhiChu;
@@ -506,22 +536,24 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
     }
 
     void huy() {
-
         try {
             int[] selectedRows = tblHoaDon.getSelectedRows();
             for (int i : selectedRows) {
                 String trangThai = (String) tblHoaDon.getValueAt(i, 5);
-                if ("Đã thanh toán".equals(trangThai)) {
-                    JOptionPane.showMessageDialog(this, "Hóa đơn đã thanh toán không thể bị hủy.");
+                if ("Chưa thanh toán".equals(trangThai)) {
+                    JOptionPane.showMessageDialog(this, "Không thể hủy hóa đơn chưa thanh toán!.");
                     return;
+                }
+
+                if ("Đã hủy".equals(trangThai)) {
+                    continue;
                 }
             }
             int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
             if (confirm == JOptionPane.YES_OPTION) {
-                String reason = JOptionPane.showInputDialog("Vui lòng nhập lý do hủy!");
-
-                if (reason != null && !reason.trim().isEmpty()) {
-                    for (int i : selectedRows) {
+                for (int i : selectedRows) {
+                    String reason = JOptionPane.showInputDialog("Mã HD: \nVui lòng nhập lý do hủy!");
+                    if (reason != null && !reason.trim().isEmpty()) {
                         int id = (Integer) tblHoaDon.getValueAt(i, 0);
                         HoaDon hd = new HoaDon();
                         hd.setMaHD(id);
@@ -530,14 +562,15 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                         hd.setGhiChu(reason);
 
                         dao.update(hd);
+                    } else {
+                        MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
+                        continue;
                     }
                     fillTable();
                     JOptionPane.showMessageDialog(this, "Hóa đơn đã được hủy!");
-                } else {
-                    MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
                 }
             }
-      
+
         } catch (Exception e) {
             e.printStackTrace();
         }

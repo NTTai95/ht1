@@ -63,7 +63,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         fillTableLM();
         updateStatusLM();
         updateStatus();
-        
+
         ImageIcon icon = new ImageIcon("./img/logo.jpg");
         setIconImage(icon.getImage());
     }
@@ -217,13 +217,16 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
     ImageIcon chonAnh() throws IOException {
 
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
 
-            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Hình ảnh", "jpg", "jpeg", "png", "gif"));
+        int op = fileChooser.showOpenDialog(this);
+        if (op == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             XImage.save(file);
             ImageIcon icon = XImage.read(file.getName());
             return icon;
+        }else if(op == JFileChooser.CANCEL_OPTION){
+            MsgBox.alert(this, "Ảnh chưa được chọn!");
         }
         return null;
     }
@@ -1011,6 +1014,9 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         if (evt.getClickCount() == 2) {
             try {
                 ImageIcon anh = chonAnh();
+                if(anh == null){
+                    return;
+                }
                 Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);
                 lblAnh.setIcon(anh != null ? new ImageIcon(img) : lblAnh.getIcon());
                 lblAnh.setToolTipText(anh.getDescription());
