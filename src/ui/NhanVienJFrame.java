@@ -28,7 +28,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         setTitle("Hệ thống quản lý nhà hàng L'ESSALE - Quản Lý Nhân Viên");
         initComponents();
         init();
-        
+
         ImageIcon icon = new ImageIcon("./img/logo.jpg");
         setIconImage(icon.getImage());
     }
@@ -355,11 +355,12 @@ public class NhanVienJFrame extends javax.swing.JFrame {
 
     private void btnHideShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHideShowActionPerformed
         // TODO add your handling code here:
-        if(txt_matKhau.getEchoChar() == '\u2022'){
-            txt_matKhau.setEchoChar((char)0);
+        if (txt_matKhau.getEchoChar() == '\u2022') {
+            txt_matKhau.setEchoChar((char) 0);
             ImageIcon icon = new ImageIcon("./img/hide.png");
+            System.out.println(icon.getDescription());
             btnHideShow.setIcon(icon);
-        }else{
+        } else {
             txt_matKhau.setEchoChar('\u2022');
             ImageIcon icon = new ImageIcon("./img/show.png");
             btnHideShow.setIcon(icon);
@@ -434,16 +435,16 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     }
 
     public boolean checkForm() {
-        if(txt_tenNV.getText().trim().equals("")){
+        if (txt_tenNV.getText().trim().equals("")) {
             MsgBox.alert(this, "Vui lòng nhập tên nhân viên!");
             return false;
-        }else if(txt_matKhau.getText().trim().equals("")){
+        } else if (txt_matKhau.getText().trim().equals("")) {
             MsgBox.alert(this, "Vui lòng nhập mật khẩu!");
             return false;
-        }else if(txt_email.getText().trim().equals("")){
+        } else if (txt_email.getText().trim().equals("")) {
             MsgBox.alert(this, "Vui lòng nhập email!");
             return false;
-        }else if (txt_tenNV.getText().matches(".*\\d.*")) {
+        } else if (txt_tenNV.getText().matches(".*\\d.*")) {
             MsgBox.alert(this, "Tên nhân viên không hợp lệ!");
             return false;
         } else if (!txt_email.getText().matches("^[\\w.-]+@([\\w-]+\\.)+[\\w]+$")) {
@@ -459,10 +460,13 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         try {
             List<NhanVien> list = dao.selectAll(); //đọc dữ lịu từ sql
             for (NhanVien nv : list) {
+                String tenNV = nv.getTenNV();
+                if(nv.getMaNV().equals(Auth.user.getMaNV())){
+                  tenNV = "<html><p style='font-weight:bold'>"+tenNV+"</p></html>"; 
+                }
                 Object[] row = {
                     nv.getMaNV(),
-                    //nv.getMatKhau(),
-                    nv.getTenNV(),
+                    tenNV,
                     nv.isVaiTro() ? "Quản lý" : "Nhân Viên",
                     nv.getEmail()
                 };
@@ -506,6 +510,44 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         btn_them.setEnabled(!edit);
         btn_capNhat.setEnabled(edit);
         btn_xoa.setEnabled(edit);
+        rdo_nhanVien.setEnabled(true);
+        rdo_quanLy.setEnabled(true);
+        
+        if (!Auth.user.getMaNV().equals("NV01")) {
+            rdo_quanLy.setEnabled(false);
+        }
+        if (row < 0) {
+            return;
+        }
+
+        String maNV = (String) tbl_NhanVien.getValueAt(row, 0);
+        System.out.println(maNV);
+        if (Auth.user.getMaNV().equals("NV01")) {
+            if (maNV.equals("NV01")) {
+                btn_xoa.setEnabled(false);
+                rdo_nhanVien.setEnabled(false);
+                rdo_quanLy.setEnabled(false);
+            }
+        } else {
+            if (tbl_NhanVien.getValueAt(row, 2).equals("Quản lý")) {
+                btn_xoa.setEnabled(false);
+                rdo_nhanVien.setEnabled(false);
+                rdo_quanLy.setEnabled(false);
+                if (!tbl_NhanVien.getValueAt(row, 0).equals(Auth.user.getMaNV())) {
+                    btn_capNhat.setEnabled(false);
+                    btnHideShow.setEnabled(false);
+                    txt_matKhau.setText("");
+                    txt_matKhau.setEditable(false);
+                    return;
+                }
+                btnHideShow.setEnabled(true);
+            } else {
+                btnHideShow.setEnabled(true);
+                btn_xoa.setEnabled(true);
+                rdo_nhanVien.setEnabled(true);
+                rdo_quanLy.setEnabled(false);
+            }
+        }
     }
 
     void clearForm() {

@@ -17,7 +17,7 @@ import entity.NhanVien;
 public class Auth {
 
 //    public static NhanVien user = new NhanVien("NV01", "Nguyễn Tấn Tài", "nv1234", "nguyentantaivithanh@gmail.com", false);
-    public static NhanVien user = new NhanVien("NV02", "Nguyễn Tấn Tài", "nv1234", "nguyentantaivithanh@gmail.com", true);
+    public static NhanVien user = new NhanVien("NV03", "Nguyễn Tấn Tài", "nv1234", "nguyentantaivithanh@gmail.com", true);
     public static void clear(){
         Auth.user = null;
     }

@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import utils.Auth;
@@ -520,7 +521,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 txtThoiLai.setText(fmTien.format(Integer.parseInt(tienKhachTra) - tongTien));
                 return true;
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             txtThoiLai.setText("không hợp lệ!");
         }
         return false;
@@ -604,7 +605,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         } else if (txtSDT.getText().trim().length() < 10 || txtSDT.getText().trim().length() > 14) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!");
             return false;
-        }else if(!txtSDT.getText().startsWith(0+"")){
+        } else if (!txtSDT.getText().startsWith(0 + "")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại phải bắt đầu bằng số 0!");
             return false;
         }
@@ -657,12 +658,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     public boolean checkTrungSDT(KhachHang khNew) {
         KhachHang kh = khDAO.selectBySDT(khNew.getSDT());
-        System.out.println("kh != null - :" + kh != null);
-        if (khNew.getMaKH().equals("KH0032")) {
-            System.out.println("ui.BanHangJFrame.checkTrungSDT()");
-        }
         if (kh != null) {
-
             if (kh.getMaKH().equalsIgnoreCase(khNew.getMaKH())) {
                 System.out.println("--Chính nó");
                 return false;
@@ -691,7 +687,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
             KhachHang khTemp = new KhachHang();
             khTemp.setMaKH(tblListKH.getValueAt(i, 0).toString());
             String tenKhachHang = tblListKH.getValueAt(i, 1).toString();
-            if (tenKhachHang.matches(".*\\d.*")) {
+            if (tenKhachHang.trim().equals("")) {
+                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - tên không được bỏ trống '" + tblListKH.getValueAt(i, 1) + "'");
+                continue;
+            } else if (tenKhachHang.matches(".*\\d.*")) {
                 MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Tên Không hợp lệ '" + tblListKH.getValueAt(i, 1) + "'");
                 continue;
             }
@@ -699,12 +698,21 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
             String SDT = tblListKH.getValueAt(i, 2).toString();
             khTemp.setSDT(SDT);
-            if (SDT.matches(".*\\D.*") || SDT.length() < 9) {
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại Không hợp lệ '" + tblListKH.getValueAt(i, 2) + "'");
+            if(SDT.trim().equals("")){
+                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại không được bỏ trống! '" + tblListKH.getValueAt(i, 2) + "'");
+                continue;
+            }else if (SDT.matches(".*\\D.*")) {
+                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại không nhập chữ! '" + tblListKH.getValueAt(i, 2) + "'");
                 continue;
             } else if (checkTrungSDT(khTemp)) {
                 KhachHang khNew = khDAO.selectBySDT(khTemp.getSDT());
                 MsgBox.alert(this, khTemp.getMaKH() + " - " + khNew.getMaKH() + " - Số điện thoại bị trùng!");
+                continue;
+            }else if(SDT.length() < 10 || SDT.length() > 14){
+                 MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - số điện thoại không hợp lệ! '" + tblListKH.getValueAt(i, 2) + "'");
+                continue;
+            }else if(!SDT.startsWith(0+"")){
+                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - số điện thoại phải bắt đầu bằng 0! '" + tblListKH.getValueAt(i, 2) + "'");
                 continue;
             }
 
@@ -772,15 +780,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         return baTemp;
     }
-    
-    public void chuyenBanAn(){
-       String maBA = JOptionPane.showInputDialog(this, "Nhập mã bàn muốn chuyển :", "Chuyển Bàn Ăn", JOptionPane.QUESTION_MESSAGE);
+
+    public void chuyenBanAn() {
+        String maBA = JOptionPane.showInputDialog(this, "Nhập mã bàn muốn chuyển :", "Chuyển Bàn Ăn", JOptionPane.QUESTION_MESSAGE);
         maBA = maBA == null ? null : maBA.toUpperCase();
 
         if (maBA == null) {
             return;
         };
-        
+
         if (!maBA.startsWith("B") || maBA.length() < 4 || !maBA.substring(1).matches("[0-9]{3}")) {
             JOptionPane.showMessageDialog(this, "Mã bàn ăn không hợp lệ!");
             return;
@@ -806,7 +814,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Không tìm thấy bàn ăn '" + maBA + "'");
             return;
         }
-        
+
         check = false;
         for (HoaDon hd1 : hd) {
             if (hd1.getMaB().equalsIgnoreCase(maBA)) {
@@ -818,19 +826,19 @@ public class BanHangJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Không thể chuyển sang bàn đang có khách!");
             return;
         }
-        
+
         HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
-        
+
         hdTemp.setMaB(maBA);
-        
+
         hdDAO.update(hdTemp);
-        
+
         hd = hdDAO.selectByTrangThai("0");
-        
+
         loadBanAn();
         loadHoaDon();
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -960,6 +968,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         tblBanAn.setGridColor(new java.awt.Color(204, 204, 204));
         tblBanAn.setRowHeight(25);
         tblBanAn.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblBanAn.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblBanAn.setShowGrid(true);
         tblBanAn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1029,6 +1038,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         });
         tblThucDon.setRowHeight(130);
         tblThucDon.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        tblThucDon.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblThucDon.setShowGrid(true);
         tblThucDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1131,6 +1141,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         tblHoaDonChiTiet.setGridColor(new java.awt.Color(255, 102, 102));
         tblHoaDonChiTiet.setRowHeight(25);
         tblHoaDonChiTiet.setSelectionBackground(new java.awt.Color(255, 204, 204));
+        tblHoaDonChiTiet.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblHoaDonChiTiet.setShowGrid(true);
         tblHoaDonChiTiet.addHierarchyListener(new java.awt.event.HierarchyListener() {
             public void hierarchyChanged(java.awt.event.HierarchyEvent evt) {
@@ -1784,6 +1795,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         tblListBanAn.setFillsViewportHeight(true);
         tblListBanAn.setGridColor(new java.awt.Color(153, 153, 153));
         tblListBanAn.setRowHeight(25);
+        tblListBanAn.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblListBanAn.setShowGrid(true);
         tblListBanAn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1930,164 +1942,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtmaKHActionPerformed
 
-    private void btnThongBaoBepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongBaoBepActionPerformed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            return;
-        }
-        if (Printer.inThongBaoBep(lblMaHoaDon.getText())) {
-            JOptionPane.showMessageDialog(this, "Đã in thông báo bếp!");
-        } else {
-            MsgBox.alert(this, "Thông báo bếp chưa được in!");
-        }
-
-    }//GEN-LAST:event_btnThongBaoBepActionPerformed
-
-    private void cboBATrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboBATrangThaiActionPerformed
-        // TODO add your handling code here:
-        loadBanAn();
-    }//GEN-LAST:event_cboBATrangThaiActionPerformed
-
-    private void tblBanAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBanAnMouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            this.row = tblBanAn.getSelectedRow();
-            if (row >= 0) {
-                loadHoaDon();
-            }
-        }
-    }//GEN-LAST:event_tblBanAnMouseClicked
-
-    private void cboLoaiMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonAnActionPerformed
-        // TODO add your handling code here:
-        loadThucDon();
-    }//GEN-LAST:event_cboLoaiMonAnActionPerformed
-
-    private void txtTimKiemMonAnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemMonAnKeyPressed
-        // TODO add your handling code here:
-        loadThucDon();
-    }//GEN-LAST:event_txtTimKiemMonAnKeyPressed
-
-    private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            return;
-        }
-        if (!tinhTienThoi()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập tiền khách trả!");
-            return;
-        }
-
-        String tienKhachTra = txtKhachTra.getText().replaceAll("\\.", "");
-        tienKhachTra = tienKhachTra.replaceAll(",", "");
-        tienKhachTra = tienKhachTra.replaceAll(" ", "");
-        if (Printer.inHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra))) {
-            JOptionPane.showMessageDialog(this, "Đã in hóa đơn!");
-        } else {
-            MsgBox.alert(this, "Hóa đơn chưa được in!");
-        }
-
-    }//GEN-LAST:event_btnInHoaDonActionPerformed
-
-    private void tblThucDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThucDonMouseClicked
-        // TODO add your handling code here:
-        if (evt.getClickCount() == 2) {
-            if (tblThucDon.getSelectedRow() >= 0) {
-                themMonAn();
-            }
-        }
-    }//GEN-LAST:event_tblThucDonMouseClicked
-
-    private void tblHoaDonChiTietMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietMouseClicked
-        // TODO add your handling code here:
-        btnXoaMonAn.setEnabled(true);
-
-    }//GEN-LAST:event_tblHoaDonChiTietMouseClicked
-
-    private void tblHoaDonChiTietAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietAncestorAdded
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tblHoaDonChiTietAncestorAdded
-
-    private void tblHoaDonChiTietInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietInputMethodTextChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tblHoaDonChiTietInputMethodTextChanged
-
-    private void tblHoaDonChiTietKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietKeyPressed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tblHoaDonChiTietKeyPressed
-
-    private void txtTimKiemKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKhachHangKeyPressed
-        // TODO add your handling code here:
-        KhachHang khTemp = timKhachHangbySDT(txtTimKiemKhachHang.getText());
-        lblTenKhachHang.setText(khTemp != null ? khTemp.getTenKH() : "không tìm thấy!");
-    }//GEN-LAST:event_txtTimKiemKhachHangKeyPressed
-
-    private void btnTaoHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoHDActionPerformed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            System.out.println("Hoa Don Khong Duoc Luu");
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng");
-            return;
-        }
-        int rowTemp = row;
-        hdDAO.insert(getFrom(0));
-        hd = hdDAO.selectByTrangThai("0");
-        loadBanAn();
-        row = rowTemp;
-        tblBanAn.setRowSelectionInterval(row, row);
-        loadHoaDon();
-    }//GEN-LAST:event_btnTaoHDActionPerformed
-
-    private void tblHoaDonChiTietFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietFocusGained
-        // TODO add your handling code here:
-        capNhatHDCT();
-    }//GEN-LAST:event_tblHoaDonChiTietFocusGained
-
-    private void btnGopBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGopBanActionPerformed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            return;
-        }
-
-        gopBanAn();
-    }//GEN-LAST:event_btnGopBanActionPerformed
-
-    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            System.out.println("Hóa đơn không hợp lệ");
-            return;
-        }
-        
-        if (!tinhTienThoi()) {
-            JOptionPane.showMessageDialog(this, "Tiền khách trả chưa nhập hoặc chưa đủ!");
-            return;
-        }
-        
-        HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
-        hdTemp.setTrangThai(1);
-
-        hdDAO.update(hdTemp);
-        hd = hdDAO.selectByTrangThai("0");
-        loadBanAn();
-        loadHoaDon();
-    }//GEN-LAST:event_btnThanhToanActionPerformed
-
-    private void btnXoaMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaMonAnActionPerformed
-        // TODO add your handling code here:
-        List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
-        for (int x : tblHoaDonChiTiet.getSelectedRows()) {
-            hdctDAO.delete(lblMaHoaDon.getText(), hdctTemp.get(x - 1).getMaMon());
-            hdctTemp.remove(x - 1);
-        }
-
-        loadHoaDonChiTiet(hdctTemp);
-        tinhTienThoi();
-    }//GEN-LAST:event_btnXoaMonAnActionPerformed
-
     private void btntimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntimKiemActionPerformed
         // TODO add your handling code here:
         fillTable();
@@ -2102,22 +1956,6 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tblListKHMouseClicked
-
-    private void txtKhachTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKhachTraActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtKhachTraActionPerformed
-
-    private void txtThoiLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThoiLaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtThoiLaiActionPerformed
-
-    private void txtKhachTraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKhachTraKeyPressed
-        // TODO add your handling code here:
-        if (!checkHoaDon()) {
-            return;
-        }
-        tinhTienThoi();
-    }//GEN-LAST:event_txtKhachTraKeyPressed
 
     private void btnThemBanAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemBanAnActionPerformed
         // TODO add your handling code here:
@@ -2210,22 +2048,193 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTenKHActionPerformed
 
+    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSDTActionPerformed
+
+    private void btnChuyenBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChuyenBanActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            return;
+        }
+
+        chuyenBanAn();
+    }//GEN-LAST:event_btnChuyenBanActionPerformed
+
+    private void txtThoiLaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThoiLaiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtThoiLaiActionPerformed
+
+    private void txtKhachTraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtKhachTraKeyPressed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            return;
+        }
+        tinhTienThoi();
+    }//GEN-LAST:event_txtKhachTraKeyPressed
+
+    private void txtKhachTraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKhachTraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtKhachTraActionPerformed
+
+    private void btnTaoHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoHDActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            System.out.println("Hoa Don Khong Duoc Luu");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng");
+            return;
+        }
+        int rowTemp = row;
+        hdDAO.insert(getFrom(0));
+        hd = hdDAO.selectByTrangThai("0");
+        loadBanAn();
+        row = rowTemp;
+        tblBanAn.setRowSelectionInterval(row, row);
+        loadHoaDon();
+    }//GEN-LAST:event_btnTaoHDActionPerformed
+
+    private void btnInHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHoaDonActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            return;
+        }
+        if (!tinhTienThoi()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập tiền khách trả!");
+            return;
+        }
+
+        String tienKhachTra = txtKhachTra.getText().replaceAll("\\.", "");
+        tienKhachTra = tienKhachTra.replaceAll(",", "");
+        tienKhachTra = tienKhachTra.replaceAll(" ", "");
+        if (Printer.inHoaDon(lblMaHoaDon.getText(), Integer.parseInt(tienKhachTra))) {
+            JOptionPane.showMessageDialog(this, "Đã in hóa đơn!");
+        } else {
+            MsgBox.alert(this, "Hóa đơn chưa được in!");
+        }
+    }//GEN-LAST:event_btnInHoaDonActionPerformed
+
+    private void btnThongBaoBepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongBaoBepActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            return;
+        }
+        if (Printer.inThongBaoBep(lblMaHoaDon.getText())) {
+            JOptionPane.showMessageDialog(this, "Đã in thông báo bếp!");
+        } else {
+            MsgBox.alert(this, "Thông báo bếp chưa được in!");
+        }
+    }//GEN-LAST:event_btnThongBaoBepActionPerformed
+
+    private void btnGopBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGopBanActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            return;
+        }
+
+        gopBanAn();
+    }//GEN-LAST:event_btnGopBanActionPerformed
+
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
+        // TODO add your handling code here:
+        if (!checkHoaDon()) {
+            System.out.println("Hóa đơn không hợp lệ");
+            return;
+        }
+
+        if (!tinhTienThoi()) {
+            JOptionPane.showMessageDialog(this, "Tiền khách trả chưa nhập hoặc chưa đủ!");
+            return;
+        }
+
+        HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
+        hdTemp.setTrangThai(1);
+
+        hdDAO.update(hdTemp);
+        hd = hdDAO.selectByTrangThai("0");
+        loadBanAn();
+        loadHoaDon();
+    }//GEN-LAST:event_btnThanhToanActionPerformed
+
+    private void txtTimKiemKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemKhachHangKeyPressed
+        // TODO add your handling code here:
+        KhachHang khTemp = timKhachHangbySDT(txtTimKiemKhachHang.getText());
+        lblTenKhachHang.setText(khTemp != null ? khTemp.getTenKH() : "không tìm thấy!");
+    }//GEN-LAST:event_txtTimKiemKhachHangKeyPressed
+
+    private void btnXoaMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaMonAnActionPerformed
+        // TODO add your handling code here:
+        List<HoaDonChiTiet> hdctTemp = hdctDAO.selectHDCT(lblMaHoaDon.getText());
+        
+        System.out.println(Arrays.toString(tblHoaDonChiTiet.getSelectedRows()));
+        
+        for (int x : tblHoaDonChiTiet.getSelectedRows()) {
+            hdctDAO.delete(lblMaHoaDon.getText(), hdctTemp.get(x).getMaMon());
+            hdctTemp.remove(x);
+        }
+
+        loadHoaDonChiTiet(hdctTemp);
+        tinhTienThoi();
+    }//GEN-LAST:event_btnXoaMonAnActionPerformed
+
+    private void tblHoaDonChiTietKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblHoaDonChiTietKeyPressed
+
+    private void tblHoaDonChiTietInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietInputMethodTextChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblHoaDonChiTietInputMethodTextChanged
+
+    private void tblHoaDonChiTietMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietMouseClicked
+        // TODO add your handling code here:
+        btnXoaMonAn.setEnabled(true);
+    }//GEN-LAST:event_tblHoaDonChiTietMouseClicked
+
+    private void tblHoaDonChiTietFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietFocusGained
+        // TODO add your handling code here:
+        capNhatHDCT();
+    }//GEN-LAST:event_tblHoaDonChiTietFocusGained
+
+    private void tblHoaDonChiTietAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietAncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblHoaDonChiTietAncestorAdded
+
     private void tblHoaDonChiTietHierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_tblHoaDonChiTietHierarchyChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_tblHoaDonChiTietHierarchyChanged
 
-    private void btnChuyenBanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChuyenBanActionPerformed
+    private void txtTimKiemMonAnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKiemMonAnKeyPressed
         // TODO add your handling code here:
-        if(!checkHoaDon()){
-            return;
-        }
-        
-        chuyenBanAn();
-    }//GEN-LAST:event_btnChuyenBanActionPerformed
+        loadThucDon();
+    }//GEN-LAST:event_txtTimKiemMonAnKeyPressed
 
-    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
+    private void cboLoaiMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboLoaiMonAnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSDTActionPerformed
+        loadThucDon();
+    }//GEN-LAST:event_cboLoaiMonAnActionPerformed
+
+    private void tblThucDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblThucDonMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            if (tblThucDon.getSelectedRow() >= 0) {
+                themMonAn();
+            }
+        }
+    }//GEN-LAST:event_tblThucDonMouseClicked
+
+    private void cboBATrangThaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboBATrangThaiActionPerformed
+        // TODO add your handling code here:
+        loadBanAn();
+    }//GEN-LAST:event_cboBATrangThaiActionPerformed
+
+    private void tblBanAnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblBanAnMouseClicked
+        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            this.row = tblBanAn.getSelectedRow();
+            if (row >= 0) {
+                loadHoaDon();
+            }
+        }
+    }//GEN-LAST:event_tblBanAnMouseClicked
 
     /**
      * @param args the command line arguments
