@@ -124,7 +124,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         );
         pnlDoanhThuLayout.setVerticalGroup(
             pnlDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 666, Short.MAX_VALUE)
+            .addGap(0, 632, Short.MAX_VALUE)
         );
 
         ycrNam.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -168,7 +168,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        tabs.addTab("DOANH THU", jPanel2);
+        tabs.addTab("DOANH THU THEO NĂM", jPanel2);
 
         btnXuatExcelDTCT.setBackground(new java.awt.Color(51, 255, 0));
         btnXuatExcelDTCT.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -276,7 +276,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                             .addComponent(clrDenNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnXuatExcelDTCT))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -410,7 +410,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel7)
                             .addComponent(lblSoLuongItNhat))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -425,8 +425,8 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(tabs))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(tabs, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();

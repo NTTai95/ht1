@@ -12,6 +12,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,8 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
 
     LoaiMonDAO daolm = new LoaiMonDAO();
     int rowlm = 0;
+    
+    DecimalFormat fmTien = new DecimalFormat("#,#00");
 
     DefaultTableModel modelTableHA = new DefaultTableModel(new Object[]{"Mã món ăn", "Tên món ăn", "Đơn giá", "Hình ảnh"}, 0) {
         @Override
@@ -122,13 +125,13 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
                 if (cd.getDonGia() > min && cd.getDonGia() < max) {
                     Image hinhAnh = new ImageIcon(cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
                     Object[] row = {
-                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
+                        cd.getMaMon(), cd.getTenMon(), fmTien.format(cd.getDonGia()), new ImageIcon(hinhAnh)
                     };
                     model.addRow(row);
                 } else if (min == -1 && max == -1) {
                     Image hinhAnh = new ImageIcon(cd.getAnh()).getImage().getScaledInstance(tblMonAn.getRowHeight(), tblMonAn.getRowHeight(), Image.SCALE_SMOOTH);
                     Object[] row = {
-                        cd.getMaMon(), cd.getTenMon(), cd.getDonGia(), new ImageIcon(hinhAnh)
+                        cd.getMaMon(), cd.getTenMon(), fmTien.format(cd.getDonGia()), new ImageIcon(hinhAnh)
                     };
                     model.addRow(row);
                 }
@@ -183,7 +186,7 @@ public class QuanLyMonAnJFrame extends javax.swing.JFrame {
         txtMaLoai.setText(model.getMaLoai());
         txtMaMon.setText(model.getMaMon());
         txtTenMonAn.setText(model.getTenMon());
-        txtDonGia.setText(String.valueOf(model.getDonGia()));
+        txtDonGia.setText(fmTien.format(model.getDonGia()));
         if (!model.getAnh().equals("")) {
             ImageIcon anh = new ImageIcon(model.getAnh());
             Image img = anh.getImage().getScaledInstance(lblAnh.getWidth(), lblAnh.getHeight(), Image.SCALE_SMOOTH);

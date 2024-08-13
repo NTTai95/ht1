@@ -90,6 +90,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
         mniNhanVien = new javax.swing.JMenuItem();
         mnuThongKe = new javax.swing.JMenu();
+        mniDoanhThuChiTiet = new javax.swing.JMenuItem();
         mniDoanhSo = new javax.swing.JMenuItem();
         mniDoanhThu = new javax.swing.JMenuItem();
         mnuTroGiup = new javax.swing.JMenu();
@@ -399,6 +400,16 @@ public class TrangChuJFrame extends javax.swing.JFrame {
             }
         });
 
+        mniDoanhThuChiTiet.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        mniDoanhThuChiTiet.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/List.png"))); // NOI18N
+        mniDoanhThuChiTiet.setText("DOANH THU CHI TIẾT");
+        mniDoanhThuChiTiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniDoanhThuChiTietActionPerformed(evt);
+            }
+        });
+        mnuThongKe.add(mniDoanhThuChiTiet);
+
         mniDoanhSo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mniDoanhSo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Best.png"))); // NOI18N
         mniDoanhSo.setText("DOANH SỐ MÓN ĂN");
@@ -412,7 +423,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
         mniDoanhThu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         mniDoanhThu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Diagram.png"))); // NOI18N
-        mniDoanhThu.setText("DOANH THU ");
+        mniDoanhThu.setText("DOANH THU THEO NĂM");
         mniDoanhThu.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mniDoanhThu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -592,7 +603,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private void mniDoanhSoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhSoActionPerformed
         // TODO add your handling code here:
         ThongKeJFrame thongKe = new ThongKeJFrame();
-        thongKe.selectTab(0);
+        thongKe.selectTab(2);
         thongKe.setVisible(true);
         dispose();
     }//GEN-LAST:event_mniDoanhSoActionPerformed
@@ -600,7 +611,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private void mniDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuActionPerformed
         // TODO add your handling code here:
         ThongKeJFrame thongKe = new ThongKeJFrame();
-        thongKe.selectTab(1);
+        thongKe.selectTab(0);
         thongKe.setVisible(true);
         dispose();
     }//GEN-LAST:event_mniDoanhThuActionPerformed
@@ -614,6 +625,14 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         openHDSD();
     }//GEN-LAST:event_mniHDSDActionPerformed
+
+    private void mniDoanhThuChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuChiTietActionPerformed
+        // TODO add your handling code here:
+        ThongKeJFrame thongKe = new ThongKeJFrame();
+        thongKe.selectTab(1);
+        thongKe.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_mniDoanhThuChiTietActionPerformed
 
     /**
      * @param args the command line arguments
@@ -677,6 +696,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem mniBanHang;
     private javax.swing.JMenuItem mniDoanhSo;
     private javax.swing.JMenuItem mniDoanhThu;
+    private javax.swing.JMenuItem mniDoanhThuChiTiet;
     private javax.swing.JMenuItem mniHDSD;
     private javax.swing.JMenuItem mniHoaDon;
     private javax.swing.JMenuItem mniMonAn;

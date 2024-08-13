@@ -108,6 +108,7 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblHoaDon.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         tblHoaDon.setShowGrid(true);
         tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -535,45 +536,48 @@ public class QuanLyHoaDonJFrame extends javax.swing.JFrame {
         return model;
     }
 
+    public String getValueTable(String str) {
+        if (!str.startsWith("<html>")) {
+            return str;
+        }
+        String strNew = str.substring(6, str.length() - 7);
+        int start = strNew.indexOf(">");
+        int end = strNew.lastIndexOf("<");
+
+        return strNew.substring(start + 1, end);
+    }
+    
     void huy() {
-        try {
-            int[] selectedRows = tblHoaDon.getSelectedRows();
-            for (int i : selectedRows) {
-                String trangThai = (String) tblHoaDon.getValueAt(i, 5);
-                if ("Chưa thanh toán".equals(trangThai)) {
-                    JOptionPane.showMessageDialog(this, "Không thể hủy hóa đơn chưa thanh toán!.");
-                    return;
-                }
+        int selectedRow = tblHoaDon.getSelectedRow();
+        String trangThai = getValueTable(tblHoaDon.getValueAt(selectedRow, 5).toString());
+        if ("Chưa thanh toán".equals(trangThai)) {
+            JOptionPane.showMessageDialog(this, "Không thể hủy hóa đơn chưa thanh toán!.");
+            return;
+        }
 
-                if ("Đã hủy".equals(trangThai)) {
-                    continue;
-                }
+        if ("Đã hủy".equals(trangThai)) {
+            JOptionPane.showMessageDialog(this, "Hóa đơn đã có trạng thái hủy!.");
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            String reason = JOptionPane.showInputDialog("Mã HD: "+tblHoaDon.getValueAt(selectedRow, 0).toString()+" \nVui lòng nhập lý do hủy!");
+            if (reason != null && !reason.trim().isEmpty()) {
+                int id = (Integer) tblHoaDon.getValueAt(selectedRow, 0);
+                HoaDon hd = new HoaDon();
+                hd.setMaHD(id);
+                hd.setMaB((String) tblHoaDon.getValueAt(selectedRow, 4));
+                hd.setTrangThai(-1);
+                hd.setGhiChu(reason);
+
+                dao.update(hd);
+            } else {
+                MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
+                return;
             }
-            int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn hủy!", "Xác nhận hủy", JOptionPane.YES_NO_OPTION);
-            if (confirm == JOptionPane.YES_OPTION) {
-                for (int i : selectedRows) {
-                    String reason = JOptionPane.showInputDialog("Mã HD: \nVui lòng nhập lý do hủy!");
-                    if (reason != null && !reason.trim().isEmpty()) {
-                        int id = (Integer) tblHoaDon.getValueAt(i, 0);
-                        HoaDon hd = new HoaDon();
-                        hd.setMaHD(id);
-                        hd.setMaB((String) tblHoaDon.getValueAt(i, 4));
-                        hd.setTrangThai(-1);
-                        hd.setGhiChu(reason);
-
-                        dao.update(hd);
-                    } else {
-                        MsgBox.alert(this, "Bạn cần nhập lý do hủy!");
-                        continue;
-                    }
-                    fillTable();
-                    JOptionPane.showMessageDialog(this, "Hóa đơn đã được hủy!");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            fillTable();
+            JOptionPane.showMessageDialog(this, "Hóa đơn đã được hủy!");
         }
     }
-
 }
