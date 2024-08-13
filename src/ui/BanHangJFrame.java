@@ -601,8 +601,11 @@ public class BanHangJFrame extends javax.swing.JFrame {
         } else if (txtSDT.getText().trim().equals("")) {
             JOptionPane.showMessageDialog(this, "Số điện thoại không được bỏ trống!");
             return false;
-        } else if (txtSDT.getText().trim().length() < 9) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại không đủ!");
+        } else if (txtSDT.getText().trim().length() < 10 || txtSDT.getText().trim().length() > 14) {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ!");
+            return false;
+        }else if(!txtSDT.getText().startsWith(0+"")){
+            JOptionPane.showMessageDialog(this, "Số điện thoại phải bắt đầu bằng số 0!");
             return false;
         }
         return true;
@@ -1473,6 +1476,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         });
 
+        txtSDT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSDTActionPerformed(evt);
+            }
+        });
+
         jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("Tên khách hàng:");
@@ -2213,6 +2222,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
         
         chuyenBanAn();
     }//GEN-LAST:event_btnChuyenBanActionPerformed
+
+    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSDTActionPerformed
 
     /**
      * @param args the command line arguments
