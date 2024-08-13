@@ -432,6 +432,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         setTitle("Edusys - Quản lý nhân viên quản trị");
         fillTable();
         updateStatus();
+        clearForm();
     }
 
     public boolean checkForm() {
@@ -517,6 +518,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         rdo_nhanVien.setEnabled(true);
         rdo_quanLy.setEnabled(true);
         txt_matKhau.setEditable(true);
+        btnHideShow.setEnabled(true);
         
         if (!Auth.user.getMaNV().equals("NV01")) {
             rdo_quanLy.setEnabled(false);
@@ -570,6 +572,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         this.row = -1;
         this.updateStatus();
         tbl_NhanVien.clearSelection();
+        rdo_nhanVien.setSelected(true);
     }
 
     void insert() {
@@ -585,6 +588,9 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     }
 
     void update() {
+        if(checkForm()){
+            return;
+        }
         NhanVien model = getForm();
         String confirm = new String(txt_matKhau.getText());
         if (!confirm.equals(model.getMatKhau())) {
