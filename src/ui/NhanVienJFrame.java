@@ -450,6 +450,9 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         } else if (!txt_email.getText().matches("^[\\w.-]+@([\\w-]+\\.)+[\\w]+$")) {
             MsgBox.alert(this, "Email không hợp lệ!");
             return false;
+        }else if(!txt_email.getText().endsWith("@gmail.com")){
+            MsgBox.alert(this, "Email phải kết thúc bằng '@gmail.com'!");
+            return false;
         }
         return true;
     }
