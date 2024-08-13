@@ -43,10 +43,11 @@ public class ThongKeDAO {
                           ORDER BY CONVERT(date, hd.NgayLap, 103) asc""";
     
     String DoanhThuCT_SQL = """
-                          SELECT hd.MaHD, CONVERT(date, hd.NgayLap, 103) as NgayLap, hd.MaKH, SUM(hdct.SoLuongMon * hdct.DonGia) as TongTien
+                          SELECT hd.MaHD, CONVERT(date, hd.NgayLap, 103) as NgayLap, kh.TENKH, SUM(hdct.SoLuongMon * hdct.DonGia) as TongTien
                           From HoaDonChiTiet hdct Join HoaDon hd on hdct.MaHD = hd.MaHD
+                          Join KhachHang kh on hd.MaKH = kh.MAKH
                           Where CONVERT(date, hd.NgayLap, 103) BETWEEN CONVERT(date, ?, 103) AND CONVERT(date, ?, 103) AND hd.TrangThai like '1'
-                          GROUP BY CONVERT(date, hd.NgayLap, 103), hd.MaHD, hd.MaKH
+                          GROUP BY CONVERT(date, hd.NgayLap, 103), hd.MaHD, kh.TENKH
                           ORDER BY CONVERT(date, hd.NgayLap, 103) asc;""";
 
 
@@ -128,7 +129,7 @@ public class ThongKeDAO {
                 DoanhThuCT dt = new DoanhThuCT();
                 dt.setMaHD(rs.getInt(1));
                 dt.setNgayLap(rs.getDate(2));
-                dt.setMaKH(rs.getString(3));
+                dt.setTenKH(rs.getString(3));
                 dt.setTongTien(rs.getInt(4));
                 list.add(dt);
             }

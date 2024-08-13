@@ -11,6 +11,7 @@ import dao.ThongKeDAO;
 import entity.LoaiMon;
 import entity.ThongKe.*;
 import java.awt.Font;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLayeredPane;
@@ -34,6 +35,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.TextAnchor;
 import utils.MsgBox;
+import utils.XuatExcel;
 
 /**
  *
@@ -81,6 +83,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         ycrNam = new com.toedter.calendar.JYearChooser();
         lblTongDoanhThuNam = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
+        btnXuatExcelDTCT = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDoanhThuCT = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -89,6 +92,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         clrDenNgayCT = new com.toedter.calendar.JDateChooser();
         lblTongDoanhThu = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        btnXuatExcelDTCT1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         clrTuNgayMA = new com.toedter.calendar.JDateChooser();
         clrDenNgayMA = new com.toedter.calendar.JDateChooser();
@@ -120,7 +124,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         );
         pnlDoanhThuLayout.setVerticalGroup(
             pnlDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
+            .addGap(0, 666, Short.MAX_VALUE)
         );
 
         ycrNam.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -156,8 +160,8 @@ public class ThongKeJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ycrNam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblTongDoanhThuNam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ycrNam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(lblTongDoanhThuNam, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -165,6 +169,16 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         );
 
         tabs.addTab("DOANH THU", jPanel2);
+
+        btnXuatExcelDTCT.setBackground(new java.awt.Color(51, 255, 0));
+        btnXuatExcelDTCT.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXuatExcelDTCT.setForeground(new java.awt.Color(255, 255, 255));
+        btnXuatExcelDTCT.setText("Xuất Excel");
+        btnXuatExcelDTCT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelDTCTActionPerformed(evt);
+            }
+        });
 
         tblDoanhThuCT.setAutoCreateRowSorter(true);
         tblDoanhThuCT.setModel(new javax.swing.table.DefaultTableModel(
@@ -175,7 +189,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Mã Hoá Đơn", "Ngày lập", "Mã Khách hàng", "Tổng tiền"
+                "Mã Hoá Đơn", "Ngày lập", "Tên khách hàng", "Tổng tiền"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -240,7 +254,9 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clrDenNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 341, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnXuatExcelDTCT)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
                         .addComponent(lblTongDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -257,13 +273,24 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(clrTuNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
-                            .addComponent(clrDenNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(clrDenNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnXuatExcelDTCT))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         tabs.addTab("DOANH THU CHI TIẾT", jPanel3);
+
+        btnXuatExcelDTCT1.setBackground(new java.awt.Color(51, 255, 0));
+        btnXuatExcelDTCT1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnXuatExcelDTCT1.setForeground(new java.awt.Color(255, 255, 255));
+        btnXuatExcelDTCT1.setText("Xuất Excel");
+        btnXuatExcelDTCT1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatExcelDTCT1ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel2.setText("TỪ NGÀY");
@@ -356,27 +383,34 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                                     .addComponent(lblSoLuongNhieuNhat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(clrDenNgayMA, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(674, 674, 674))))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnXuatExcelDTCT1)
+                        .addGap(568, 568, 568))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(clrTuNgayMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6)
-                    .addComponent(clrDenNgayMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(lblSoLuongNhieuNhat))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(lblSoLuongItNhat))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnXuatExcelDTCT1)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(clrTuNgayMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(clrDenNgayMA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(lblSoLuongNhieuNhat))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(lblSoLuongItNhat))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 603, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -427,6 +461,24 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
          loadCboNgayLap();
     }//GEN-LAST:event_clrDenNgayMAPropertyChange
+
+    private void btnXuatExcelDTCTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelDTCTActionPerformed
+        try {
+            // TODO add your handling code here:
+            XuatExcel.printReport(tblDoanhThuCT.getModel(), "Doanh thu chi tiet");
+        } catch (IOException ex) {
+            MsgBox.alert(this, "Vui lòng đóng file trước khi xuất!");
+        }
+    }//GEN-LAST:event_btnXuatExcelDTCTActionPerformed
+
+    private void btnXuatExcelDTCT1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatExcelDTCT1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            XuatExcel.printReport(tblDoanhSoMonAn.getModel(), "Doanh số món ăn");
+        } catch (IOException ex) {
+            MsgBox.alert(this, "Vui lòng đóng file trước khi xuất!");
+        }
+    }//GEN-LAST:event_btnXuatExcelDTCT1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -593,7 +645,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                     Object[] row = {
                         dt.getMaHD(),
                         fmThoiGianCT.format(dt.getNgayLap()),
-                        dt.getMaKH(),
+                        dt.getTenKH(),
                         fmTien.format(tongTien) + " VNĐ"
                     };
                     model.addRow(row);
@@ -647,6 +699,8 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnXuatExcelDTCT;
+    private javax.swing.JButton btnXuatExcelDTCT1;
     private com.toedter.calendar.JDateChooser clrDenNgayCT;
     private com.toedter.calendar.JDateChooser clrDenNgayMA;
     private com.toedter.calendar.JDateChooser clrTuNgayCT;

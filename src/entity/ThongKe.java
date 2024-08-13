@@ -101,25 +101,25 @@ public class ThongKe {
     public static class DoanhThuCT{
         int MaHD;        
         Date ngayLap;
-        String MaKH;
+        String tenKH;
         int tongTien;
 
         public DoanhThuCT() {
         }
-        
-        public DoanhThuCT(int MaHD, Date ngayLap, String MaKH, int tongTien) {
+
+        public DoanhThuCT(int MaHD, Date ngayLap, String tenKH, int tongTien) {
             this.MaHD = MaHD;
-            this.ngayLap = ngayLap;           
-            this.MaKH = MaKH;
+            this.ngayLap = ngayLap;
+            this.tenKH = tenKH;
             this.tongTien = tongTien;
         }
 
-        public double getTongTien() {
-            return tongTien;
+        public int getMaHD() {
+            return MaHD;
         }
 
-        public void setTongTien(int tongTien) {
-            this.tongTien = tongTien;
+        public void setMaHD(int MaHD) {
+            this.MaHD = MaHD;
         }
 
         public Date getNgayLap() {
@@ -129,21 +129,21 @@ public class ThongKe {
         public void setNgayLap(Date ngayLap) {
             this.ngayLap = ngayLap;
         }
-        
-        public int getMaHD() {
-            return MaHD;
+
+        public String getTenKH() {
+            return tenKH;
         }
 
-        public void setMaHD(int MaHD) {
-            this.MaHD = MaHD;
-        }
-        
-        public String getMaKH() {
-            return MaKH;
+        public void setTenKH(String tenKH) {
+            this.tenKH = tenKH;
         }
 
-        public void setMaKH(String MaKH) {
-            this.MaKH = MaKH;
+        public int getTongTien() {
+            return tongTien;
+        }
+
+        public void setTongTien(int tongTien) {
+            this.tongTien = tongTien;
         }
     }
     
