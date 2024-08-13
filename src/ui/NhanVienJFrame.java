@@ -19,7 +19,7 @@ import utils.MsgBox;
 public class NhanVienJFrame extends javax.swing.JFrame {
 
     NhanVienDAO dao = new NhanVienDAO();
-    int row = 0;
+    int row = -1;
 
     /**
      * Creates new form NhanVienJFrame
@@ -505,6 +505,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
 
     void updateStatus() {
         boolean edit = this.row >= 0;
+        System.out.println(row);
         txt_maNV.setEditable(!edit);
         //khi insert thì ko update, delete
         btn_them.setEnabled(!edit);
@@ -512,6 +513,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         btn_xoa.setEnabled(edit);
         rdo_nhanVien.setEnabled(true);
         rdo_quanLy.setEnabled(true);
+        txt_matKhau.setEditable(true);
         
         if (!Auth.user.getMaNV().equals("NV01")) {
             rdo_quanLy.setEnabled(false);
@@ -564,6 +566,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         this.setForm(nv);
         this.row = -1;
         this.updateStatus();
+        tbl_NhanVien.clearSelection();
     }
 
     void insert() {

@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import utils.Auth;
 import utils.MsgBox;
@@ -47,7 +50,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         initComponents();
         setChucVu();
         init();
-        
+
         ImageIcon icon = new ImageIcon("./img/logo.jpg");
         setIconImage(icon.getImage());
     }
@@ -507,25 +510,110 @@ public class TrangChuJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void mniHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniHoaDonActionPerformed
-        openQLHoaDon();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openQLHoaDon();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniHoaDonActionPerformed
 
     private void mniBanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniBanHangActionPerformed
-        openBanHang();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openBanHang();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniBanHangActionPerformed
 
     private void btnHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoaDonActionPerformed
-        openQLHoaDon();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openQLHoaDon();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_btnHoaDonActionPerformed
 
     private void btnMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMonAnActionPerformed
         // TODO add your handling code here:
-        openMonAn();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openMonAn();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_btnMonAnActionPerformed
 
     private void btnBanHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBanHangActionPerformed
-        // TODO add your handling code here:
-        openBanHang();
+
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openBanHang();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_btnBanHangActionPerformed
 
     private void btnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangXuatActionPerformed
@@ -591,29 +679,90 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void mniMonAnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniMonAnActionPerformed
         // TODO add your handling code here:
-        openMonAn();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openMonAn();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniMonAnActionPerformed
 
     private void mniNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniNhanVienActionPerformed
         // TODO add your handling code here:
-        new NhanVienJFrame().setVisible(true);
-        dispose();
+       JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openNhanVien();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniNhanVienActionPerformed
 
     private void mniDoanhSoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhSoActionPerformed
         // TODO add your handling code here:
-        ThongKeJFrame thongKe = new ThongKeJFrame();
-        thongKe.selectTab(2);
-        thongKe.setVisible(true);
-        dispose();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openThongKe(2);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniDoanhSoActionPerformed
 
     private void mniDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuActionPerformed
         // TODO add your handling code here:
-        ThongKeJFrame thongKe = new ThongKeJFrame();
-        thongKe.selectTab(0);
-        thongKe.setVisible(true);
-        dispose();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openThongKe(0);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniDoanhThuActionPerformed
 
     private void jMenuItem15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem15ActionPerformed
@@ -628,10 +777,24 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void mniDoanhThuChiTietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniDoanhThuChiTietActionPerformed
         // TODO add your handling code here:
-        ThongKeJFrame thongKe = new ThongKeJFrame();
-        thongKe.selectTab(1);
-        thongKe.setVisible(true);
-        dispose();
+        JDialog JDWait = new WaitDialog(this, false);
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                openThongKe(1);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                JDWait.setVisible(false);
+                JDWait.dispose();
+            }
+        };
+
+        JDWait.setVisible(true);
+        worker.execute();
     }//GEN-LAST:event_mniDoanhThuChiTietActionPerformed
 
     /**
@@ -777,36 +940,45 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         new BanHangJFrame().setVisible(true);
         dispose();
     }
-
+    
+    void openNhanVien(){
+        new NhanVienJFrame().setVisible(true);
+        dispose();
+    }
+    
+    void openThongKe(int tab){
+        ThongKeJFrame TK = new ThongKeJFrame();
+        TK.selectTab(tab);
+        TK.setVisible(true);
+        dispose();
+    }
     public void openHDSD() {
         try {
-            // Thiết lập đường dẫn tới thư mục dự án của bạn
-            String projectDir = "./HDSD"; // Đường dẫn tới thư mục chứa dự án của bạn
-            
+            String projectDir = "./HDSD";
+
             // Tạo server tại địa chỉ 127.0.0.1 và cổng 5500
             HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 5500), 0);
-            
+
             // Đăng ký handler cho mọi yêu cầu
             server.createContext("/", new HttpHandler() {
                 @Override
                 public void handle(HttpExchange exchange) throws IOException {
                     // Lấy đường dẫn của file được yêu cầu
                     String requestedFile = exchange.getRequestURI().getPath();
-                    
-                    // Nếu không có file cụ thể nào được yêu cầu, trả về index.html
+
                     if (requestedFile.equals("/")) {
                         requestedFile = "/HDSD.html";
                     }
-                    
+
                     // Tạo đường dẫn đầy đủ tới file
                     Path filePath = Paths.get(projectDir, requestedFile);
-                    
+
                     // Kiểm tra xem file có tồn tại không
                     if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
                         // Đoán loại nội dung và thiết lập header
                         String contentType = Files.probeContentType(filePath);
                         exchange.getResponseHeaders().set("Content-Type", contentType);
-                        
+
                         // Đọc nội dung file và gửi phản hồi
                         byte[] response = Files.readAllBytes(filePath);
                         exchange.sendResponseHeaders(200, response.length);
@@ -823,12 +995,12 @@ public class TrangChuJFrame extends javax.swing.JFrame {
                     }
                 }
             });
-            
+
             // Bắt đầu server
             server.setExecutor(null);
             server.start();
             System.out.println("Server đang chạy tại http://127.0.0.1:5500/");
-            
+
             // Mở trình duyệt tự động
             if (Desktop.isDesktopSupported()) {
                 try {
