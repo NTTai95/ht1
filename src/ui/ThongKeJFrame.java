@@ -48,8 +48,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
     HoaDonDAO dao = new HoaDonDAO();
     HoaDonChiTietDAO daoct = new HoaDonChiTietDAO();
     DecimalFormat fmTien = new DecimalFormat("#,#00");
-    SimpleDateFormat fmThoiGian = new SimpleDateFormat("dd/MM");
-    SimpleDateFormat fmThoiGianCT = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat fmThoiGianCT = new SimpleDateFormat("dd-MM-yyyy");
     NgayLap nl = TKdao.getNgayLap();
 
     /**
@@ -144,16 +143,14 @@ public class ThongKeJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(pnlDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(pnlDoanhThu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ycrNam, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblTongDoanhThuNam, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(46, 46, 46))))
+                        .addComponent(lblTongDoanhThuNam, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,14 +201,14 @@ public class ThongKeJFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblDoanhThuCT);
         if (tblDoanhThuCT.getColumnModel().getColumnCount() > 0) {
             tblDoanhThuCT.getColumnModel().getColumn(0).setMinWidth(70);
-            tblDoanhThuCT.getColumnModel().getColumn(0).setPreferredWidth(150);
-            tblDoanhThuCT.getColumnModel().getColumn(0).setMaxWidth(200);
+            tblDoanhThuCT.getColumnModel().getColumn(0).setPreferredWidth(100);
+            tblDoanhThuCT.getColumnModel().getColumn(0).setMaxWidth(150);
             tblDoanhThuCT.getColumnModel().getColumn(1).setMinWidth(200);
-            tblDoanhThuCT.getColumnModel().getColumn(1).setPreferredWidth(400);
-            tblDoanhThuCT.getColumnModel().getColumn(1).setMaxWidth(550);
-            tblDoanhThuCT.getColumnModel().getColumn(2).setMinWidth(100);
-            tblDoanhThuCT.getColumnModel().getColumn(2).setPreferredWidth(300);
-            tblDoanhThuCT.getColumnModel().getColumn(2).setMaxWidth(400);
+            tblDoanhThuCT.getColumnModel().getColumn(1).setPreferredWidth(300);
+            tblDoanhThuCT.getColumnModel().getColumn(1).setMaxWidth(400);
+            tblDoanhThuCT.getColumnModel().getColumn(3).setMinWidth(100);
+            tblDoanhThuCT.getColumnModel().getColumn(3).setPreferredWidth(200);
+            tblDoanhThuCT.getColumnModel().getColumn(3).setMaxWidth(300);
         }
 
         jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
@@ -256,8 +253,8 @@ public class ThongKeJFrame extends javax.swing.JFrame {
                         .addComponent(clrDenNgayCT, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnXuatExcelDTCT)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 235, Short.MAX_VALUE)
-                        .addComponent(lblTongDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                        .addComponent(lblTongDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 391, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -588,7 +585,7 @@ public class ThongKeJFrame extends javax.swing.JFrame {
 
             renderer.setItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", fmTien));
             renderer.setItemLabelsVisible(true);
-            renderer.setItemLabelFont(new Font("Segoe UI", Font.BOLD, 12));
+            renderer.setItemLabelFont(new Font("Open Sans", Font.BOLD, 13));
             renderer.setPositiveItemLabelPosition(new org.jfree.chart.labels.ItemLabelPosition(
                     org.jfree.chart.labels.ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER
             ));

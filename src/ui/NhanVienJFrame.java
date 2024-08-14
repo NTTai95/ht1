@@ -251,6 +251,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbl_NhanVien.setRowHeight(25);
         tbl_NhanVien.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_NhanVienMouseClicked(evt);
@@ -260,6 +261,14 @@ public class NhanVienJFrame extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_NhanVien);
+        if (tbl_NhanVien.getColumnModel().getColumnCount() > 0) {
+            tbl_NhanVien.getColumnModel().getColumn(0).setMinWidth(50);
+            tbl_NhanVien.getColumnModel().getColumn(0).setPreferredWidth(80);
+            tbl_NhanVien.getColumnModel().getColumn(0).setMaxWidth(100);
+            tbl_NhanVien.getColumnModel().getColumn(2).setMinWidth(50);
+            tbl_NhanVien.getColumnModel().getColumn(2).setPreferredWidth(70);
+            tbl_NhanVien.getColumnModel().getColumn(2).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -448,11 +457,26 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         } else if (txt_tenNV.getText().matches(".*\\d.*")) {
             MsgBox.alert(this, "Tên nhân viên không hợp lệ!");
             return false;
-        } else if (!txt_email.getText().matches("^[\\w.-]+@([\\w-]+\\.)+[\\w]+$")) {
+        } else if (!txt_email.getText().matches("^[a-zA-Z][\\w.]+@[a-zA-Z]([\\w]*\\.)+[\\w]+$")) {
             MsgBox.alert(this, "Email không hợp lệ!");
             return false;
-        }else if(!txt_email.getText().endsWith("@gmail.com")){
+        } else if (!txt_email.getText().endsWith("@gmail.com")) {
             MsgBox.alert(this, "Email phải kết thúc bằng '@gmail.com'!");
+            return false;
+        }else if(checkTrungEmail()){
+            MsgBox.alert(this, "Email đã tồn tại!");
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkTrungEmail(){
+        NhanVien nvTemp = dao.SelectByEmail(txt_email.getText());
+        
+        if(nvTemp == null){
+            return false;
+        }
+        if(nvTemp.getMaNV().equals(txt_maNV.getText())){
             return false;
         }
         return true;
@@ -465,8 +489,8 @@ public class NhanVienJFrame extends javax.swing.JFrame {
             List<NhanVien> list = dao.selectAll(); //đọc dữ lịu từ sql
             for (NhanVien nv : list) {
                 String tenNV = nv.getTenNV();
-                if(nv.getMaNV().equals(Auth.user.getMaNV())){
-                  tenNV = "<html><p style='font-weight:bold'>"+tenNV+"</p></html>"; 
+                if (nv.getMaNV().equals(Auth.user.getMaNV())) {
+                    tenNV = "<html><p style='font-weight:bold'>" + tenNV + "</p></html>";
                 }
                 Object[] row = {
                     nv.getMaNV(),
@@ -519,7 +543,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         rdo_quanLy.setEnabled(true);
         txt_matKhau.setEditable(true);
         btnHideShow.setEnabled(true);
-        
+
         if (!Auth.user.getMaNV().equals("NV01")) {
             rdo_quanLy.setEnabled(false);
         }
@@ -561,7 +585,7 @@ public class NhanVienJFrame extends javax.swing.JFrame {
         NhanVien nv = new NhanVien();
         nv.setMatKhau("");
         int slNV = dao.getCountRow();
-        if (slNV < 10) {
+        if (slNV < 9) {
             nv.setMaNV("NV0" + (slNV + 1));
         } else {
             nv.setMaNV("NV" + (slNV + 1));
@@ -588,21 +612,14 @@ public class NhanVienJFrame extends javax.swing.JFrame {
     }
 
     void update() {
-        if(checkForm()){
-            return;
-        }
         NhanVien model = getForm();
-        String confirm = new String(txt_matKhau.getText());
-        if (!confirm.equals(model.getMatKhau())) {
-            MsgBox.alert(this, "Xác nhận mật khẩu không đúng!");
-        } else {
-            try {
-                dao.update(model);
-                this.fillTable();
-                MsgBox.alert(this, "Cập nhật thành công !");
-            } catch (Exception e) {
-                MsgBox.alert(this, "Cập nhật thất bại !");
-            }
+        try {
+            dao.update(model);
+            this.fillTable();
+            tbl_NhanVien.setRowSelectionInterval(row, row);
+            MsgBox.alert(this, "Cập nhật thành công !");
+        } catch (Exception e) {
+            MsgBox.alert(this, "Cập nhật thất bại !");
         }
     }
 

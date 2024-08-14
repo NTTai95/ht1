@@ -23,6 +23,7 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
     String SELECT_BY_ID = "Select * from NhanVien where MaNV like ?";
     String SELECT_ALL = "SELECT * FROM NhanVien";
     String COUNT_ROW = "SELECT COUNT(*) FROM NhanVien";
+    String SELECT_BY_EMAIL = "SELECT * From NHANVIEN WHERE Email like ?";
 
     @Override
     public void insert(NhanVien entity) {
@@ -83,6 +84,14 @@ public class NhanVienDAO extends SysDAO<NhanVien, String> {
             throw new RuntimeException(e);
         }
 
+    }
+    
+    public NhanVien SelectByEmail(String email){
+        List<NhanVien> list = this.selectBySQL(SELECT_BY_EMAIL, email);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
     }
 
     public int getCountRow() {
