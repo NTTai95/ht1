@@ -102,7 +102,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     public boolean checkHoaDon() {
         if (lblMaHoaDon.getText().equals("0")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn bàn ăn!");
+            JOptionPane.showMessageDialog(this, "<html><p style='color:red;'>Vui lòng chọn bàn ăn!</p></html>");
             System.err.print("Mã hóa đơn: " + lblMaHoaDon.getText());
             return false;
         } else if (lblNgayLap.getText().equals("0")) {
@@ -112,7 +112,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             System.err.print("Tìm kiếm khách hàng: " + txtTimKiemKhachHang.getText());
             return false;
         } else if (lblTenKhachHang.getText().equals("không tìm thấy!")) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng!");
+            JOptionPane.showMessageDialog(this, "<html><p style='color:red;'>Vui lòng chọn khách hàng!</p></html>");
             return false;
         } else if (lblTongTien.getText().equals("0")) {
             System.err.print("Tổng tiền: " + lblTongTien.getText());
@@ -274,6 +274,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnThanhToan.setEnabled(false);
             btnChuyenBan.setEnabled(false);
             txtKhachTra.setText("");
+            btnThemKH.setEnabled(false);
             tinhTienThoi();
             return;
         }
@@ -292,6 +293,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                     btnThanhToan.setEnabled(true);
                     btnChuyenBan.setEnabled(true);
                     txtKhachTra.setText("");
+                    btnThemKH.setEnabled(false);
                     tinhTienThoi();
                     return;
                 }
@@ -316,6 +318,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             btnThanhToan.setEnabled(false);
             btnChuyenBan.setEnabled(false);
             txtKhachTra.setText("");
+            btnThemKH.setEnabled(true);
             tinhTienThoi();
         }
     }
@@ -356,7 +359,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
     public void themMonAn() {
         if (!checkHoaDon()) {
-            MsgBox.alert(this, "Vui lòng thêm khách hàng trước!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Vui lòng thêm khách hàng trước!</p></html>");
             return;
         }
         DefaultTableModel model = (DefaultTableModel) tblHoaDonChiTiet.getModel();
@@ -395,12 +398,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
         try {
             if (Integer.parseInt(tblHoaDonChiTiet.getValueAt(rowS, 2).toString()) < 1) {
-                MsgBox.alert(this, "Số lượng phải lớn hơn 0!");
+                MsgBox.alert(this, "<html><p style='color:red;'>Số lượng phải lớn hơn 0!</p></html>");
                 loadHoaDonChiTiet(hdctTemp);
                 return;
             }
         } catch (Exception e) {
-            MsgBox.alert(this, "Số lượng không hợp lệ!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Số lượng không hợp lệ!</p></html>");
             loadHoaDonChiTiet(hdctTemp);
             return;
         }
@@ -445,7 +448,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         List<BanAn> baAn = baDAO.selectByTrangThai(false);
         for (BanAn ba1 : baAn) {
             if (ba1.getMaB().equalsIgnoreCase(maBA)) {
-                MsgBox.alert(this, "Bàn ăn '" + maBA + "' không được sử dụng!");
+                MsgBox.alert(this, "<html><p style='color:red;'>Bàn ăn <b>'" + maBA + "'</b> không được sử dụng!</p></html>");
                 return;
             }
         }
@@ -459,7 +462,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         }
         if (check) {
-            MsgBox.alert(this, "Không tìm thấy bàn ăn '" + maBA + "'");
+            MsgBox.alert(this, "<html><p style='color:red;'>Không tìm thấy bàn ăn <b>'" + maBA + "'</b></p></html>");
             return;
         }
 
@@ -471,7 +474,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
 
         if (check) {
-            MsgBox.alert(this, "Không thể gợp với bàn trống!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Không thể gợp với bàn trống!</p></html>");
             return;
         }
 
@@ -616,12 +619,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
         KhachHang kh = new KhachHang();
         kh.setMaKH(txtmaKH.getText());
         if (txtTenKH.getText().matches(".*\\d.*")) {
-            MsgBox.alert(this, "Tên không được nhập số!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Tên không được nhập số!</p></html>");
             return null;
         }
         kh.setTenKH(txtTenKH.getText());
         if (!txtSDT.getText().matches("\\d{9,}")) {
-            MsgBox.alert(this, "Số điện thoại không được nhập chữ");
+            MsgBox.alert(this, "<html><p style='color:red;'>Số điện thoại không được nhập chữ!</p></html>");
             return null;
         }
         kh.setSDT(txtSDT.getText());
@@ -671,10 +674,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
     public void xoaKhachHang() {
         for (int i : tblListKH.getSelectedRows()) {
             if (hdDAO.selectByMaKH(tblListKH.getValueAt(i, 0).toString()) != null) {
-                MsgBox.alert(this, "Không thể xóa khách hàng '" + tblListKH.getValueAt(i, 1) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>Không thể xóa khách hàng <b>'" + tblListKH.getValueAt(i, 1) + "'</b></p></html>");
             } else {
                 khDAO.delete(tblListKH.getValueAt(i, 0).toString());
-                MsgBox.alert(this, "Đã xóa khách hàng '" + tblListKH.getValueAt(i, 1) + " (" + tblListKH.getValueAt(i, 2) + ")'");
+                MsgBox.alert(this, "<html><p style='color:red;'>Đã xóa khách hàng <b>'" + tblListKH.getValueAt(i, 1) + " (" + tblListKH.getValueAt(i, 2) + ")'</b></p></html>");
             }
         }
         clearForm();
@@ -688,10 +691,10 @@ public class BanHangJFrame extends javax.swing.JFrame {
             khTemp.setMaKH(tblListKH.getValueAt(i, 0).toString());
             String tenKhachHang = tblListKH.getValueAt(i, 1).toString();
             if (tenKhachHang.trim().equals("")) {
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - tên không được bỏ trống '" + tblListKH.getValueAt(i, 1) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - tên không được bỏ trống <b>'" + tblListKH.getValueAt(i, 1) + "'</b></p></html>");
                 continue;
             } else if (tenKhachHang.matches(".*\\d.*")) {
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Tên Không hợp lệ '" + tblListKH.getValueAt(i, 1) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - Tên Không hợp lệ <b>'" + tblListKH.getValueAt(i, 1) + "'</b></p></html>");
                 continue;
             }
             khTemp.setTenKH(tenKhachHang);
@@ -699,20 +702,20 @@ public class BanHangJFrame extends javax.swing.JFrame {
             String SDT = tblListKH.getValueAt(i, 2).toString();
             khTemp.setSDT(SDT);
             if(SDT.trim().equals("")){
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại không được bỏ trống! '" + tblListKH.getValueAt(i, 2) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - Số điện thoại không được bỏ trống! <b>'" + tblListKH.getValueAt(i, 2) + "'</b></p></html>");
                 continue;
             }else if (SDT.matches(".*\\D.*")) {
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - Số điện thoại không nhập chữ! '" + tblListKH.getValueAt(i, 2) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - Số điện thoại không nhập chữ! <b>'" + tblListKH.getValueAt(i, 2) + "'</b></p></html>");
                 continue;
             } else if (checkTrungSDT(khTemp)) {
                 KhachHang khNew = khDAO.selectBySDT(khTemp.getSDT());
-                MsgBox.alert(this, khTemp.getMaKH() + " - " + khNew.getMaKH() + " - Số điện thoại bị trùng!");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+khTemp.getMaKH() + " - " + khNew.getMaKH() + " - Số điện thoại bị trùng!</p></html>");
                 continue;
             }else if(SDT.length() < 10 || SDT.length() > 14){
-                 MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - số điện thoại không hợp lệ! '" + tblListKH.getValueAt(i, 2) + "'");
+                 MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - số điện thoại không hợp lệ! <b>'" + tblListKH.getValueAt(i, 2) + "'</b></p></html>");
                 continue;
             }else if(!SDT.startsWith(0+"")){
-                MsgBox.alert(this, tblListKH.getValueAt(i, 0) + " - số điện thoại phải bắt đầu bằng 0! '" + tblListKH.getValueAt(i, 2) + "'");
+                MsgBox.alert(this, "<html><p style='color:red;'>"+tblListKH.getValueAt(i, 0) + " - số điện thoại phải bắt đầu bằng 0! <b>'" + tblListKH.getValueAt(i, 2) + "'</b></p></html>");
                 continue;
             }
 
@@ -740,7 +743,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             MsgBox.alert(this, "Mã bàn ăn không được bỏ trống!");
             return false;
         } else if (txtViTri.getText().trim().equals("")) {
-            MsgBox.alert(this, "Vị trí không được bỏ trống!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Vị trí không được bỏ trống!</p></html>");
             return false;
         }
         return true;
@@ -797,7 +800,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         List<BanAn> baAn = baDAO.selectByTrangThai(false);
         for (BanAn ba1 : baAn) {
             if (ba1.getMaB().equalsIgnoreCase(maBA)) {
-                MsgBox.alert(this, "Bàn ăn '" + maBA + "' không được sử dụng!");
+                MsgBox.alert(this, "<html><p style='color:red;'>Bàn ăn <b>'" + maBA + "'</b> không được sử dụng!</p></html>");
                 return;
             }
         }
@@ -811,7 +814,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
             }
         }
         if (check) {
-            MsgBox.alert(this, "Không tìm thấy bàn ăn '" + maBA + "'");
+            MsgBox.alert(this, "<html><p style='color:red;'>Không tìm thấy bàn ăn <b>'" + maBA + "'</b></p></html>");
             return;
         }
 
@@ -823,7 +826,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
 
         if (check) {
-            MsgBox.alert(this, "Không thể chuyển sang bàn đang có khách!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Không thể chuyển sang bàn đang có khách!</p></html>");
             return;
         }
 
@@ -882,6 +885,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtThoiLai = new javax.swing.JTextField();
         btnChuyenBan = new javax.swing.JButton();
+        btnThemKH = new javax.swing.JButton();
         pnlKhachHang = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         txtTenKH = new javax.swing.JTextField();
@@ -1336,8 +1340,8 @@ public class BanHangJFrame extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel8.setText("Thối lại:");
 
+        txtThoiLai.setEditable(false);
         txtThoiLai.setText("0");
-        txtThoiLai.setEnabled(false);
         txtThoiLai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtThoiLaiActionPerformed(evt);
@@ -1351,6 +1355,15 @@ public class BanHangJFrame extends javax.swing.JFrame {
         btnChuyenBan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChuyenBanActionPerformed(evt);
+            }
+        });
+
+        btnThemKH.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icon/Create.png"))); // NOI18N
+        btnThemKH.setBorder(null);
+        btnThemKH.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnThemKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemKHActionPerformed(evt);
             }
         });
 
@@ -1368,26 +1381,28 @@ public class BanHangJFrame extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
-                                    .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtKhachTra, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                                    .addComponent(txtThoiLai)))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lblNgayLap, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblMaHoaDon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(71, 71, 71))
+                                    .addComponent(lblMaHoaDon, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel5Layout.createSequentialGroup()
+                                        .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnThemKH))
+                                    .addComponent(lblTenKhachHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(19, 19, 19)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtKhachTra, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtThoiLai, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -1424,10 +1439,11 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 .addGap(7, 7, 7)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(5, 5, 5)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(btnThemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTimKiemKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblTenKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -1461,7 +1477,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1904,7 +1920,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
                 xoaKhachHang();
             }
         } else {
-            MsgBox.alert(this, "Vui lòng chọn khách hàng cần xóa!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Vui lòng chọn khách hàng cần xóa!</p></html>");
         }
     }//GEN-LAST:event_btnXoaActionPerformed
 
@@ -1921,7 +1937,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         kh = getKhachHangNew(kh);
 
         if (checkTrungSDT(kh)) {
-            MsgBox.alert(this, "Số điện thoại bị trùng!");
+            MsgBox.alert(this, "<html><p style='color:red;'>Số điện thoại bị trùng!</p></html>");
             return;
         }
 
@@ -1991,7 +2007,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         for (int i = 0; i < tblListBanAn.getRowCount(); i++) {
             if (tblListBanAn.getValueAt(i, 2).toString().trim().equals("")) {
-                MsgBox.alert(this, "Bàn ăn: " + tblListBanAn.getValueAt(i, 0).toString() + " - vị trí không được để trống!");
+                MsgBox.alert(this, "<html><p style='color:red;'>Bàn ăn: " + tblListBanAn.getValueAt(i, 0).toString() + " - vị trí không được để trống!</p></html>");
                 continue;
             }
             BanAn baTemp = new BanAn();
@@ -2016,7 +2032,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
 
         for (HoaDon hd1 : listHD) {
             if (baTemp.getMaB().equalsIgnoreCase(hd1.getMaB())) {
-                MsgBox.alert(this, "Bàn ăn: " + baTemp.getMaB() + " Đang có khách không thể đổi trạng thái!");
+                MsgBox.alert(this, "<html><p style='color:red;'>Bàn ăn: " + baTemp.getMaB() + " Đang có khách không thể đổi trạng thái!</p></html>");
                 return;
             }
         }
@@ -2142,10 +2158,18 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
 
         if (!tinhTienThoi()) {
-            JOptionPane.showMessageDialog(this, "Tiền khách trả chưa nhập hoặc chưa đủ!");
+            JOptionPane.showMessageDialog(this, "<html><p style='color:red;'>Tiền khách trả chưa nhập hoặc chưa đủ!</p></html>");
             return;
         }
 
+        if(MsgBox.confirm(this, "<html><p style='color:green; font-weight: bold;'>Hóa đơn đã thanh toán!</p><br><p>Bạn có muốn in hóa đơn không?</p></html>")){
+           if(Printer.inHoaDon(lblMaHoaDon.getText(), Float.valueOf(txtThoiLai.getText()))){
+               MsgBox.alert(this, "Đã in hóa đơn!");
+           }else{
+               MsgBox.alert(this, "Hóa đơn chưa được in!");
+           }
+        }
+        
         HoaDon hdTemp = hdDAO.selectById(Integer.valueOf(lblMaHoaDon.getText()));
         hdTemp.setTrangThai(1);
 
@@ -2236,6 +2260,12 @@ public class BanHangJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblBanAnMouseClicked
 
+    private void btnThemKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKHActionPerformed
+        // TODO add your handling code here:
+        txtSDT.setText(txtTimKiemKhachHang.getText());
+        tabMain.setSelectedIndex(1);
+    }//GEN-LAST:event_btnThemKHActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -2293,6 +2323,7 @@ public class BanHangJFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnThemBanAn;
+    private javax.swing.JButton btnThemKH;
     private javax.swing.JButton btnThongBaoBep;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaMonAn;

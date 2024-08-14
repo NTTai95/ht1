@@ -38,7 +38,7 @@ public class Printer {
 
     private static final int width = 58; // Thay đổi width thành 58mm
     private static final int sizeHeader = 180; // Giảm sizeHeader để phù hợp
-    private static final int sizeFooter = 200; // Giảm sizeFooter để phù hợp
+    private static final int sizeFooter = 100; // Giảm sizeFooter để phù hợp
     private static final int margin_left_right = 1;
     private static final int margin_top_bottom = 5;
     private static final Font fontTieuDe = new Font("Arial", Font.BOLD, 9); 
@@ -244,7 +244,7 @@ public class Printer {
         g2d.drawString(header[0], x, y);
 
         textWidth = g2d.getFontMetrics().stringWidth(header[1]);
-        x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+        x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2)+mmToPonit(2));
 
         g2d.drawString(header[1], x, y);
 
@@ -282,7 +282,7 @@ public class Printer {
             text = String.valueOf(hdct.getSoLuong());
             textWidth = g2d.getFontMetrics().stringWidth(text);
 
-            x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+            x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2)+mmToPonit(2));
             g2d.drawString(text, x, y);
 
             if (i > 0) {
@@ -304,7 +304,7 @@ public class Printer {
         g2d.drawString(header[0], x, y);
 
         textWidth = g2d.getFontMetrics().stringWidth(header[1]);
-        x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+        x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2)+mmToPonit(2));
 
         g2d.drawString(header[1], x, y);
 
@@ -343,10 +343,8 @@ public class Printer {
             text = String.valueOf(hdct.getSoLuong());
             textWidth = g2d.getFontMetrics().stringWidth(text);
 
-            x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2));
+            x = (int) (widthColumn1 + ((widthColumn2 - textWidth) / 2)+mmToPonit(2));
             g2d.drawString(text, x, y);
-
-            x = (int) (widthColumn1 + widthColumn2);
 
             text = fmTien.format(hdct.getDonGia() * hdct.getSoLuong());
             drawRight(text, fontBody, g2d, width, y);
@@ -449,7 +447,7 @@ public class Printer {
     }
 
     public static void main(String[] args) {
-//        inHoaDon("7", 4000000);
+        inHoaDon("7", 4000000);
         inThongBaoBep("7");
     }
 }
