@@ -701,7 +701,7 @@ public class TrangChuJFrame extends javax.swing.JFrame {
 
     private void mniNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniNhanVienActionPerformed
         // TODO add your handling code here:
-       JDialog JDWait = new WaitDialog(this, false);
+        JDialog JDWait = new WaitDialog(this, false);
 
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
@@ -940,79 +940,79 @@ public class TrangChuJFrame extends javax.swing.JFrame {
         new BanHangJFrame().setVisible(true);
         dispose();
     }
-    
-    void openNhanVien(){
+
+    void openNhanVien() {
         new NhanVienJFrame().setVisible(true);
         dispose();
     }
-    
-    void openThongKe(int tab){
+
+    void openThongKe(int tab) {
         ThongKeJFrame TK = new ThongKeJFrame();
         TK.selectTab(tab);
         TK.setVisible(true);
         dispose();
     }
+
     public void openHDSD() {
-        try {
-            String projectDir = "./HDSD";
+        String projectDir = "./HDSD";
+        int port = 5500; // Cổng khởi tạo ban đầu
+        HttpServer server = null;
 
-            // Tạo server tại địa chỉ 127.0.0.1 và cổng 5500
-            HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", 5500), 0);
+        while (server == null) {
+            try {
+                // Tạo server tại địa chỉ 127.0.0.1 và cổng hiện tại
+                server = HttpServer.create(new InetSocketAddress("127.0.0.1", port), 0);
 
-            // Đăng ký handler cho mọi yêu cầu
-            server.createContext("/", new HttpHandler() {
-                @Override
-                public void handle(HttpExchange exchange) throws IOException {
-                    // Lấy đường dẫn của file được yêu cầu
-                    String requestedFile = exchange.getRequestURI().getPath();
+                // Đăng ký handler cho mọi yêu cầu
+                server.createContext("/", new HttpHandler() {
+                    @Override
+                    public void handle(HttpExchange exchange) throws IOException {
+                        String requestedFile = exchange.getRequestURI().getPath();
 
-                    if (requestedFile.equals("/")) {
-                        requestedFile = "/HDSD.html";
+                        if (requestedFile.equals("/")) {
+                            requestedFile = "/HDSD.html";
+                        }
+
+                        Path filePath = Paths.get(projectDir, requestedFile);
+
+                        if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
+                            String contentType = Files.probeContentType(filePath);
+                            exchange.getResponseHeaders().set("Content-Type", contentType);
+
+                            byte[] response = Files.readAllBytes(filePath);
+                            exchange.sendResponseHeaders(200, response.length);
+                            OutputStream output = exchange.getResponseBody();
+                            output.write(response);
+                            output.close();
+                        } else {
+                            String errorMsg = "404 (Not Found)\n";
+                            exchange.sendResponseHeaders(404, errorMsg.length());
+                            OutputStream output = exchange.getResponseBody();
+                            output.write(errorMsg.getBytes());
+                            output.close();
+                        }
                     }
+                });
 
-                    // Tạo đường dẫn đầy đủ tới file
-                    Path filePath = Paths.get(projectDir, requestedFile);
+                server.setExecutor(null);
+                server.start();
+                System.out.println("Server đang chạy tại http://127.0.0.1:" + port + "/");
 
-                    // Kiểm tra xem file có tồn tại không
-                    if (Files.exists(filePath) && !Files.isDirectory(filePath)) {
-                        // Đoán loại nội dung và thiết lập header
-                        String contentType = Files.probeContentType(filePath);
-                        exchange.getResponseHeaders().set("Content-Type", contentType);
-
-                        // Đọc nội dung file và gửi phản hồi
-                        byte[] response = Files.readAllBytes(filePath);
-                        exchange.sendResponseHeaders(200, response.length);
-                        OutputStream output = exchange.getResponseBody();
-                        output.write(response);
-                        output.close();
-                    } else {
-                        // Nếu file không tồn tại, trả về lỗi 404
-                        String errorMsg = "404 (Not Found)\n";
-                        exchange.sendResponseHeaders(404, errorMsg.length());
-                        OutputStream output = exchange.getResponseBody();
-                        output.write(errorMsg.getBytes());
-                        output.close();
+                // Mở trình duyệt tự động
+                if (Desktop.isDesktopSupported()) {
+                    try {
+                        Desktop.getDesktop().browse(new URI("http://127.0.0.1:" + port + "/"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+                } else {
+                    System.out.println("Desktop không được hỗ trợ trên hệ thống này!");
                 }
-            });
 
-            // Bắt đầu server
-            server.setExecutor(null);
-            server.start();
-            System.out.println("Server đang chạy tại http://127.0.0.1:5500/");
-
-            // Mở trình duyệt tự động
-            if (Desktop.isDesktopSupported()) {
-                try {
-                    Desktop.getDesktop().browse(new URI("http://127.0.0.1:5500/"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                System.out.println("Desktop không được hỗ trợ trên hệ thống này!");
+            } catch (IOException ex) {
+                System.err.println("Không thể mở cổng " + port + ". Thử cổng khác...");
+                port++; // Thử với cổng tiếp theo
             }
-        } catch (IOException ex) {
-            Logger.getLogger(TrangChuJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
